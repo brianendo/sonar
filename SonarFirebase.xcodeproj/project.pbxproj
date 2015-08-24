@@ -7,12 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8165BEEB0C390634459BDBBE /* libPods-SonarFirebase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 61D4F2DA31BE0571D3EDFB29 /* libPods-SonarFirebase.a */; };
 		8EE328161B8B939E000F4500 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE328151B8B939E000F4500 /* AppDelegate.swift */; };
-		8EE328181B8B939E000F4500 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE328171B8B939E000F4500 /* ViewController.swift */; };
 		8EE3281B1B8B939E000F4500 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8EE328191B8B939E000F4500 /* Main.storyboard */; };
 		8EE3281D1B8B939E000F4500 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8EE3281C1B8B939E000F4500 /* Images.xcassets */; };
 		8EE328201B8B939E000F4500 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8EE3281E1B8B939E000F4500 /* LaunchScreen.xib */; };
 		8EE3282C1B8B939F000F4500 /* SonarFirebaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE3282B1B8B939F000F4500 /* SonarFirebaseTests.swift */; };
+		8EE328361B8B9530000F4500 /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE328351B8B9530000F4500 /* StartViewController.swift */; };
+		8EE328381B8B953F000F4500 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE328371B8B953F000F4500 /* LogInViewController.swift */; };
+		8EE3283A1B8B9548000F4500 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE328391B8B9548000F4500 /* SignUpViewController.swift */; };
+		8EE3283C1B8B9C9D000F4500 /* PulseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE3283B1B8B9C9D000F4500 /* PulseViewController.swift */; };
+		8EE328401B8BAB75000F4500 /* CreatePulseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE3283F1B8BAB75000F4500 /* CreatePulseViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -26,16 +31,23 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		10CA79A10D6C03531A37D0B2 /* Pods-SonarFirebase.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SonarFirebase.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SonarFirebase/Pods-SonarFirebase.debug.xcconfig"; sourceTree = "<group>"; };
+		61D4F2DA31BE0571D3EDFB29 /* libPods-SonarFirebase.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SonarFirebase.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8EE328101B8B939E000F4500 /* SonarFirebase.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SonarFirebase.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8EE328141B8B939E000F4500 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8EE328151B8B939E000F4500 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		8EE328171B8B939E000F4500 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		8EE3281A1B8B939E000F4500 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		8EE3281C1B8B939E000F4500 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		8EE3281F1B8B939E000F4500 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		8EE328251B8B939F000F4500 /* SonarFirebaseTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SonarFirebaseTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8EE3282A1B8B939F000F4500 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8EE3282B1B8B939F000F4500 /* SonarFirebaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SonarFirebaseTests.swift; sourceTree = "<group>"; };
+		8EE328351B8B9530000F4500 /* StartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
+		8EE328371B8B953F000F4500 /* LogInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
+		8EE328391B8B9548000F4500 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		8EE3283B1B8B9C9D000F4500 /* PulseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulseViewController.swift; sourceTree = "<group>"; };
+		8EE3283F1B8BAB75000F4500 /* CreatePulseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePulseViewController.swift; sourceTree = "<group>"; };
+		E0D34AB836B69ED1FC64F81B /* Pods-SonarFirebase.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SonarFirebase.release.xcconfig"; path = "Pods/Target Support Files/Pods-SonarFirebase/Pods-SonarFirebase.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +55,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8165BEEB0C390634459BDBBE /* libPods-SonarFirebase.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -62,6 +75,8 @@
 				8EE328121B8B939E000F4500 /* SonarFirebase */,
 				8EE328281B8B939F000F4500 /* SonarFirebaseTests */,
 				8EE328111B8B939E000F4500 /* Products */,
+				AE3A876D014DF8F99C81CA98 /* Pods */,
+				BE90DB4082EAA178505C8105 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -78,7 +93,9 @@
 			isa = PBXGroup;
 			children = (
 				8EE328151B8B939E000F4500 /* AppDelegate.swift */,
-				8EE328171B8B939E000F4500 /* ViewController.swift */,
+				8EE328411B8BAB84000F4500 /* LogIn */,
+				8EE3283B1B8B9C9D000F4500 /* PulseViewController.swift */,
+				8EE3283F1B8BAB75000F4500 /* CreatePulseViewController.swift */,
 				8EE328191B8B939E000F4500 /* Main.storyboard */,
 				8EE3281C1B8B939E000F4500 /* Images.xcassets */,
 				8EE3281E1B8B939E000F4500 /* LaunchScreen.xib */,
@@ -112,6 +129,33 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		8EE328411B8BAB84000F4500 /* LogIn */ = {
+			isa = PBXGroup;
+			children = (
+				8EE328351B8B9530000F4500 /* StartViewController.swift */,
+				8EE328371B8B953F000F4500 /* LogInViewController.swift */,
+				8EE328391B8B9548000F4500 /* SignUpViewController.swift */,
+			);
+			name = LogIn;
+			sourceTree = "<group>";
+		};
+		AE3A876D014DF8F99C81CA98 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				10CA79A10D6C03531A37D0B2 /* Pods-SonarFirebase.debug.xcconfig */,
+				E0D34AB836B69ED1FC64F81B /* Pods-SonarFirebase.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		BE90DB4082EAA178505C8105 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				61D4F2DA31BE0571D3EDFB29 /* libPods-SonarFirebase.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -119,9 +163,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8EE3282F1B8B939F000F4500 /* Build configuration list for PBXNativeTarget "SonarFirebase" */;
 			buildPhases = (
+				73714B910A9FB26932CA3AAE /* Check Pods Manifest.lock */,
 				8EE3280C1B8B939E000F4500 /* Sources */,
 				8EE3280D1B8B939E000F4500 /* Frameworks */,
 				8EE3280E1B8B939E000F4500 /* Resources */,
+				964F3A9F7C8A454B87389F67 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -207,13 +253,50 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		73714B910A9FB26932CA3AAE /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		964F3A9F7C8A454B87389F67 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SonarFirebase/Pods-SonarFirebase-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		8EE3280C1B8B939E000F4500 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8EE328181B8B939E000F4500 /* ViewController.swift in Sources */,
 				8EE328161B8B939E000F4500 /* AppDelegate.swift in Sources */,
+				8EE328361B8B9530000F4500 /* StartViewController.swift in Sources */,
+				8EE3283A1B8B9548000F4500 /* SignUpViewController.swift in Sources */,
+				8EE3283C1B8B9C9D000F4500 /* PulseViewController.swift in Sources */,
+				8EE328401B8BAB75000F4500 /* CreatePulseViewController.swift in Sources */,
+				8EE328381B8B953F000F4500 /* LogInViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -340,6 +423,7 @@
 		};
 		8EE328301B8B939F000F4500 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 10CA79A10D6C03531A37D0B2 /* Pods-SonarFirebase.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = SonarFirebase/Info.plist;
@@ -350,6 +434,7 @@
 		};
 		8EE328311B8B939F000F4500 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E0D34AB836B69ED1FC64F81B /* Pods-SonarFirebase.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = SonarFirebase/Info.plist;
@@ -411,6 +496,7 @@
 				8EE328311B8B939F000F4500 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		8EE328321B8B939F000F4500 /* Build configuration list for PBXNativeTarget "SonarFirebaseTests" */ = {
 			isa = XCConfigurationList;
@@ -419,6 +505,7 @@
 				8EE328341B8B939F000F4500 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
