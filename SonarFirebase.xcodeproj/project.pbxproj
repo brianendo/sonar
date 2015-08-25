@@ -18,6 +18,7 @@
 		8EE3283A1B8B9548000F4500 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE328391B8B9548000F4500 /* SignUpViewController.swift */; };
 		8EE3283C1B8B9C9D000F4500 /* PulseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE3283B1B8B9C9D000F4500 /* PulseViewController.swift */; };
 		8EE328401B8BAB75000F4500 /* CreatePulseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE3283F1B8BAB75000F4500 /* CreatePulseViewController.swift */; };
+		8EE328431B8BD8AF000F4500 /* LogIn.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8EE328421B8BD8AF000F4500 /* LogIn.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		8EE328391B8B9548000F4500 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		8EE3283B1B8B9C9D000F4500 /* PulseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulseViewController.swift; sourceTree = "<group>"; };
 		8EE3283F1B8BAB75000F4500 /* CreatePulseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePulseViewController.swift; sourceTree = "<group>"; };
+		8EE328421B8BD8AF000F4500 /* LogIn.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LogIn.storyboard; sourceTree = "<group>"; };
 		E0D34AB836B69ED1FC64F81B /* Pods-SonarFirebase.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SonarFirebase.release.xcconfig"; path = "Pods/Target Support Files/Pods-SonarFirebase/Pods-SonarFirebase.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -97,6 +99,7 @@
 				8EE3283B1B8B9C9D000F4500 /* PulseViewController.swift */,
 				8EE3283F1B8BAB75000F4500 /* CreatePulseViewController.swift */,
 				8EE328191B8B939E000F4500 /* Main.storyboard */,
+				8EE328421B8BD8AF000F4500 /* LogIn.storyboard */,
 				8EE3281C1B8B939E000F4500 /* Images.xcassets */,
 				8EE3281E1B8B939E000F4500 /* LaunchScreen.xib */,
 				8EE328131B8B939E000F4500 /* Supporting Files */,
@@ -238,6 +241,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8EE328431B8BD8AF000F4500 /* LogIn.storyboard in Resources */,
 				8EE3281B1B8B939E000F4500 /* Main.storyboard in Resources */,
 				8EE328201B8B939E000F4500 /* LaunchScreen.xib in Resources */,
 				8EE3281D1B8B939E000F4500 /* Images.xcassets in Resources */,

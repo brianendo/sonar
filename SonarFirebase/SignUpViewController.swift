@@ -16,6 +16,10 @@ class SignUpViewController: UIViewController {
     
     @IBOutlet weak var passwordTextField: UITextField!
     
+    @IBOutlet weak var firstNameTextField: UITextField!
+    
+    @IBOutlet weak var lastNameTextField: UITextField!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -28,7 +32,6 @@ class SignUpViewController: UIViewController {
     }
     
     @IBAction func signUpButtonPressed(sender: UIButton) {
-        let ref = Firebase(url: "https://sonarapp.firebaseio.com")
         ref.createUser(emailTextField.text, password: passwordTextField.text,
             withValueCompletionBlock: { error, result in
                 if error != nil {
@@ -36,13 +39,25 @@ class SignUpViewController: UIViewController {
                 } else {
                     let uid = result["uid"] as? String
                     println("Successfully created user account with uid: \(uid)")
+                    
                     ref.authUser(self.emailTextField.text, password: self.passwordTextField.text,
                         withCompletionBlock: { error, authData in
                             if error != nil {
                                 // There was an error logging in to this account
                             } else {
                                 // We are now logged in
-                                self.performSegueWithIdentifier("signUpToPulse", sender: self)
+                                println(authData.uid)
+                                
+                                let newUser = [
+                                    "firstname": self.firstNameTextField.text,
+                                    "lastname": self.lastNameTextField.text
+                                ]
+                                
+                                ref.childByAppendingPath("users").childByAppendingPath(authData.uid).setValue(newUser)
+                                
+                                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                                let mainVC = storyboard.instantiateInitialViewController() as! UIViewController
+                                self.presentViewController(mainVC, animated: true, completion: nil)
                             }
                     })
 

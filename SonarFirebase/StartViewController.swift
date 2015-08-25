@@ -10,8 +10,6 @@ import UIKit
 import Firebase
 
 class StartViewController: UIViewController {
-
-    let ref = Firebase(url: "https://sonarapp.firebaseio.com/")
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,15 +18,7 @@ class StartViewController: UIViewController {
     }
     
     override func viewDidAppear(animated: Bool) {
-        ref.observeAuthEventWithBlock({ authData in
-            if authData != nil {
-                // user authenticated
-                println(authData)
-                self.performSegueWithIdentifier("segueToPulse", sender: self)
-            } else {
-                // No user is signed in
-            }
-        })
+
     }
 
     override func didReceiveMemoryWarning() {

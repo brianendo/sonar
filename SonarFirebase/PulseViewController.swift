@@ -11,8 +11,6 @@ import Firebase
 
 class PulseViewController: UIViewController {
     
-    let ref = Firebase(url: "https://sonarapp.firebaseio.com/")
-    
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -22,7 +20,17 @@ class PulseViewController: UIViewController {
     }
     
     override func viewDidAppear(animated: Bool) {
-        
+        ref.observeAuthEventWithBlock({ authData in
+            if authData != nil {
+                // user authenticated
+                println(authData)
+            } else {
+                // No user is signed in
+                let login = UIStoryboard(name: "LogIn", bundle: nil)
+                let loginVC = login.instantiateInitialViewController() as! UIViewController
+                self.presentViewController(loginVC, animated: true, completion: nil)
+            }
+        })
     }
 
     override func didReceiveMemoryWarning() {
@@ -32,8 +40,12 @@ class PulseViewController: UIViewController {
     
     
     @IBAction func logOutButtonPressed(sender: UIBarButtonItem) {
+        
         ref.unauth()
-        self.performSegueWithIdentifier("segueToStart", sender: self)
+        
+        let login = UIStoryboard(name: "LogIn", bundle: nil)
+        let loginVC = login.instantiateInitialViewController() as! UIViewController
+        self.presentViewController(loginVC, animated: true, completion: nil)
     }
     
 

@@ -9,12 +9,15 @@
 import UIKit
 import Firebase
 
+let ref = Firebase(url: "https://sonarapp.firebaseio.com/")
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
+    
 
-
+    
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         

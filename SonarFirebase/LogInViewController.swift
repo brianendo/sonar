@@ -30,14 +30,15 @@ class LogInViewController: UIViewController {
     }
     
     @IBAction func logInButtonPressed(sender: UIButton) {
-        let ref = Firebase(url: "https://sonarapp.firebaseio.com/")
         ref.authUser(emailTextField.text, password: passwordTextField.text,
             withCompletionBlock: { error, authData in
                 if error != nil {
                     // There was an error logging in to this account
                 } else {
                     // We are now logged in
-                    self.performSegueWithIdentifier("logInToPulse", sender: self)
+                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                    let mainVC = storyboard.instantiateInitialViewController() as! UIViewController
+                    self.presentViewController(mainVC, animated: true, completion: nil)
                 }
         })
     }

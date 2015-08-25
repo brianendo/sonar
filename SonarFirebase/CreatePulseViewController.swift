@@ -91,8 +91,6 @@ class CreatePulseViewController: UIViewController, UITextViewDelegate {
     
     @IBAction func doneButtonPressed(sender: UIBarButtonItem) {
         
-        var ref = Firebase(url: "https://sonarapp.firebaseio.com/")
-        
         let postRef = ref.childByAppendingPath("posts")
         let post1 = ["content": pulseTextView.text ]
         let post1Ref = postRef.childByAutoId()
