@@ -19,6 +19,12 @@
 		8EE3283C1B8B9C9D000F4500 /* PulseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE3283B1B8B9C9D000F4500 /* PulseViewController.swift */; };
 		8EE328401B8BAB75000F4500 /* CreatePulseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE3283F1B8BAB75000F4500 /* CreatePulseViewController.swift */; };
 		8EE328431B8BD8AF000F4500 /* LogIn.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8EE328421B8BD8AF000F4500 /* LogIn.storyboard */; };
+		8EE328451B8BF047000F4500 /* AddFriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE328441B8BF047000F4500 /* AddFriendViewController.swift */; };
+		8EE328471B8BF062000F4500 /* AddFriendTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE328461B8BF062000F4500 /* AddFriendTableViewCell.swift */; };
+		8EE3284B1B8E52B1000F4500 /* TargetListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE3284A1B8E52B1000F4500 /* TargetListViewController.swift */; };
+		8EE3284D1B8E52CD000F4500 /* TargetListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE3284C1B8E52CD000F4500 /* TargetListTableViewCell.swift */; };
+		8EE3284F1B8EDFA0000F4500 /* PickTargetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE3284E1B8EDFA0000F4500 /* PickTargetViewController.swift */; };
+		8EE328511B8EDFB8000F4500 /* PickTargetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE328501B8EDFB8000F4500 /* PickTargetTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +55,12 @@
 		8EE3283B1B8B9C9D000F4500 /* PulseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulseViewController.swift; sourceTree = "<group>"; };
 		8EE3283F1B8BAB75000F4500 /* CreatePulseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePulseViewController.swift; sourceTree = "<group>"; };
 		8EE328421B8BD8AF000F4500 /* LogIn.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LogIn.storyboard; sourceTree = "<group>"; };
+		8EE328441B8BF047000F4500 /* AddFriendViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddFriendViewController.swift; sourceTree = "<group>"; };
+		8EE328461B8BF062000F4500 /* AddFriendTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddFriendTableViewCell.swift; sourceTree = "<group>"; };
+		8EE3284A1B8E52B1000F4500 /* TargetListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TargetListViewController.swift; sourceTree = "<group>"; };
+		8EE3284C1B8E52CD000F4500 /* TargetListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TargetListTableViewCell.swift; sourceTree = "<group>"; };
+		8EE3284E1B8EDFA0000F4500 /* PickTargetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickTargetViewController.swift; sourceTree = "<group>"; };
+		8EE328501B8EDFB8000F4500 /* PickTargetTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickTargetTableViewCell.swift; sourceTree = "<group>"; };
 		E0D34AB836B69ED1FC64F81B /* Pods-SonarFirebase.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SonarFirebase.release.xcconfig"; path = "Pods/Target Support Files/Pods-SonarFirebase/Pods-SonarFirebase.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -97,8 +109,14 @@
 				8EE328151B8B939E000F4500 /* AppDelegate.swift */,
 				8EE328411B8BAB84000F4500 /* LogIn */,
 				8EE3283B1B8B9C9D000F4500 /* PulseViewController.swift */,
+				8EE328441B8BF047000F4500 /* AddFriendViewController.swift */,
+				8EE328461B8BF062000F4500 /* AddFriendTableViewCell.swift */,
 				8EE3283F1B8BAB75000F4500 /* CreatePulseViewController.swift */,
+				8EE3284A1B8E52B1000F4500 /* TargetListViewController.swift */,
+				8EE3284C1B8E52CD000F4500 /* TargetListTableViewCell.swift */,
 				8EE328191B8B939E000F4500 /* Main.storyboard */,
+				8EE3284E1B8EDFA0000F4500 /* PickTargetViewController.swift */,
+				8EE328501B8EDFB8000F4500 /* PickTargetTableViewCell.swift */,
 				8EE328421B8BD8AF000F4500 /* LogIn.storyboard */,
 				8EE3281C1B8B939E000F4500 /* Images.xcassets */,
 				8EE3281E1B8B939E000F4500 /* LaunchScreen.xib */,
@@ -296,7 +314,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				8EE328161B8B939E000F4500 /* AppDelegate.swift in Sources */,
+				8EE328451B8BF047000F4500 /* AddFriendViewController.swift in Sources */,
+				8EE3284D1B8E52CD000F4500 /* TargetListTableViewCell.swift in Sources */,
+				8EE3284F1B8EDFA0000F4500 /* PickTargetViewController.swift in Sources */,
 				8EE328361B8B9530000F4500 /* StartViewController.swift in Sources */,
+				8EE328511B8EDFB8000F4500 /* PickTargetTableViewCell.swift in Sources */,
+				8EE328471B8BF062000F4500 /* AddFriendTableViewCell.swift in Sources */,
+				8EE3284B1B8E52B1000F4500 /* TargetListViewController.swift in Sources */,
 				8EE3283A1B8B9548000F4500 /* SignUpViewController.swift in Sources */,
 				8EE3283C1B8B9C9D000F4500 /* PulseViewController.swift in Sources */,
 				8EE328401B8BAB75000F4500 /* CreatePulseViewController.swift in Sources */,

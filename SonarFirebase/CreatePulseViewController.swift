@@ -92,9 +92,11 @@ class CreatePulseViewController: UIViewController, UITextViewDelegate {
     @IBAction func doneButtonPressed(sender: UIBarButtonItem) {
         
         let postRef = ref.childByAppendingPath("posts")
-        let post1 = ["content": pulseTextView.text ]
+        let post1 = ["content": pulseTextView.text, "creator": currentUser]
         let post1Ref = postRef.childByAutoId()
         post1Ref.setValue(post1)
+        
+        var postId = post1Ref.key
         
         }
     

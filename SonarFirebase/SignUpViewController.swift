@@ -46,7 +46,6 @@ class SignUpViewController: UIViewController {
                                 // There was an error logging in to this account
                             } else {
                                 // We are now logged in
-                                println(authData.uid)
                                 
                                 let newUser = [
                                     "firstname": self.firstNameTextField.text,

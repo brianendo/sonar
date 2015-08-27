@@ -24,6 +24,7 @@ class PulseViewController: UIViewController {
             if authData != nil {
                 // user authenticated
                 println(authData)
+                currentUser = authData.uid
             } else {
                 // No user is signed in
                 let login = UIStoryboard(name: "LogIn", bundle: nil)
@@ -31,6 +32,7 @@ class PulseViewController: UIViewController {
                 self.presentViewController(loginVC, animated: true, completion: nil)
             }
         })
+        
     }
 
     override func didReceiveMemoryWarning() {

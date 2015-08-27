@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 
 let ref = Firebase(url: "https://sonarapp.firebaseio.com/")
+var currentUser = ""
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
