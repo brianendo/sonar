@@ -89,7 +89,7 @@ class AddFriendViewController: UIViewController, UITableViewDataSource, UITableV
     func addButton(sender: UIButton!) {
         let user: (AnyObject) = friendArray[sender.tag]
         
-        let url = "https://sonarapp.firebaseio.com/users" + "/" + currentUser + "/targets/"
+        let url = "https://sonarapp.firebaseio.com/users/" +   currentUser + "/targets/"
         
         var currentUserRef = Firebase(url: url)
         

@@ -1,19 +1,18 @@
 //
-//  PickTargetTableViewCell.swift
+//  RadarTableViewCell.swift
 //  SonarFirebase
 //
-//  Created by Brian Endo on 8/26/15.
+//  Created by Brian Endo on 8/27/15.
 //  Copyright (c) 2015 Brian Endo. All rights reserved.
 //
 
 import UIKit
 
-class PickTargetTableViewCell: UITableViewCell {
+class RadarTableViewCell: UITableViewCell {
 
     @IBOutlet weak var nameLabel: UILabel!
     
-    @IBOutlet weak var addTarget: UIButton!
-    
+    @IBOutlet weak var contentLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

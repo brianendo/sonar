@@ -69,15 +69,15 @@ class CreatePulseViewController: UIViewController, UITextViewDelegate {
             
         }
         
-        // Limit character limit to 100
+        // Limit character limit to 80
         var newLength: Int = (pulseTextView.text as NSString).length + (text as NSString).length - range.length
-        var remainingChar: Int = 100 - newLength
+        var remainingChar: Int = 80 - newLength
         
         // Make label show remaining characters
         charRemainingLabel.text = "\(remainingChar)"
         
-        // Once text > 100 chars, stop ability to change text
-        return (newLength > 100) ? false : true
+        // Once text > 80 chars, stop ability to change text
+        return (newLength > 80) ? false : true
     }
     
     func textViewDidChangeSelection(textView: UITextView) {
@@ -89,14 +89,18 @@ class CreatePulseViewController: UIViewController, UITextViewDelegate {
         
     }
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "pulseToTargets" {
+            let pickTargetVC: PickTargetViewController = segue.destinationViewController as! PickTargetViewController
+            
+            pickTargetVC.content = pulseTextView.text
+            pickTargetVC.creator = currentUser
+            
+        }
+    }
+    
     @IBAction func doneButtonPressed(sender: UIBarButtonItem) {
         
-        let postRef = ref.childByAppendingPath("posts")
-        let post1 = ["content": pulseTextView.text, "creator": currentUser]
-        let post1Ref = postRef.childByAutoId()
-        post1Ref.setValue(post1)
-        
-        var postId = post1Ref.key
         
         }
     

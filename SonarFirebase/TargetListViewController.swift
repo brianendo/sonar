@@ -16,7 +16,7 @@ class TargetListViewController: UIViewController, UITableViewDelegate, UITableVi
     
     
     var friendsArray = [AnyObject]()
-    var nameArray = [String]()
+
     
     
     func loadTargetData() {
