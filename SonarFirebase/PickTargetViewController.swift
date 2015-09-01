@@ -115,12 +115,23 @@ class PickTargetViewController: UIViewController, UITableViewDataSource, UITable
                 var targetedRef = Firebase(url: targetedUrl)
                 targetedRef.childByAppendingPath(postID).setValue(true)
             }
+//            var myurl = "https://sonarapp.firebaseio.com/users/" + currentUser + "/postsSent/"
+//            var myPostsRef = Firebase(url: myurl)
+//            myPostsRef.childByAppendingPath(postID).setValue(true)
+            var userurl = "https://sonarapp.firebaseio.com/users/" + currentUser + "/postsReceived/"
+            var userTargetRef = Firebase(url: userurl)
+            userTargetRef.childByAppendingPath(postID).setValue(true)
         }
         
+        
+        // Add Server Side timestamp to post
         var timeUrl = "https://sonarapp.firebaseio.com/posts/" + postID
         var timeRef = Firebase(url: timeUrl)
         timeRef.childByAppendingPath("createdAt").setValue([".sv":"timestamp"])
         
+        
+        
+        // Convert unix date to local date
         var dateUrl = "https://sonarapp.firebaseio.com/posts/" + postID
         var dateRef = Firebase(url: dateUrl)
         

@@ -35,23 +35,11 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
                         
                         self.contentArray.append(content)
                         
-                        self.creatorArray.append(creator)
                         
-                        for creator in self.creatorArray {
-                            var userUrl = "https://sonarapp.firebaseio.com/users/" + (creator as! String)
-                            var userRef = Firebase(url: userUrl)
-                            
-                            userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
-                                if let firstname = snapshot.value["firstname"] as? String {
-                                    if let lastname = snapshot.value["lastname"] as? String {
-                                        var name = firstname + " " + lastname
-                                        self.nameArray.append(name)
-                                        self.tableView.reloadData()
-                                    }
-                                }
-                            })
-                            
-                        }
+                        self.creatorArray.append(creator)
+
+                        self.tableView.reloadData()
+                        
                         
                     }
                 }
@@ -73,6 +61,7 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
         
         self.creatorArray.removeAll(keepCapacity: true)
         self.contentArray.removeAll(keepCapacity: true)
+        self.nameArray.removeAll(keepCapacity: true)
         
         self.tableView.reloadData()
         
@@ -94,8 +83,19 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
         let radarContent: (AnyObject) = contentArray[indexPath.row]
         cell.contentLabel.text = radarContent as? String
         
-        let radarCreator: (AnyObject) = nameArray[indexPath.row]
-        cell.nameLabel.text = radarCreator as? String
+        
+        
+        let radarCreator: (AnyObject) = creatorArray[indexPath.row]
+        
+        var userurl = "https://sonarapp.firebaseio.com/users/" + (radarCreator as! String)
+        var userRef = Firebase(url: userurl)
+        userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+            if let firstname = snapshot.value["firstname"] as? String {
+                if let lastname = snapshot.value["lastname"] as? String {
+                    cell.nameLabel.text = firstname + " " + lastname
+                }
+            }
+        })
         
         return cell
     }

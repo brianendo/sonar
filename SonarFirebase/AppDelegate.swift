@@ -9,7 +9,10 @@
 import UIKit
 import Firebase
 
+// Firebase url
 let ref = Firebase(url: "https://sonarapp.firebaseio.com/")
+
+// Global currentuser variable
 var currentUser = ""
 
 @UIApplicationMain

@@ -20,6 +20,8 @@ class PulseViewController: UIViewController {
     }
     
     override func viewDidAppear(animated: Bool) {
+        
+        // Authenticate user and redirect to login if not signed in
         ref.observeAuthEventWithBlock({ authData in
             if authData != nil {
                 // user authenticated
