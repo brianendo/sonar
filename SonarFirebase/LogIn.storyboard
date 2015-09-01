@@ -13,6 +13,7 @@
                         <viewControllerLayoutGuide type="bottom" id="t0i-yX-0QM"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Fzq-i3-gsg">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gvm-qb-uij">
@@ -71,6 +72,7 @@
                         <viewControllerLayoutGuide type="bottom" id="UVF-9F-FNu"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="6js-vE-gsV">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lql-SF-6nb">
@@ -202,6 +204,7 @@
                         <viewControllerLayoutGuide type="bottom" id="MFZ-o6-ZbI"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="an0-AT-xBK">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PY0-gP-UbD">

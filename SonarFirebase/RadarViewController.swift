@@ -14,9 +14,8 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     @IBOutlet weak var tableView: UITableView!
     
-    var contentArray = [AnyObject]()
-    var creatorArray = [AnyObject]()
-    var nameArray = [AnyObject]()
+
+    var posts = [Post]()
     
     func loadRadarData() {
         
@@ -32,12 +31,10 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
             postsRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
                 if let content = snapshot.value["content"] as? String {
                     if let creator = snapshot.value["creator"] as? String {
-                        
-                        self.contentArray.append(content)
-                        
-                        
-                        self.creatorArray.append(creator)
 
+                        let post = Post(content: content, creator: creator)
+                        self.posts.append(post)
+                        
                         self.tableView.reloadData()
                         
                         
@@ -59,9 +56,7 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
-        self.creatorArray.removeAll(keepCapacity: true)
-        self.contentArray.removeAll(keepCapacity: true)
-        self.nameArray.removeAll(keepCapacity: true)
+        self.posts.removeAll(keepCapacity: true)
         
         self.tableView.reloadData()
         
@@ -74,18 +69,18 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return contentArray.count
+        return posts.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell: RadarTableViewCell = tableView.dequeueReusableCellWithIdentifier("radarCell", forIndexPath: indexPath) as! RadarTableViewCell
         
-        let radarContent: (AnyObject) = contentArray[indexPath.row]
+        let radarContent: (AnyObject) = posts[indexPath.row].content
         cell.contentLabel.text = radarContent as? String
         
         
         
-        let radarCreator: (AnyObject) = creatorArray[indexPath.row]
+        let radarCreator: (AnyObject) = posts[indexPath.row].creator
         
         var userurl = "https://sonarapp.firebaseio.com/users/" + (radarCreator as! String)
         var userRef = Firebase(url: userurl)

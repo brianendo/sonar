@@ -10,6 +10,7 @@
 		8165BEEB0C390634459BDBBE /* libPods-SonarFirebase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 61D4F2DA31BE0571D3EDFB29 /* libPods-SonarFirebase.a */; };
 		8EAC77601B8FA07A002D2890 /* RadarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EAC775F1B8FA07A002D2890 /* RadarViewController.swift */; };
 		8EAC77621B8FA0A3002D2890 /* RadarTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EAC77611B8FA0A3002D2890 /* RadarTableViewCell.swift */; };
+		8EAC77641B963B23002D2890 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EAC77631B963B23002D2890 /* Post.swift */; };
 		8EE328161B8B939E000F4500 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE328151B8B939E000F4500 /* AppDelegate.swift */; };
 		8EE3281B1B8B939E000F4500 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8EE328191B8B939E000F4500 /* Main.storyboard */; };
 		8EE3281D1B8B939E000F4500 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8EE3281C1B8B939E000F4500 /* Images.xcassets */; };
@@ -44,6 +45,7 @@
 		61D4F2DA31BE0571D3EDFB29 /* libPods-SonarFirebase.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SonarFirebase.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8EAC775F1B8FA07A002D2890 /* RadarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadarViewController.swift; sourceTree = "<group>"; };
 		8EAC77611B8FA0A3002D2890 /* RadarTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadarTableViewCell.swift; sourceTree = "<group>"; };
+		8EAC77631B963B23002D2890 /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		8EE328101B8B939E000F4500 /* SonarFirebase.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SonarFirebase.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8EE328141B8B939E000F4500 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8EE328151B8B939E000F4500 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -123,7 +125,7 @@
 				8EE3283F1B8BAB75000F4500 /* CreatePulseViewController.swift */,
 				8EE3284E1B8EDFA0000F4500 /* PickTargetViewController.swift */,
 				8EE328501B8EDFB8000F4500 /* PickTargetTableViewCell.swift */,
-				8EE328421B8BD8AF000F4500 /* LogIn.storyboard */,
+				8EAC77631B963B23002D2890 /* Post.swift */,
 				8EE3281C1B8B939E000F4500 /* Images.xcassets */,
 				8EE3281E1B8B939E000F4500 /* LaunchScreen.xib */,
 				8EE328131B8B939E000F4500 /* Supporting Files */,
@@ -159,6 +161,7 @@
 		8EE328411B8BAB84000F4500 /* LogIn */ = {
 			isa = PBXGroup;
 			children = (
+				8EE328421B8BD8AF000F4500 /* LogIn.storyboard */,
 				8EE328351B8B9530000F4500 /* StartViewController.swift */,
 				8EE328371B8B953F000F4500 /* LogInViewController.swift */,
 				8EE328391B8B9548000F4500 /* SignUpViewController.swift */,
@@ -328,6 +331,7 @@
 				8EE328361B8B9530000F4500 /* StartViewController.swift in Sources */,
 				8EE328511B8EDFB8000F4500 /* PickTargetTableViewCell.swift in Sources */,
 				8EE328471B8BF062000F4500 /* AddFriendTableViewCell.swift in Sources */,
+				8EAC77641B963B23002D2890 /* Post.swift in Sources */,
 				8EE3284B1B8E52B1000F4500 /* TargetListViewController.swift in Sources */,
 				8EE3283A1B8B9548000F4500 /* SignUpViewController.swift in Sources */,
 				8EE3283C1B8B9C9D000F4500 /* PulseViewController.swift in Sources */,
