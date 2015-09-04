@@ -53,14 +53,19 @@ class TargetListViewController: UIViewController, UITableViewDelegate, UITableVi
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-    }
-    
-    override func viewDidAppear(animated: Bool) {
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.reloadData()
         
         self.loadTargetData()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+//        self.tableView.delegate = self
+//        self.tableView.dataSource = self
+//        self.tableView.reloadData()
+//        
+//        self.loadTargetData()
     }
 
     override func didReceiveMemoryWarning() {

@@ -13,12 +13,14 @@ class Post: NSObject {
     var creator: String
     var key: String
     var date: NSDate
+    var name: String
     
-    init(content: String?, creator: String?, key: String?, date: NSDate?) {
+    init(content: String?, creator: String?, key: String?, date: NSDate?, name:String?) {
         self.content = content!
         self.creator = creator!
         self.key = key!
         self.date = date!
+        self.name = name!
     }
     
 

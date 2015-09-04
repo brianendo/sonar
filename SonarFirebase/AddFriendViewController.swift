@@ -48,15 +48,21 @@ class AddFriendViewController: UIViewController, UITableViewDataSource, UITableV
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-    }
-    
-    override func viewDidAppear(animated: Bool) {
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.reloadData()
-    
+        
         
         self.loadData()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+//        self.tableView.delegate = self
+//        self.tableView.dataSource = self
+//        self.tableView.reloadData()
+//    
+//        
+//        self.loadData()
         
     }
     
@@ -94,6 +100,14 @@ class AddFriendViewController: UIViewController, UITableViewDataSource, UITableV
         var currentUserRef = Firebase(url: url)
         
         currentUserRef.childByAppendingPath(user as! String).setValue(true)
+        
+        let userUrl = "https://sonarapp.firebaseio.com/user_activity/" + currentUser + "/added/"
+        let userActivityRef = Firebase(url: userUrl)
+        userActivityRef.childByAppendingPath(user as! String).setValue(true)
+        
+        let otherUserUrl = "https://sonarapp.firebaseio.com/user_activity/" + (user as! String) + "/addedme/"
+        let otherUserActivityRef = Firebase(url: otherUserUrl)
+        otherUserActivityRef.childByAppendingPath(currentUser).setValue(true)
         
         println(user)
         println(currentUser)

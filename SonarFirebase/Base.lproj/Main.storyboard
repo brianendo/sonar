@@ -48,11 +48,16 @@
                                 <action selector="logOutButtonPressed:" destination="PNl-eA-3Vx" id="qg2-rJ-wwc"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Profile" id="IQM-kB-wuF">
+                            <connections>
+                                <segue destination="BMt-iT-8fv" kind="show" id="z1h-Vb-yba"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rdG-Nf-mMY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2781" y="1699"/>
+            <point key="canvasLocation" x="2241" y="1573"/>
         </scene>
         <!--Create Pulse View Controller-->
         <scene sceneID="PoQ-wh-Wrx">
@@ -236,7 +241,7 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="EHF-Eh-pOi" id="IBE-cV-lF5">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="55M-Df-lVP">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="55M-Df-lVP">
                                                     <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -245,7 +250,7 @@
                                                         <rect key="frame" x="24" y="24" width="74" height="21"/>
                                                     </variation>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Content" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fQ3-xH-aIr">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fQ3-xH-aIr">
                                                     <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -599,7 +604,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ic8-Pd-be4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1669.5" y="2056"/>
+            <point key="canvasLocation" x="2884.5" y="2225"/>
         </scene>
         <!--Add Friend View Controller-->
         <scene sceneID="ogp-Yp-4J5">
@@ -685,7 +690,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wuk-nW-gko" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1809" y="3584"/>
+            <point key="canvasLocation" x="2688" y="3259"/>
         </scene>
         <!--Pulse-->
         <scene sceneID="hLB-PX-BiB">
@@ -725,6 +730,99 @@
             </objects>
             <point key="canvasLocation" x="-15" y="1334"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="MGY-Dr-dJe">
+            <objects>
+                <viewController id="BMt-iT-8fv" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="UTi-ia-ewd"/>
+                        <viewControllerLayoutGuide type="bottom" id="y5e-QV-xua"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="7h4-wq-ISm">
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cYT-Yh-qbV">
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="141" y="82" width="119" height="94"/>
+                                </variation>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="otT-6O-eoX">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <state key="normal" title="Added Me">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="167" y="278" width="71" height="30"/>
+                                </variation>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gE2-uY-G3F">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <state key="normal" title="Log Out">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="179" y="413" width="56" height="30"/>
+                                </variation>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yb6-fh-gc2">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <state key="normal" title="Add by Username">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="145" y="324" width="124" height="30"/>
+                                </variation>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eFg-zT-2Un">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <state key="normal" title="Add from Address Book">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="125" y="369" width="165" height="30"/>
+                                </variation>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aKC-Z3-hP8">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <state key="normal" title="Friends">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="177" y="233" width="51" height="30"/>
+                                </variation>
+                                <connections>
+                                    <segue destination="zZr-dG-gI4" kind="show" id="lt1-1V-NGz"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="cYT-Yh-qbV"/>
+                                <exclude reference="otT-6O-eoX"/>
+                                <exclude reference="gE2-uY-G3F"/>
+                                <exclude reference="Yb6-fh-gc2"/>
+                                <exclude reference="eFg-zT-2Un"/>
+                                <exclude reference="aKC-Z3-hP8"/>
+                            </mask>
+                        </variation>
+                        <variation key="widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="cYT-Yh-qbV"/>
+                                <include reference="otT-6O-eoX"/>
+                                <include reference="gE2-uY-G3F"/>
+                                <include reference="Yb6-fh-gc2"/>
+                                <include reference="eFg-zT-2Un"/>
+                                <include reference="aKC-Z3-hP8"/>
+                            </mask>
+                        </variation>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ekf-fd-EFL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2959.5" y="1446"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="fHU-rD-aAm">
             <objects>
@@ -741,7 +839,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LGh-k9-gVB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3579" y="1707"/>
+            <point key="canvasLocation" x="3690" y="1783"/>
         </scene>
         <!--Radar-->
         <scene sceneID="VmC-cD-yxq">
@@ -763,4 +861,7 @@
             <point key="canvasLocation" x="820.5" y="2164"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="lt1-1V-NGz"/>
+    </inferredMetricsTieBreakers>
 </document>

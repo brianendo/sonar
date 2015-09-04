@@ -16,6 +16,7 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
     
 
     var posts = [Post]()
+    var postID = [String]()
     
     func loadRadarData() {
         
@@ -30,26 +31,34 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
             var postsUrl = "https://sonarapp.firebaseio.com/posts/" + snapshot.key
             var postsRef = Firebase(url: postsUrl)
             postsRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
-                if let content = snapshot.value["content"] as? String {
+                if let key = snapshot.key
+                {if let content = snapshot.value["content"] as? String {
                     if let creator = snapshot.value["creator"] as? String {
                         if let createdAt = snapshot.value["createdAt"] as? NSTimeInterval {
-                        
-                        var date = NSDate(timeIntervalSince1970: (createdAt/1000))
-                        let post = Post(content: content, creator: creator, key: snapshot.key, date: date)
-                        self.posts.append(post)
-                        println(date)
-//                        self.posts.sort({ $0.date.compare($1.date) == .OrderedDescending })
-                        self.tableView.reloadData()
-                        
+                            var userurl = "https://sonarapp.firebaseio.com/users/" + (creator)
+                            var userRef = Firebase(url: userurl)
+                            userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+                                if let firstname = snapshot.value["firstname"] as? String {
+                                    if let lastname = snapshot.value["lastname"] as? String {
+                                        var name = firstname + " " + lastname
+                                        var date = NSDate(timeIntervalSince1970: (createdAt/1000))
+                                        let post = Post(content: content, creator: creator, key: key, date: date, name: name)
+                                        self.posts.append(post)
+                                        self.posts.sort({ $0.date.compare($1.date) == .OrderedDescending })
+                                        self.tableView.reloadData()
+                                    }
+                                }
+                            })
 
                         }
                     }
                 }
                 
-                
+                }
             })
         })
     }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,6 +86,7 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
             
             let post = self.posts[indexPath!.row]
             chatVC.postVC = post
+            println(post.key)
         }
     }
 
@@ -98,17 +108,9 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
         
         
         
-        let radarCreator: (AnyObject) = posts[indexPath.row].creator
+        let radarCreator: (AnyObject) = posts[indexPath.row].name
         
-        var userurl = "https://sonarapp.firebaseio.com/users/" + (radarCreator as! String)
-        var userRef = Firebase(url: userurl)
-        userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
-            if let firstname = snapshot.value["firstname"] as? String {
-                if let lastname = snapshot.value["lastname"] as? String {
-                    cell.nameLabel.text = firstname + " " + lastname
-                }
-            }
-        })
+        cell.nameLabel.text = radarCreator as? String
         
         return cell
     }

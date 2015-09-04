@@ -93,6 +93,10 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         var timeMessageRef = Firebase(url: timeMessageUrl)
         timeMessageRef.childByAppendingPath("createdAt").setValue([".sv":"timestamp"])
         
+        var postUpdatedUrl = "https://sonarapp.firebaseio.com/posts/" + postID!
+        var postUpdatedRef = Firebase(url: postUpdatedUrl)
+        postUpdatedRef.childByAppendingPath("updatedAt").setValue([".sv":"timestamp"])
+        
         // Call the end editing method for the text field
         self.sendMessageTextField.endEditing(true)
         self.sendMessageTextField.text = ""
