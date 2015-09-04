@@ -1,5 +1,5 @@
 //
-//  Post.swift
+//  Message.swift
 //  SonarFirebase
 //
 //  Created by Brian Endo on 9/1/15.
@@ -8,18 +8,12 @@
 
 import Foundation
 
-class Post: NSObject {
+class Message: NSObject {
     var content: String
     var creator: String
-    var key: String
-    var date: NSDate
     
-    init(content: String?, creator: String?, key: String?, date: NSDate?) {
+    init(content: String?, creator: String?) {
         self.content = content!
         self.creator = creator!
-        self.key = key!
-        self.date = date!
     }
-    
-
 }

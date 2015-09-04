@@ -26,18 +26,23 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
         targetRef.observeEventType(.ChildAdded, withBlock: {
             snapshot in
             
+            
             var postsUrl = "https://sonarapp.firebaseio.com/posts/" + snapshot.key
             var postsRef = Firebase(url: postsUrl)
             postsRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
                 if let content = snapshot.value["content"] as? String {
                     if let creator = snapshot.value["creator"] as? String {
-
-                        let post = Post(content: content, creator: creator)
-                        self.posts.append(post)
+                        if let createdAt = snapshot.value["createdAt"] as? NSTimeInterval {
                         
+                        var date = NSDate(timeIntervalSince1970: (createdAt/1000))
+                        let post = Post(content: content, creator: creator, key: snapshot.key, date: date)
+                        self.posts.append(post)
+                        println(date)
+//                        self.posts.sort({ $0.date.compare($1.date) == .OrderedDescending })
                         self.tableView.reloadData()
                         
-                        
+
+                        }
                     }
                 }
                 
@@ -50,17 +55,29 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-    }
-    
-    override func viewDidAppear(animated: Bool) {
+        
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
         self.posts.removeAll(keepCapacity: true)
         
-        self.tableView.reloadData()
         
         self.loadRadarData()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        
+
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "showChat" {
+            let chatVC: ChatTableViewController = segue.destinationViewController as! ChatTableViewController
+            let indexPath = self.tableView.indexPathForSelectedRow()
+            
+            let post = self.posts[indexPath!.row]
+            chatVC.postVC = post
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -74,6 +91,7 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell: RadarTableViewCell = tableView.dequeueReusableCellWithIdentifier("radarCell", forIndexPath: indexPath) as! RadarTableViewCell
+        
         
         let radarContent: (AnyObject) = posts[indexPath.row].content
         cell.contentLabel.text = radarContent as? String
@@ -93,6 +111,11 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
         })
         
         return cell
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        performSegueWithIdentifier("showChat", sender: self)
+        tableView.deselectRowAtIndexPath(indexPath, animated: false)
     }
     
     

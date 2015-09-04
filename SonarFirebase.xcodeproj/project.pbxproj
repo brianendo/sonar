@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		8165BEEB0C390634459BDBBE /* libPods-SonarFirebase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 61D4F2DA31BE0571D3EDFB29 /* libPods-SonarFirebase.a */; };
+		8E5226C11B965B1E002BD8FA /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5226C01B965B1E002BD8FA /* Message.swift */; };
+		8E5226C31B976DC1002BD8FA /* ChatTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5226C21B976DC1002BD8FA /* ChatTableViewController.swift */; };
+		8E5226C51B976EDD002BD8FA /* ChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5226C41B976EDD002BD8FA /* ChatTableViewCell.swift */; };
 		8EAC77601B8FA07A002D2890 /* RadarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EAC775F1B8FA07A002D2890 /* RadarViewController.swift */; };
 		8EAC77621B8FA0A3002D2890 /* RadarTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EAC77611B8FA0A3002D2890 /* RadarTableViewCell.swift */; };
 		8EAC77641B963B23002D2890 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EAC77631B963B23002D2890 /* Post.swift */; };
@@ -43,6 +46,9 @@
 /* Begin PBXFileReference section */
 		10CA79A10D6C03531A37D0B2 /* Pods-SonarFirebase.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SonarFirebase.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SonarFirebase/Pods-SonarFirebase.debug.xcconfig"; sourceTree = "<group>"; };
 		61D4F2DA31BE0571D3EDFB29 /* libPods-SonarFirebase.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SonarFirebase.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8E5226C01B965B1E002BD8FA /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		8E5226C21B976DC1002BD8FA /* ChatTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatTableViewController.swift; sourceTree = "<group>"; };
+		8E5226C41B976EDD002BD8FA /* ChatTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatTableViewCell.swift; sourceTree = "<group>"; };
 		8EAC775F1B8FA07A002D2890 /* RadarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadarViewController.swift; sourceTree = "<group>"; };
 		8EAC77611B8FA0A3002D2890 /* RadarTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadarTableViewCell.swift; sourceTree = "<group>"; };
 		8EAC77631B963B23002D2890 /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
@@ -120,12 +126,15 @@
 				8EE3284A1B8E52B1000F4500 /* TargetListViewController.swift */,
 				8EE3284C1B8E52CD000F4500 /* TargetListTableViewCell.swift */,
 				8EE328191B8B939E000F4500 /* Main.storyboard */,
+				8E5226C21B976DC1002BD8FA /* ChatTableViewController.swift */,
+				8E5226C41B976EDD002BD8FA /* ChatTableViewCell.swift */,
 				8EAC775F1B8FA07A002D2890 /* RadarViewController.swift */,
 				8EAC77611B8FA0A3002D2890 /* RadarTableViewCell.swift */,
 				8EE3283F1B8BAB75000F4500 /* CreatePulseViewController.swift */,
 				8EE3284E1B8EDFA0000F4500 /* PickTargetViewController.swift */,
 				8EE328501B8EDFB8000F4500 /* PickTargetTableViewCell.swift */,
 				8EAC77631B963B23002D2890 /* Post.swift */,
+				8E5226C01B965B1E002BD8FA /* Message.swift */,
 				8EE3281C1B8B939E000F4500 /* Images.xcassets */,
 				8EE3281E1B8B939E000F4500 /* LaunchScreen.xib */,
 				8EE328131B8B939E000F4500 /* Supporting Files */,
@@ -324,6 +333,7 @@
 			files = (
 				8EAC77621B8FA0A3002D2890 /* RadarTableViewCell.swift in Sources */,
 				8EE328161B8B939E000F4500 /* AppDelegate.swift in Sources */,
+				8E5226C11B965B1E002BD8FA /* Message.swift in Sources */,
 				8EE328451B8BF047000F4500 /* AddFriendViewController.swift in Sources */,
 				8EE3284D1B8E52CD000F4500 /* TargetListTableViewCell.swift in Sources */,
 				8EAC77601B8FA07A002D2890 /* RadarViewController.swift in Sources */,
@@ -331,10 +341,12 @@
 				8EE328361B8B9530000F4500 /* StartViewController.swift in Sources */,
 				8EE328511B8EDFB8000F4500 /* PickTargetTableViewCell.swift in Sources */,
 				8EE328471B8BF062000F4500 /* AddFriendTableViewCell.swift in Sources */,
+				8E5226C31B976DC1002BD8FA /* ChatTableViewController.swift in Sources */,
 				8EAC77641B963B23002D2890 /* Post.swift in Sources */,
 				8EE3284B1B8E52B1000F4500 /* TargetListViewController.swift in Sources */,
 				8EE3283A1B8B9548000F4500 /* SignUpViewController.swift in Sources */,
 				8EE3283C1B8B9C9D000F4500 /* PulseViewController.swift in Sources */,
+				8E5226C51B976EDD002BD8FA /* ChatTableViewCell.swift in Sources */,
 				8EE328401B8BAB75000F4500 /* CreatePulseViewController.swift in Sources */,
 				8EE328381B8B953F000F4500 /* LogInViewController.swift in Sources */,
 			);
