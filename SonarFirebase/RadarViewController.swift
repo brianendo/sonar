@@ -18,6 +18,8 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
     var posts = [Post]()
     var postID = [String]()
     
+    var cellURL: NSURL?
+    
     func loadRadarData() {
         
         var url = "https://sonarapp.firebaseio.com/users/" + currentUser + "/postsReceived/"
@@ -87,6 +89,11 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
             let post = self.posts[indexPath!.row]
             chatVC.postVC = post
             println(post.key)
+        } else if segue.identifier == "presentWebView" {
+            let nav = segue.destinationViewController as! UINavigationController
+            let webVC: WebViewController = nav.topViewController as! WebViewController
+            
+            webVC.urlToLoad = cellURL
         }
     }
 
@@ -104,9 +111,9 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
         
         
         let radarContent: (AnyObject) = posts[indexPath.row].content
-        cell.contentLabel.text = radarContent as? String
+        cell.textView.text = radarContent as? String
         
-        
+        cell.viewController = self
         
         let radarCreator: (AnyObject) = posts[indexPath.row].name
         
@@ -119,6 +126,7 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
         performSegueWithIdentifier("showChat", sender: self)
         tableView.deselectRowAtIndexPath(indexPath, animated: false)
     }
+    
     
     
 

@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E2522AF0CC64023C97AECE5E"
+               BlueprintIdentifier = "4CF0706A545909907420C147"
                BuildableName = "libPods-SonarFirebase.a"
                BlueprintName = "Pods-SonarFirebase"
                ReferencedContainer = "container:Pods.xcodeproj">

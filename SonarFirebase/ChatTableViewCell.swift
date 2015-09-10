@@ -11,6 +11,10 @@ import UIKit
 class ChatTableViewCell: UITableViewCell {
 
     
+    
+    @IBOutlet weak var profileImageView: UIImageView!
+    
+    
     @IBOutlet weak var creatorLabel: UILabel!
     
     @IBOutlet weak var contentLabel: UILabel!

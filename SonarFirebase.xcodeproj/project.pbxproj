@@ -11,6 +11,11 @@
 		8E5226C11B965B1E002BD8FA /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5226C01B965B1E002BD8FA /* Message.swift */; };
 		8E5226C31B976DC1002BD8FA /* ChatTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5226C21B976DC1002BD8FA /* ChatTableViewController.swift */; };
 		8E5226C51B976EDD002BD8FA /* ChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5226C41B976EDD002BD8FA /* ChatTableViewCell.swift */; };
+		8E5226C91B9A3194002BD8FA /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5226C81B9A3194002BD8FA /* ProfileViewController.swift */; };
+		8E5226CB1B9A32EB002BD8FA /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E5226CA1B9A32EB002BD8FA /* MapKit.framework */; };
+		8E5226CD1B9A32F2002BD8FA /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E5226CC1B9A32F2002BD8FA /* MobileCoreServices.framework */; };
+		8E5227341B9F972F002BD8FA /* PicturesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5227331B9F972F002BD8FA /* PicturesViewController.swift */; };
+		8E5227361BA0E3D0002BD8FA /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5227351BA0E3D0002BD8FA /* WebViewController.swift */; };
 		8EAC77601B8FA07A002D2890 /* RadarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EAC775F1B8FA07A002D2890 /* RadarViewController.swift */; };
 		8EAC77621B8FA0A3002D2890 /* RadarTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EAC77611B8FA0A3002D2890 /* RadarTableViewCell.swift */; };
 		8EAC77641B963B23002D2890 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EAC77631B963B23002D2890 /* Post.swift */; };
@@ -49,6 +54,12 @@
 		8E5226C01B965B1E002BD8FA /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		8E5226C21B976DC1002BD8FA /* ChatTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatTableViewController.swift; sourceTree = "<group>"; };
 		8E5226C41B976EDD002BD8FA /* ChatTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatTableViewCell.swift; sourceTree = "<group>"; };
+		8E5226C81B9A3194002BD8FA /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		8E5226CA1B9A32EB002BD8FA /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		8E5226CC1B9A32F2002BD8FA /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		8E52272F1B9F925D002BD8FA /* SonarFirebase-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SonarFirebase-Bridging-Header.h"; sourceTree = "<group>"; };
+		8E5227331B9F972F002BD8FA /* PicturesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PicturesViewController.swift; sourceTree = "<group>"; };
+		8E5227351BA0E3D0002BD8FA /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		8EAC775F1B8FA07A002D2890 /* RadarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadarViewController.swift; sourceTree = "<group>"; };
 		8EAC77611B8FA0A3002D2890 /* RadarTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadarTableViewCell.swift; sourceTree = "<group>"; };
 		8EAC77631B963B23002D2890 /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
@@ -81,6 +92,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8E5226CD1B9A32F2002BD8FA /* MobileCoreServices.framework in Frameworks */,
+				8E5226CB1B9A32EB002BD8FA /* MapKit.framework in Frameworks */,
 				8165BEEB0C390634459BDBBE /* libPods-SonarFirebase.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -95,6 +108,37 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8E5227371BA101DF002BD8FA /* CreatePulse */ = {
+			isa = PBXGroup;
+			children = (
+				8EE3283B1B8B9C9D000F4500 /* PulseViewController.swift */,
+				8EE3283F1B8BAB75000F4500 /* CreatePulseViewController.swift */,
+				8EE3284E1B8EDFA0000F4500 /* PickTargetViewController.swift */,
+				8EE328501B8EDFB8000F4500 /* PickTargetTableViewCell.swift */,
+			);
+			name = CreatePulse;
+			sourceTree = "<group>";
+		};
+		8E5227381BA10202002BD8FA /* Friends */ = {
+			isa = PBXGroup;
+			children = (
+				8EE328441B8BF047000F4500 /* AddFriendViewController.swift */,
+				8EE328461B8BF062000F4500 /* AddFriendTableViewCell.swift */,
+				8EE3284A1B8E52B1000F4500 /* TargetListViewController.swift */,
+				8EE3284C1B8E52CD000F4500 /* TargetListTableViewCell.swift */,
+			);
+			name = Friends;
+			sourceTree = "<group>";
+		};
+		8E5227391BA10233002BD8FA /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				8EAC77631B963B23002D2890 /* Post.swift */,
+				8E5226C01B965B1E002BD8FA /* Message.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
 		8EE328071B8B939E000F4500 = {
 			isa = PBXGroup;
 			children = (
@@ -120,24 +164,21 @@
 			children = (
 				8EE328151B8B939E000F4500 /* AppDelegate.swift */,
 				8EE328411B8BAB84000F4500 /* LogIn */,
-				8EE3283B1B8B9C9D000F4500 /* PulseViewController.swift */,
-				8EE328441B8BF047000F4500 /* AddFriendViewController.swift */,
-				8EE328461B8BF062000F4500 /* AddFriendTableViewCell.swift */,
-				8EE3284A1B8E52B1000F4500 /* TargetListViewController.swift */,
-				8EE3284C1B8E52CD000F4500 /* TargetListTableViewCell.swift */,
+				8E5227371BA101DF002BD8FA /* CreatePulse */,
+				8E5227381BA10202002BD8FA /* Friends */,
+				8E5226C81B9A3194002BD8FA /* ProfileViewController.swift */,
+				8E5227331B9F972F002BD8FA /* PicturesViewController.swift */,
 				8EE328191B8B939E000F4500 /* Main.storyboard */,
+				8E5227351BA0E3D0002BD8FA /* WebViewController.swift */,
 				8E5226C21B976DC1002BD8FA /* ChatTableViewController.swift */,
 				8E5226C41B976EDD002BD8FA /* ChatTableViewCell.swift */,
 				8EAC775F1B8FA07A002D2890 /* RadarViewController.swift */,
 				8EAC77611B8FA0A3002D2890 /* RadarTableViewCell.swift */,
-				8EE3283F1B8BAB75000F4500 /* CreatePulseViewController.swift */,
-				8EE3284E1B8EDFA0000F4500 /* PickTargetViewController.swift */,
-				8EE328501B8EDFB8000F4500 /* PickTargetTableViewCell.swift */,
-				8EAC77631B963B23002D2890 /* Post.swift */,
-				8E5226C01B965B1E002BD8FA /* Message.swift */,
+				8E5227391BA10233002BD8FA /* Models */,
 				8EE3281C1B8B939E000F4500 /* Images.xcassets */,
 				8EE3281E1B8B939E000F4500 /* LaunchScreen.xib */,
 				8EE328131B8B939E000F4500 /* Supporting Files */,
+				8E52272F1B9F925D002BD8FA /* SonarFirebase-Bridging-Header.h */,
 			);
 			path = SonarFirebase;
 			sourceTree = "<group>";
@@ -190,6 +231,8 @@
 		BE90DB4082EAA178505C8105 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8E5226CC1B9A32F2002BD8FA /* MobileCoreServices.framework */,
+				8E5226CA1B9A32EB002BD8FA /* MapKit.framework */,
 				61D4F2DA31BE0571D3EDFB29 /* libPods-SonarFirebase.a */,
 			);
 			name = Frameworks;
@@ -335,11 +378,13 @@
 				8EE328161B8B939E000F4500 /* AppDelegate.swift in Sources */,
 				8E5226C11B965B1E002BD8FA /* Message.swift in Sources */,
 				8EE328451B8BF047000F4500 /* AddFriendViewController.swift in Sources */,
+				8E5227361BA0E3D0002BD8FA /* WebViewController.swift in Sources */,
 				8EE3284D1B8E52CD000F4500 /* TargetListTableViewCell.swift in Sources */,
 				8EAC77601B8FA07A002D2890 /* RadarViewController.swift in Sources */,
 				8EE3284F1B8EDFA0000F4500 /* PickTargetViewController.swift in Sources */,
 				8EE328361B8B9530000F4500 /* StartViewController.swift in Sources */,
 				8EE328511B8EDFB8000F4500 /* PickTargetTableViewCell.swift in Sources */,
+				8E5226C91B9A3194002BD8FA /* ProfileViewController.swift in Sources */,
 				8EE328471B8BF062000F4500 /* AddFriendTableViewCell.swift in Sources */,
 				8E5226C31B976DC1002BD8FA /* ChatTableViewController.swift in Sources */,
 				8EAC77641B963B23002D2890 /* Post.swift in Sources */,
@@ -347,6 +392,7 @@
 				8EE3283A1B8B9548000F4500 /* SignUpViewController.swift in Sources */,
 				8EE3283C1B8B9C9D000F4500 /* PulseViewController.swift in Sources */,
 				8E5226C51B976EDD002BD8FA /* ChatTableViewCell.swift in Sources */,
+				8E5227341B9F972F002BD8FA /* PicturesViewController.swift in Sources */,
 				8EE328401B8BAB75000F4500 /* CreatePulseViewController.swift in Sources */,
 				8EE328381B8B953F000F4500 /* LogInViewController.swift in Sources */,
 			);
@@ -478,9 +524,12 @@
 			baseConfigurationReference = 10CA79A10D6C03531A37D0B2 /* Pods-SonarFirebase.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = SonarFirebase/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "SonarFirebase/SonarFirebase-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -489,9 +538,11 @@
 			baseConfigurationReference = E0D34AB836B69ED1FC64F81B /* Pods-SonarFirebase.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = SonarFirebase/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "SonarFirebase/SonarFirebase-Bridging-Header.h";
 			};
 			name = Release;
 		};

@@ -135,19 +135,19 @@ class PickTargetViewController: UIViewController, UITableViewDataSource, UITable
         var timeRef = Firebase(url: timeUrl)
         timeRef.childByAppendingPath("createdAt").setValue([".sv":"timestamp"])
         
-        
-        let messageUrl = "https://sonarapp.firebaseio.com/messages/" + postID
-        let messageRef = Firebase(url: messageUrl)
-        let message1 = ["creator": currentUser, "content": content]
-        let messages = messageRef.childByAutoId()
-        messages.setValue(message1)
-        
-        var messageID = messages.key
-        
-        var timeMessageUrl = "https://sonarapp.firebaseio.com/messages/" + postID + "/" + messageID
-        var timeMessageRef = Firebase(url: timeMessageUrl)
-        timeMessageRef.childByAppendingPath("createdAt").setValue([".sv":"timestamp"])
-        
+//        // Make post as first message
+//        let messageUrl = "https://sonarapp.firebaseio.com/messages/" + postID
+//        let messageRef = Firebase(url: messageUrl)
+//        let message1 = ["creator": currentUser, "content": content]
+//        let messages = messageRef.childByAutoId()
+//        messages.setValue(message1)
+//        
+//        var messageID = messages.key
+//        
+//        var timeMessageUrl = "https://sonarapp.firebaseio.com/messages/" + postID + "/" + messageID
+//        var timeMessageRef = Firebase(url: timeMessageUrl)
+//        timeMessageRef.childByAppendingPath("createdAt").setValue([".sv":"timestamp"])
+//        
         
         
         // Convert unix date to local date
