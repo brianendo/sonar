@@ -27,7 +27,6 @@
 		8EE328361B8B9530000F4500 /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE328351B8B9530000F4500 /* StartViewController.swift */; };
 		8EE328381B8B953F000F4500 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE328371B8B953F000F4500 /* LogInViewController.swift */; };
 		8EE3283A1B8B9548000F4500 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE328391B8B9548000F4500 /* SignUpViewController.swift */; };
-		8EE3283C1B8B9C9D000F4500 /* PulseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE3283B1B8B9C9D000F4500 /* PulseViewController.swift */; };
 		8EE328401B8BAB75000F4500 /* CreatePulseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE3283F1B8BAB75000F4500 /* CreatePulseViewController.swift */; };
 		8EE328431B8BD8AF000F4500 /* LogIn.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8EE328421B8BD8AF000F4500 /* LogIn.storyboard */; };
 		8EE328451B8BF047000F4500 /* AddFriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE328441B8BF047000F4500 /* AddFriendViewController.swift */; };
@@ -63,19 +62,18 @@
 		8EAC775F1B8FA07A002D2890 /* RadarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadarViewController.swift; sourceTree = "<group>"; };
 		8EAC77611B8FA0A3002D2890 /* RadarTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadarTableViewCell.swift; sourceTree = "<group>"; };
 		8EAC77631B963B23002D2890 /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
-		8EE328101B8B939E000F4500 /* SonarFirebase.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SonarFirebase.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8EE328101B8B939E000F4500 /* Sonar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sonar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8EE328141B8B939E000F4500 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8EE328151B8B939E000F4500 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8EE3281A1B8B939E000F4500 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		8EE3281C1B8B939E000F4500 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		8EE3281F1B8B939E000F4500 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		8EE328251B8B939F000F4500 /* SonarFirebaseTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SonarFirebaseTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8EE328251B8B939F000F4500 /* SonarTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SonarTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8EE3282A1B8B939F000F4500 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8EE3282B1B8B939F000F4500 /* SonarFirebaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SonarFirebaseTests.swift; sourceTree = "<group>"; };
 		8EE328351B8B9530000F4500 /* StartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
 		8EE328371B8B953F000F4500 /* LogInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		8EE328391B8B9548000F4500 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
-		8EE3283B1B8B9C9D000F4500 /* PulseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulseViewController.swift; sourceTree = "<group>"; };
 		8EE3283F1B8BAB75000F4500 /* CreatePulseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePulseViewController.swift; sourceTree = "<group>"; };
 		8EE328421B8BD8AF000F4500 /* LogIn.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LogIn.storyboard; sourceTree = "<group>"; };
 		8EE328441B8BF047000F4500 /* AddFriendViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddFriendViewController.swift; sourceTree = "<group>"; };
@@ -111,7 +109,6 @@
 		8E5227371BA101DF002BD8FA /* CreatePulse */ = {
 			isa = PBXGroup;
 			children = (
-				8EE3283B1B8B9C9D000F4500 /* PulseViewController.swift */,
 				8EE3283F1B8BAB75000F4500 /* CreatePulseViewController.swift */,
 				8EE3284E1B8EDFA0000F4500 /* PickTargetViewController.swift */,
 				8EE328501B8EDFB8000F4500 /* PickTargetTableViewCell.swift */,
@@ -142,8 +139,8 @@
 		8EE328071B8B939E000F4500 = {
 			isa = PBXGroup;
 			children = (
-				8EE328121B8B939E000F4500 /* SonarFirebase */,
-				8EE328281B8B939F000F4500 /* SonarFirebaseTests */,
+				8EE328121B8B939E000F4500 /* Sonar */,
+				8EE328281B8B939F000F4500 /* SonarTests */,
 				8EE328111B8B939E000F4500 /* Products */,
 				AE3A876D014DF8F99C81CA98 /* Pods */,
 				BE90DB4082EAA178505C8105 /* Frameworks */,
@@ -153,13 +150,13 @@
 		8EE328111B8B939E000F4500 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8EE328101B8B939E000F4500 /* SonarFirebase.app */,
-				8EE328251B8B939F000F4500 /* SonarFirebaseTests.xctest */,
+				8EE328101B8B939E000F4500 /* Sonar.app */,
+				8EE328251B8B939F000F4500 /* SonarTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		8EE328121B8B939E000F4500 /* SonarFirebase */ = {
+		8EE328121B8B939E000F4500 /* Sonar */ = {
 			isa = PBXGroup;
 			children = (
 				8EE328151B8B939E000F4500 /* AppDelegate.swift */,
@@ -170,16 +167,17 @@
 				8E5227331B9F972F002BD8FA /* PicturesViewController.swift */,
 				8EE328191B8B939E000F4500 /* Main.storyboard */,
 				8E5227351BA0E3D0002BD8FA /* WebViewController.swift */,
-				8E5226C21B976DC1002BD8FA /* ChatTableViewController.swift */,
-				8E5226C41B976EDD002BD8FA /* ChatTableViewCell.swift */,
 				8EAC775F1B8FA07A002D2890 /* RadarViewController.swift */,
 				8EAC77611B8FA0A3002D2890 /* RadarTableViewCell.swift */,
+				8E5226C21B976DC1002BD8FA /* ChatTableViewController.swift */,
+				8E5226C41B976EDD002BD8FA /* ChatTableViewCell.swift */,
 				8E5227391BA10233002BD8FA /* Models */,
 				8EE3281C1B8B939E000F4500 /* Images.xcassets */,
 				8EE3281E1B8B939E000F4500 /* LaunchScreen.xib */,
 				8EE328131B8B939E000F4500 /* Supporting Files */,
 				8E52272F1B9F925D002BD8FA /* SonarFirebase-Bridging-Header.h */,
 			);
+			name = Sonar;
 			path = SonarFirebase;
 			sourceTree = "<group>";
 		};
@@ -191,12 +189,13 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		8EE328281B8B939F000F4500 /* SonarFirebaseTests */ = {
+		8EE328281B8B939F000F4500 /* SonarTests */ = {
 			isa = PBXGroup;
 			children = (
 				8EE3282B1B8B939F000F4500 /* SonarFirebaseTests.swift */,
 				8EE328291B8B939F000F4500 /* Supporting Files */,
 			);
+			name = SonarTests;
 			path = SonarFirebaseTests;
 			sourceTree = "<group>";
 		};
@@ -241,9 +240,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		8EE3280F1B8B939E000F4500 /* SonarFirebase */ = {
+		8EE3280F1B8B939E000F4500 /* Sonar */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8EE3282F1B8B939F000F4500 /* Build configuration list for PBXNativeTarget "SonarFirebase" */;
+			buildConfigurationList = 8EE3282F1B8B939F000F4500 /* Build configuration list for PBXNativeTarget "Sonar" */;
 			buildPhases = (
 				73714B910A9FB26932CA3AAE /* Check Pods Manifest.lock */,
 				8EE3280C1B8B939E000F4500 /* Sources */,
@@ -255,14 +254,14 @@
 			);
 			dependencies = (
 			);
-			name = SonarFirebase;
+			name = Sonar;
 			productName = SonarFirebase;
-			productReference = 8EE328101B8B939E000F4500 /* SonarFirebase.app */;
+			productReference = 8EE328101B8B939E000F4500 /* Sonar.app */;
 			productType = "com.apple.product-type.application";
 		};
-		8EE328241B8B939F000F4500 /* SonarFirebaseTests */ = {
+		8EE328241B8B939F000F4500 /* SonarTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8EE328321B8B939F000F4500 /* Build configuration list for PBXNativeTarget "SonarFirebaseTests" */;
+			buildConfigurationList = 8EE328321B8B939F000F4500 /* Build configuration list for PBXNativeTarget "SonarTests" */;
 			buildPhases = (
 				8EE328211B8B939F000F4500 /* Sources */,
 				8EE328221B8B939F000F4500 /* Frameworks */,
@@ -273,9 +272,9 @@
 			dependencies = (
 				8EE328271B8B939F000F4500 /* PBXTargetDependency */,
 			);
-			name = SonarFirebaseTests;
+			name = SonarTests;
 			productName = SonarFirebaseTests;
-			productReference = 8EE328251B8B939F000F4500 /* SonarFirebaseTests.xctest */;
+			productReference = 8EE328251B8B939F000F4500 /* SonarTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -296,7 +295,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 8EE3280B1B8B939E000F4500 /* Build configuration list for PBXProject "SonarFirebase" */;
+			buildConfigurationList = 8EE3280B1B8B939E000F4500 /* Build configuration list for PBXProject "Sonar" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -309,8 +308,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8EE3280F1B8B939E000F4500 /* SonarFirebase */,
-				8EE328241B8B939F000F4500 /* SonarFirebaseTests */,
+				8EE3280F1B8B939E000F4500 /* Sonar */,
+				8EE328241B8B939F000F4500 /* SonarTests */,
 			);
 		};
 /* End PBXProject section */
@@ -390,7 +389,6 @@
 				8EAC77641B963B23002D2890 /* Post.swift in Sources */,
 				8EE3284B1B8E52B1000F4500 /* TargetListViewController.swift in Sources */,
 				8EE3283A1B8B9548000F4500 /* SignUpViewController.swift in Sources */,
-				8EE3283C1B8B9C9D000F4500 /* PulseViewController.swift in Sources */,
 				8E5226C51B976EDD002BD8FA /* ChatTableViewCell.swift in Sources */,
 				8E5227341B9F972F002BD8FA /* PicturesViewController.swift in Sources */,
 				8EE328401B8BAB75000F4500 /* CreatePulseViewController.swift in Sources */,
@@ -411,7 +409,7 @@
 /* Begin PBXTargetDependency section */
 		8EE328271B8B939F000F4500 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 8EE3280F1B8B939E000F4500 /* SonarFirebase */;
+			target = 8EE3280F1B8B939E000F4500 /* Sonar */;
 			targetProxy = 8EE328261B8B939F000F4500 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -527,7 +525,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = SonarFirebase/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Sonar;
 				SWIFT_OBJC_BRIDGING_HEADER = "SonarFirebase/SonarFirebase-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -541,7 +539,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = SonarFirebase/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Sonar;
 				SWIFT_OBJC_BRIDGING_HEADER = "SonarFirebase/SonarFirebase-Bridging-Header.h";
 			};
 			name = Release;
@@ -560,8 +558,8 @@
 				);
 				INFOPLIST_FILE = SonarFirebaseTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SonarFirebase.app/SonarFirebase";
+				PRODUCT_NAME = SonarTests;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Sonar.app/Sonar";
 			};
 			name = Debug;
 		};
@@ -575,15 +573,15 @@
 				);
 				INFOPLIST_FILE = SonarFirebaseTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SonarFirebase.app/SonarFirebase";
+				PRODUCT_NAME = SonarTests;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Sonar.app/Sonar";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		8EE3280B1B8B939E000F4500 /* Build configuration list for PBXProject "SonarFirebase" */ = {
+		8EE3280B1B8B939E000F4500 /* Build configuration list for PBXProject "Sonar" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8EE3282D1B8B939F000F4500 /* Debug */,
@@ -592,7 +590,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8EE3282F1B8B939F000F4500 /* Build configuration list for PBXNativeTarget "SonarFirebase" */ = {
+		8EE3282F1B8B939F000F4500 /* Build configuration list for PBXNativeTarget "Sonar" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8EE328301B8B939F000F4500 /* Debug */,
@@ -601,7 +599,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8EE328321B8B939F000F4500 /* Build configuration list for PBXNativeTarget "SonarFirebaseTests" */ = {
+		8EE328321B8B939F000F4500 /* Build configuration list for PBXNativeTarget "SonarTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8EE328331B8B939F000F4500 /* Debug */,

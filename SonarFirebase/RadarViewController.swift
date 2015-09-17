@@ -42,10 +42,12 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
                             userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
                                 if let firstname = snapshot.value["firstname"] as? String {
                                     if let lastname = snapshot.value["lastname"] as? String {
+                                        
                                         var name = firstname + " " + lastname
                                         var date = NSDate(timeIntervalSince1970: (createdAt/1000))
                                         let post = Post(content: content, creator: creator, key: key, date: date, name: name)
                                         self.posts.append(post)
+                                        // Sort posts in descending order
                                         self.posts.sort({ $0.date.compare($1.date) == .OrderedDescending })
                                         self.tableView.reloadData()
                                     }
@@ -65,23 +67,42 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        // Authenticate user and redirect to login if not signed in
+        ref.observeAuthEventWithBlock({ authData in
+            if authData != nil {
+                // user authenticated
+                println(authData)
+                currentUser = authData.uid
+                self.tableView.delegate = self
+                self.tableView.dataSource = self
+                
+                // Remove all posts when reloaded so it updates
+                self.tableView.rowHeight = UITableViewAutomaticDimension
+                self.tableView.estimatedRowHeight = 70
+                self.posts.removeAll(keepCapacity: true)
+                self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
+                
+                self.loadRadarData()
+            } else {
+                // No user is signed in
+                let login = UIStoryboard(name: "LogIn", bundle: nil)
+                let loginVC = login.instantiateInitialViewController() as! UIViewController
+                self.presentViewController(loginVC, animated: true, completion: nil)
+            }
+        })
         
-        self.tableView.delegate = self
-        self.tableView.dataSource = self
-        
-        self.posts.removeAll(keepCapacity: true)
-        
-        
-        self.loadRadarData()
     }
+    
     
     override func viewDidAppear(animated: Bool) {
         
 
+        
     }
+
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        // Segue to Chate
         if segue.identifier == "showChat" {
             let chatVC: ChatTableViewController = segue.destinationViewController as! ChatTableViewController
             let indexPath = self.tableView.indexPathForSelectedRow()
@@ -89,7 +110,10 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
             let post = self.posts[indexPath!.row]
             chatVC.postVC = post
             println(post.key)
-        } else if segue.identifier == "presentWebView" {
+        }
+        // Segue to WebView
+        else if segue.identifier == "presentWebView" {
+            // Go to nav controller then webVC
             let nav = segue.destinationViewController as! UINavigationController
             let webVC: WebViewController = nav.topViewController as! WebViewController
             
@@ -110,9 +134,13 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
         let cell: RadarTableViewCell = tableView.dequeueReusableCellWithIdentifier("radarCell", forIndexPath: indexPath) as! RadarTableViewCell
         
         
-        let radarContent: (AnyObject) = posts[indexPath.row].content
-        cell.textView.text = radarContent as? String
         
+        let radarContent: (AnyObject) = posts[indexPath.row].content
+        cell.textView.selectable = false
+        cell.textView.text = radarContent as? String
+        cell.textView.selectable = true
+        
+        // Need View Controller to segue in TableViewCell
         cell.viewController = self
         
         let radarCreator: (AnyObject) = posts[indexPath.row].name

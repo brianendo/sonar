@@ -17,16 +17,29 @@ class LogInViewController: UIViewController {
     
     @IBOutlet weak var passwordTextField: UITextField!
     
+    @IBOutlet var logInView: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        self.navigationController?.navigationBarHidden = false
+        
+        // Add a tap gesture recognizer to the table view
+        let tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "viewTapped")
+        self.logInView.addGestureRecognizer(tapGesture)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func viewTapped() {
+        
+        // Force the textfield to end editing
+        self.passwordTextField.endEditing(true)
+        self.emailTextField.endEditing(true)
     }
     
     @IBAction func logInButtonPressed(sender: UIButton) {

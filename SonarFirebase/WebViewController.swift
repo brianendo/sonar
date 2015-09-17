@@ -10,6 +10,7 @@ import UIKit
 
 class WebViewController: UIViewController {
     
+    // Accessed from RadarVC
     var urlToLoad: NSURL?
     
     @IBOutlet weak var webView: UIWebView!
@@ -18,10 +19,9 @@ class WebViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-//        println(urlToLoad!)
-//        let requesturl = NSURL(string: url)
+
+        // Set up webView, conver NSURL to request
         let request = NSURLRequest(URL: urlToLoad!)
-        println(request)
         webView.loadRequest(request)
     }
 

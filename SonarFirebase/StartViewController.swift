@@ -11,15 +11,20 @@ import Firebase
 
 class StartViewController: UIViewController {
     
+    
+    @IBOutlet weak var imageView: UIImageView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        
     }
     
-    override func viewDidAppear(animated: Bool) {
-
+    override func viewWillAppear(animated: Bool) {
+        self.navigationController?.navigationBarHidden = true
     }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

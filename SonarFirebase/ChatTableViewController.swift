@@ -14,6 +14,8 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
     var postVC: Post?
     var messages = [Message]()
     
+    var cellURL: NSURL?
+    
     @IBOutlet weak var sendMessageTextField: UITextField!
     
     @IBOutlet weak var dockViewHeightConstraint: NSLayoutConstraint!
@@ -32,6 +34,7 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
             snapshot in
             if let content = snapshot.value["content"] as? String {
                 if let creator = snapshot.value["creator"] as? String {
+                    
                     let message = Message(content: content, creator: creator)
                     self.messages.append(message)
                     self.tableView.reloadData()
@@ -50,7 +53,7 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         self.tableView.dataSource = self
         
         self.sendMessageTextField.delegate = self
-        
+
         // Add a tap gesture recognizer to the table view
         let tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "tableViewTapped")
         self.tableView.addGestureRecognizer(tapGesture)
@@ -60,14 +63,24 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
     }
     
     
-    
     override func viewDidAppear(animated: Bool) {
-
+        
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        // Segue to WebView
+        if segue.identifier == "presentWebViewFromChat" {
+            // Go to nav controller then webVC
+            let nav = segue.destinationViewController as! UINavigationController
+            let webVC: WebViewController = nav.topViewController as! WebViewController
+            
+            webVC.urlToLoad = cellURL
+        }
     }
     
     func tableViewTapped() {
@@ -77,22 +90,26 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
     }
     
     @IBAction func sendButtonPressed(sender: AnyObject) {
+        
+        // Post Message to Firebase
         var postID = postVC?.key
         var messagesUrl = "https://sonarapp.firebaseio.com/messages/" + postID!
         var messagesRef = Firebase(url: messagesUrl)
-        
         var newMessageText = self.sendMessageTextField.text
         var message1 = ["creator": currentUser, "content": newMessageText]
-        
         let messages = messagesRef.childByAutoId()
         messages.setValue(message1)
         
+        // Get messageID
         var messageID = messages.key
         
+        // Timestamp of Message
         var timeMessageUrl = "https://sonarapp.firebaseio.com/messages/" + postID! + "/" + messageID
         var timeMessageRef = Firebase(url: timeMessageUrl)
         timeMessageRef.childByAppendingPath("createdAt").setValue([".sv":"timestamp"])
         
+        
+        // Time updated of Message
         var postUpdatedUrl = "https://sonarapp.firebaseio.com/posts/" + postID!
         var postUpdatedRef = Firebase(url: postUpdatedUrl)
         postUpdatedRef.childByAppendingPath("updatedAt").setValue([".sv":"timestamp"])
@@ -160,18 +177,28 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
             }
         })
         
-        cell.contentLabel.text = messages[indexPath.row].content
+        let messageContent: (AnyObject) = messages[indexPath.row].content
+        
+        cell.contentTextView.selectable = false
+        cell.contentTextView.text = messageContent as? String
+        cell.contentTextView.selectable = true
+        
+        // Need View Controller to segue in TableViewCell
+        cell.viewController = self
+
+        
+        // Pull Profile Image from S3
         
         let downloadingFilePath1 = NSTemporaryDirectory().stringByAppendingPathComponent("temp-download")
         let downloadingFileURL1 = NSURL(fileURLWithPath: downloadingFilePath1 )
         let transferManager = AWSS3TransferManager.defaultS3TransferManager()
-        
         
         let readRequest1 : AWSS3TransferManagerDownloadRequest = AWSS3TransferManagerDownloadRequest()
         readRequest1.bucket = S3BucketName
         readRequest1.key =  messageCreator
         readRequest1.downloadingFileURL = downloadingFileURL1
         
+        cell.profileImageView.image = nil
         let task = transferManager.download(readRequest1)
         task.continueWithBlock { (task) -> AnyObject! in
             println(task.error)
@@ -179,6 +206,12 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
             } else {
                 dispatch_async(dispatch_get_main_queue()
                     , { () -> Void in
+//                        if let image = UIImage(contentsOfFile: downloadingFilePath1) {
+//                            cell.profileImageView.image = image
+//                        } else {
+//                            // Default image or nil
+//                            cell.profileImageView.image = nil
+//                        }
                         cell.profileImageView.image = UIImage(contentsOfFile: downloadingFilePath1)
                         
                 })

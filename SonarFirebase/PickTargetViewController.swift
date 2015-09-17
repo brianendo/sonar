@@ -16,9 +16,11 @@ class PickTargetViewController: UIViewController, UITableViewDataSource, UITable
     
     @IBOutlet weak var tableView: UITableView!
     
+    @IBOutlet weak var sendButton: UIBarButtonItem!
+    
     var friendsArray = [AnyObject]()
-    var targetIdArray = [AnyObject]()
-    var postTargets = [AnyObject]()
+    var targetIdArray = [String]()
+    var postTargets = [String]()
 
     
     func loadTargetData() {
@@ -54,21 +56,18 @@ class PickTargetViewController: UIViewController, UITableViewDataSource, UITable
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        
         // Do any additional setup after loading the view.
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.reloadData()
         
         self.loadTargetData()
-        
+        self.sendButton.enabled = false
     }
 
     override func viewDidAppear(animated: Bool) {
-//        self.tableView.delegate = self
-//        self.tableView.dataSource = self
-//        self.tableView.reloadData()
-//        
-//        self.loadTargetData()
+
     }
     
     override func didReceiveMemoryWarning() {
@@ -87,16 +86,48 @@ class PickTargetViewController: UIViewController, UITableViewDataSource, UITable
         cell.nameLabel.text = target as? String
         
         cell.addTarget.tag = indexPath.row
-        cell.addTarget.addTarget(self, action: "addTarget:", forControlEvents: .TouchUpInside)
+        cell.addTarget.setTitle("Added", forState: UIControlState.Selected)
+        cell.addTarget.setTitle("Add", forState: UIControlState.Normal)
+        cell.addTarget.addTarget(self, action: "buttonClicked:", forControlEvents: .TouchUpInside)
+        
         
         return cell
     }
     
-    func addTarget(sender: UIButton!) {
-        let target: (AnyObject) = targetIdArray[sender.tag]
-        
-        postTargets.append(target)
-        
+    func buttonClicked(sender: UIButton!) {
+        if sender.selected == true {
+            
+            let target: (String) = targetIdArray[sender.tag]
+            let index = find(postTargets, target)
+            postTargets.removeAtIndex(index!)
+            println(postTargets)
+            if postTargets.count == 0 {
+                self.sendButton.enabled = false
+            }
+            
+            sender.selected = false
+        } else {
+            let target: (String) = targetIdArray[sender.tag]
+            postTargets.append(target)
+            self.sendButton.enabled = true
+            sender.selected = true
+            println(postTargets)
+//            if postTargets.count > 0 {
+//                self.sendButton.enabled = true
+//                sender.selected = true
+//            } else {
+//                sender.selected = true
+//            }
+            
+        }
+//        let target: (AnyObject) = targetIdArray[sender.tag]
+//        postTargets.append(target)
+//        sender.setTitle("Added", forState: UIControlState.Normal)
+//        if postTargets.count > 0 {
+//           self.sendButton.enabled = true
+//        } else {
+//            
+//        }
     }
     
     

@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:SonarFirebase.xcodeproj">
+      location = "group:/Users/brianendo/Desktop/SonarFirebase/Sonar.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">

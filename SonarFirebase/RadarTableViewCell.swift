@@ -16,8 +16,6 @@ class RadarTableViewCell: UITableViewCell, UITextViewDelegate {
 
     var viewController: RadarViewController?
     
-    var url: NSURL?
-    
     @IBOutlet weak var nameLabel: UILabel!
     
     @IBOutlet weak var textView: UITextView!
@@ -36,13 +34,11 @@ class RadarTableViewCell: UITableViewCell, UITextViewDelegate {
     }
 
     func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
-//        let webViewController = WebViewController()
-//        webViewController.urlToLoad = URL
 
+        // Use RadarViewController and access its variables
+        
         self.viewController?.cellURL = URL
         self.viewController?.performSegueWithIdentifier("presentWebView", sender: self)
-//        self.viewController?.presentViewController(webViewController, animated: true, completion: nil)
-        println("Reached")
         return false
 
 

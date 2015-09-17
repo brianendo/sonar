@@ -20,15 +20,30 @@ class SignUpViewController: UIViewController {
     
     @IBOutlet weak var lastNameTextField: UITextField!
     
+    @IBOutlet var signUpView: UIView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        self.navigationController?.navigationBarHidden = false
+        // Add a tap gesture recognizer to the table view
+        let tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "viewTapped")
+        self.signUpView.addGestureRecognizer(tapGesture)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func viewTapped() {
+        
+        // Force the textfield to end editing
+        self.emailTextField.endEditing(true)
+        self.passwordTextField.endEditing(true)
+        self.firstNameTextField.endEditing(true)
+        self.lastNameTextField.endEditing(true)
     }
     
     @IBAction func signUpButtonPressed(sender: UIButton) {

@@ -15,10 +15,11 @@ let ref = Firebase(url: "https://sonarapp.firebaseio.com/")
 // Global currentuser variable
 var currentUser = ""
 
+// Constants for Amazon Web Services
 let CognitoRegionType = AWSRegionType.USEast1  // e.g. AWSRegionType.USEast1
-let DefaultServiceRegionType = AWSRegionType.USEast1 // e.g. AWSRegionType.USEast1
+let DefaultServiceRegionType = AWSRegionType.USWest1 // e.g. AWSRegionType.USEast1
 let CognitoIdentityPoolId = "us-east-1:64427b0c-51a7-4d9a-9d8c-c5c8f5c2f8ea"
-let S3BucketName = "sonarapps"
+let S3BucketName = "sonarapp"
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -30,12 +31,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         
+        UINavigationBar.appearance().translucent = false
+        UINavigationBar.appearance().barTintColor = UIColor(red:0.28, green:0.27, blue:0.43, alpha:1.0)
+        UINavigationBar.appearance().tintColor = UIColor.whiteColor()
+        
+        UIApplication.sharedApplication().statusBarStyle = .LightContent
+        
+        
+        // Check credentials for AWS
         let credentialsProvider = AWSCognitoCredentialsProvider(
             regionType: AWSRegionType.USEast1, identityPoolId: "us-east-1:64427b0c-51a7-4d9a-9d8c-c5c8f5c2f8ea")
-        
         let defaultServiceConfiguration = AWSServiceConfiguration(
-            region: AWSRegionType.USEast1, credentialsProvider: credentialsProvider)
-        
+            region: AWSRegionType.USWest1, credentialsProvider: credentialsProvider)
         AWSServiceManager.defaultServiceManager().defaultServiceConfiguration = defaultServiceConfiguration
         
         return true

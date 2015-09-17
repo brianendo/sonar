@@ -39,6 +39,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         // Dispose of any resources that can be recreated.
     }
     
+    // Download profile image from S3
     func download() {
         let downloadingFilePath1 = NSTemporaryDirectory().stringByAppendingPathComponent("temp-download")
         let downloadingFileURL1 = NSURL(fileURLWithPath: downloadingFilePath1 )
@@ -68,6 +69,8 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     
 
+    
+    // Open Camera or Upload image from Camera Roll
     @IBAction func changePictureButtonPressed(sender: UIButton) {
         if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera) {
             // checking to see if the camera is available
@@ -106,14 +109,19 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     
 
+    // UIImagePickerControllerDelegate
+    
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
         let image = info[UIImagePickerControllerOriginalImage] as! UIImage
         
+        // Save image into base64 String and save in Firebase
 //        let imageData = UIImageJPEGRepresentation(image, 1.0)
 //        let thumbNailData = UIImageJPEGRepresentation(image, 0.1)
         
 //        var base64 = imageData.base64EncodedStringWithOptions(.allZeros)
         
+        
+        // Save image in S3 with the userID
         let transferManager = AWSS3TransferManager.defaultS3TransferManager()
         let testFileURL1 = NSURL(fileURLWithPath: NSTemporaryDirectory().stringByAppendingPathComponent("temp"))
         let uploadRequest1 : AWSS3TransferManagerUploadRequest = AWSS3TransferManagerUploadRequest()
@@ -136,6 +144,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             return nil
         }
         
+        // Save image in Firebase database
 //        let url = "https://sonarapp.firebaseio.com/images"
 //        let imageRef = Firebase(url: url)
 //        imageRef.childByAppendingPath(currentUser).setValue(base64)
@@ -156,5 +165,23 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         
         
     }
+    
+    
+    @IBAction func logOutButtonPressed(sender: UIButton) {
+        
+        ref.unauth()
+        
+        let login = UIStoryboard(name: "LogIn", bundle: nil)
+        let loginVC = login.instantiateInitialViewController() as! UIViewController
+        self.presentViewController(loginVC, animated: true, completion: nil)
+    }
+    
+    
+    @IBAction func addPersonButtonPressed(sender: UIButton) {
+    }
+    
+    
+    
+    
     
 }

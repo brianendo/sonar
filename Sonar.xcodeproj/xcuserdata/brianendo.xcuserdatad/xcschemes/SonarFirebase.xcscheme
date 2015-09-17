@@ -57,9 +57,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8EE3280F1B8B939E000F4500"
-            BuildableName = "SonarFirebase.app"
-            BlueprintName = "SonarFirebase"
-            ReferencedContainer = "container:SonarFirebase.xcodeproj">
+            BuildableName = "Sonar.app"
+            BlueprintName = "Sonar"
+            ReferencedContainer = "container:Sonar.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -77,9 +77,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8EE3280F1B8B939E000F4500"
-            BuildableName = "SonarFirebase.app"
-            BlueprintName = "SonarFirebase"
-            ReferencedContainer = "container:SonarFirebase.xcodeproj">
+            BuildableName = "Sonar.app"
+            BlueprintName = "Sonar"
+            ReferencedContainer = "container:Sonar.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>

@@ -16,9 +16,14 @@ class CreatePulseViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var charRemainingLabel: UILabel!
     
     
+    @IBOutlet weak var doneButton: UIBarButtonItem!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.doneButton.enabled = false
+        
         // Do any additional setup after loading the view.
         pulseTextView.delegate = self
         
@@ -66,18 +71,27 @@ class CreatePulseViewController: UIViewController, UITextViewDelegate {
         else if pulseTextView.textColor == UIColor.lightGrayColor() && !text.isEmpty {
             pulseTextView.text = nil
             pulseTextView.textColor = UIColor.blackColor()
-            
         }
-        
+
         // Limit character limit to 80
         var newLength: Int = (pulseTextView.text as NSString).length + (text as NSString).length - range.length
-        var remainingChar: Int = 80 - newLength
+        var remainingChar: Int = 100 - newLength
         
         // Make label show remaining characters
         charRemainingLabel.text = "\(remainingChar)"
         
-        // Once text > 80 chars, stop ability to change text
-        return (newLength > 80) ? false : true
+        // Once text > 100 chars, stop ability to change text
+        return (newLength > 100) ? false : true
+    }
+    
+    func textViewDidChange(textView: UITextView) {
+        let trimmedString = pulseTextView.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+        println(trimmedString)
+        if count(trimmedString) == 0 {
+            self.doneButton.enabled = false
+        } else {
+            self.doneButton.enabled = true
+        }
     }
     
     func textViewDidChangeSelection(textView: UITextView) {

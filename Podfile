@@ -1,6 +1,6 @@
 platform :ios, '8.0'
 
-target 'SonarFirebase' do
+target 'Sonar' do
     pod 'Firebase', '>= 2.3.3'
     pod 'AWSCore'
     pod 'AWSAutoScaling'
@@ -21,7 +21,7 @@ target 'SonarFirebase' do
     pod 'AWSCognitoSync'
 end
 
-target 'SonarFirebaseTests' do
+target 'SonarTests' do
 
 end
 
