@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8165BEEB0C390634459BDBBE /* libPods-SonarFirebase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 61D4F2DA31BE0571D3EDFB29 /* libPods-SonarFirebase.a */; };
+		5991A860BBCCE6A32241AC64 /* libPods-Sonar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C6A6980C8326AB89321EA4 /* libPods-Sonar.a */; };
 		8E5226C11B965B1E002BD8FA /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5226C01B965B1E002BD8FA /* Message.swift */; };
 		8E5226C31B976DC1002BD8FA /* ChatTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5226C21B976DC1002BD8FA /* ChatTableViewController.swift */; };
 		8E5226C51B976EDD002BD8FA /* ChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5226C41B976EDD002BD8FA /* ChatTableViewCell.swift */; };
@@ -48,8 +48,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		10CA79A10D6C03531A37D0B2 /* Pods-SonarFirebase.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SonarFirebase.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SonarFirebase/Pods-SonarFirebase.debug.xcconfig"; sourceTree = "<group>"; };
-		61D4F2DA31BE0571D3EDFB29 /* libPods-SonarFirebase.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SonarFirebase.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		00C6A6980C8326AB89321EA4 /* libPods-Sonar.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Sonar.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E5226C01B965B1E002BD8FA /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		8E5226C21B976DC1002BD8FA /* ChatTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatTableViewController.swift; sourceTree = "<group>"; };
 		8E5226C41B976EDD002BD8FA /* ChatTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatTableViewCell.swift; sourceTree = "<group>"; };
@@ -82,7 +81,8 @@
 		8EE3284C1B8E52CD000F4500 /* TargetListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TargetListTableViewCell.swift; sourceTree = "<group>"; };
 		8EE3284E1B8EDFA0000F4500 /* PickTargetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickTargetViewController.swift; sourceTree = "<group>"; };
 		8EE328501B8EDFB8000F4500 /* PickTargetTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickTargetTableViewCell.swift; sourceTree = "<group>"; };
-		E0D34AB836B69ED1FC64F81B /* Pods-SonarFirebase.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SonarFirebase.release.xcconfig"; path = "Pods/Target Support Files/Pods-SonarFirebase/Pods-SonarFirebase.release.xcconfig"; sourceTree = "<group>"; };
+		DE227886A749075BC941D60A /* Pods-Sonar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sonar.release.xcconfig"; path = "Pods/Target Support Files/Pods-Sonar/Pods-Sonar.release.xcconfig"; sourceTree = "<group>"; };
+		F5F7EA16307762FA11155B70 /* Pods-Sonar.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sonar.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Sonar/Pods-Sonar.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,7 +92,7 @@
 			files = (
 				8E5226CD1B9A32F2002BD8FA /* MobileCoreServices.framework in Frameworks */,
 				8E5226CB1B9A32EB002BD8FA /* MapKit.framework in Frameworks */,
-				8165BEEB0C390634459BDBBE /* libPods-SonarFirebase.a in Frameworks */,
+				5991A860BBCCE6A32241AC64 /* libPods-Sonar.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -142,8 +142,8 @@
 				8EE328121B8B939E000F4500 /* Sonar */,
 				8EE328281B8B939F000F4500 /* SonarTests */,
 				8EE328111B8B939E000F4500 /* Products */,
-				AE3A876D014DF8F99C81CA98 /* Pods */,
 				BE90DB4082EAA178505C8105 /* Frameworks */,
+				C4CD1D8F5403BFF3539AAFF1 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -218,23 +218,23 @@
 			name = LogIn;
 			sourceTree = "<group>";
 		};
-		AE3A876D014DF8F99C81CA98 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				10CA79A10D6C03531A37D0B2 /* Pods-SonarFirebase.debug.xcconfig */,
-				E0D34AB836B69ED1FC64F81B /* Pods-SonarFirebase.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		BE90DB4082EAA178505C8105 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				8E5226CC1B9A32F2002BD8FA /* MobileCoreServices.framework */,
 				8E5226CA1B9A32EB002BD8FA /* MapKit.framework */,
-				61D4F2DA31BE0571D3EDFB29 /* libPods-SonarFirebase.a */,
+				00C6A6980C8326AB89321EA4 /* libPods-Sonar.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C4CD1D8F5403BFF3539AAFF1 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				F5F7EA16307762FA11155B70 /* Pods-Sonar.debug.xcconfig */,
+				DE227886A749075BC941D60A /* Pods-Sonar.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -244,11 +244,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8EE3282F1B8B939F000F4500 /* Build configuration list for PBXNativeTarget "Sonar" */;
 			buildPhases = (
-				73714B910A9FB26932CA3AAE /* Check Pods Manifest.lock */,
+				66BA8CA546889460CF649E26 /* Check Pods Manifest.lock */,
 				8EE3280C1B8B939E000F4500 /* Sources */,
 				8EE3280D1B8B939E000F4500 /* Frameworks */,
 				8EE3280E1B8B939E000F4500 /* Resources */,
-				964F3A9F7C8A454B87389F67 /* Copy Pods Resources */,
+				5A55E76B549CA87EF1DE7151 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -336,7 +336,22 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		73714B910A9FB26932CA3AAE /* Check Pods Manifest.lock */ = {
+		5A55E76B549CA87EF1DE7151 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Sonar/Pods-Sonar-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		66BA8CA546889460CF649E26 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -349,21 +364,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		964F3A9F7C8A454B87389F67 /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SonarFirebase/Pods-SonarFirebase-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -519,7 +519,7 @@
 		};
 		8EE328301B8B939F000F4500 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 10CA79A10D6C03531A37D0B2 /* Pods-SonarFirebase.debug.xcconfig */;
+			baseConfigurationReference = F5F7EA16307762FA11155B70 /* Pods-Sonar.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -533,7 +533,7 @@
 		};
 		8EE328311B8B939F000F4500 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E0D34AB836B69ED1FC64F81B /* Pods-SonarFirebase.release.xcconfig */;
+			baseConfigurationReference = DE227886A749075BC941D60A /* Pods-Sonar.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;

@@ -18,6 +18,7 @@ class CreatePulseViewController: UIViewController, UITextViewDelegate {
     
     @IBOutlet weak var doneButton: UIBarButtonItem!
     
+    var placeholder = "Ask your friends anything"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,7 +32,7 @@ class CreatePulseViewController: UIViewController, UITextViewDelegate {
         pulseTextView.becomeFirstResponder()
         
         // Placeholder text
-        pulseTextView.text = "Ask your friends anything"
+        pulseTextView.text = placeholder
         pulseTextView.textColor = UIColor.lightGrayColor()
         
         pulseTextView.selectedTextRange = pulseTextView.textRangeFromPosition(pulseTextView.beginningOfDocument, toPosition: pulseTextView.beginningOfDocument)
@@ -56,9 +57,10 @@ class CreatePulseViewController: UIViewController, UITextViewDelegate {
         // and set the cursor to the beginning of the text view
         if updatedText.isEmpty {
             
-            pulseTextView.text = "Ask your friends anything"
+            pulseTextView.text = placeholder
             pulseTextView.textColor = UIColor.lightGrayColor()
             
+            self.charRemainingLabel.text = "100"
             pulseTextView.selectedTextRange = textView.textRangeFromPosition(textView.beginningOfDocument, toPosition: textView.beginningOfDocument)
             
             return false
@@ -71,17 +73,25 @@ class CreatePulseViewController: UIViewController, UITextViewDelegate {
         else if pulseTextView.textColor == UIColor.lightGrayColor() && !text.isEmpty {
             pulseTextView.text = nil
             pulseTextView.textColor = UIColor.blackColor()
+            
+            
         }
-
-        // Limit character limit to 80
+        
+        // Limit character limit to 100
         var newLength: Int = (pulseTextView.text as NSString).length + (text as NSString).length - range.length
         var remainingChar: Int = 100 - newLength
         
-        // Make label show remaining characters
-        charRemainingLabel.text = "\(remainingChar)"
-        
+        if pulseTextView.text == placeholder {
+            charRemainingLabel.text = "100"
+        } else {
+            // Make label show remaining characters
+            charRemainingLabel.text = "\(remainingChar)"
+        }
         // Once text > 100 chars, stop ability to change text
         return (newLength > 100) ? false : true
+        
+        
+        
     }
     
     func textViewDidChange(textView: UITextView) {
