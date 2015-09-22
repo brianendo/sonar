@@ -52,7 +52,7 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
                                         self.posts.append(post)
                                         
                                         // Sort posts in descending order
-                                        self.posts.sort({ $0.createdAt.compare($1.createdAt) == .OrderedDescending })
+                                        self.posts.sortInPlace({ $0.createdAt.compare($1.createdAt) == .OrderedDescending })
                                         self.tableView.reloadData()
                                     }
                                 }
@@ -75,7 +75,7 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
         ref.observeAuthEventWithBlock({ authData in
             if authData != nil {
                 // user authenticated
-                print(authData)
+                print(authData, terminator: "")
                 currentUser = authData.uid
                 self.tableView.delegate = self
                 self.tableView.dataSource = self
@@ -93,8 +93,8 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
             } else {
                 // No user is signed in
                 let login = UIStoryboard(name: "LogIn", bundle: nil)
-                let loginVC = login.instantiateInitialViewController() as! UIViewController
-                self.presentViewController(loginVC, animated: true, completion: nil)
+                let loginVC = login.instantiateInitialViewController()
+                self.presentViewController(loginVC!, animated: true, completion: nil)
             }
         })
         
@@ -106,11 +106,11 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     func timeAgoSinceDate(date:NSDate, numericDates:Bool) -> String {
         let calendar = NSCalendar.currentCalendar()
-        let unitFlags = NSCalendarUnit.CalendarUnitMinute | NSCalendarUnit.CalendarUnitHour | NSCalendarUnit.CalendarUnitDay | NSCalendarUnit.CalendarUnitWeekOfYear | NSCalendarUnit.CalendarUnitMonth | NSCalendarUnit.CalendarUnitYear | NSCalendarUnit.CalendarUnitSecond
+        let unitFlags: NSCalendarUnit = [NSCalendarUnit.Minute, NSCalendarUnit.Hour, NSCalendarUnit.Day, NSCalendarUnit.WeekOfYear, NSCalendarUnit.Month, NSCalendarUnit.Year, NSCalendarUnit.Second]
         let now = NSDate()
         let earliest = now.earlierDate(date)
         let latest = (earliest == now) ? date : now
-        let components:NSDateComponents = calendar.components(unitFlags, fromDate: earliest, toDate: latest, options: nil)
+        let components:NSDateComponents = calendar.components(unitFlags, fromDate: earliest, toDate: latest, options: [])
         
         
         if (components.year >= 2) {
@@ -174,11 +174,11 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
         // Segue to Chat
         if segue.identifier == "showChat" {
             let chatVC: ChatTableViewController = segue.destinationViewController as! ChatTableViewController
-            let indexPath = self.tableView.indexPathForSelectedRow()
+            let indexPath = self.tableView.indexPathForSelectedRow
             
             let post = self.posts[indexPath!.row]
             chatVC.postVC = post
-            print(post.key)
+            print(post.key, terminator: "")
         }
         // Segue to WebView
         else if segue.identifier == "presentWebView" {

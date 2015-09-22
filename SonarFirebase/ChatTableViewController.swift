@@ -274,7 +274,7 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         cell.profileImageView.image = UIImage(named: "Placeholder.png")
         let task = transferManager.download(readRequest1)
         task.continueWithBlock { (task) -> AnyObject! in
-            print(task.error)
+            print(task.error, terminator: "")
             if task.error != nil {
             } else {
                 dispatch_async(dispatch_get_main_queue()
@@ -290,7 +290,7 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
                         
                         
                 })
-                print("Fetched image")
+                print("Fetched image", terminator: "")
             }
             return nil
         }

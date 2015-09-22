@@ -50,7 +50,7 @@ class PicturesViewController: UIViewController {
         
         let task = transferManager.download(readRequest1)
         task.continueWithBlock { (task) -> AnyObject! in
-            print(task.error)
+            print(task.error, terminator: "")
             if task.error != nil {
             } else {
                 dispatch_async(dispatch_get_main_queue()
@@ -60,7 +60,7 @@ class PicturesViewController: UIViewController {
 //                        self.imageView.reloadInputViews()
                         
                 })
-                print("Fetched image")
+                print("Fetched image", terminator: "")
             }
             return nil
         }

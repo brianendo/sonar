@@ -54,7 +54,7 @@ class SignUpViewController: UIViewController {
                     // There was an error creating the account
                 } else {
                     let uid = result["uid"] as? String
-                    print("Successfully created user account with uid: \(uid)")
+                    print("Successfully created user account with uid: \(uid)", terminator: "")
                     
                     ref.authUser(self.emailTextField.text, password: self.passwordTextField.text,
                         withCompletionBlock: { error, authData in
@@ -71,8 +71,8 @@ class SignUpViewController: UIViewController {
                                 ref.childByAppendingPath("users").childByAppendingPath(authData.uid).setValue(newUser)
                                 
                                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                                let mainVC = storyboard.instantiateInitialViewController() as! UIViewController
-                                self.presentViewController(mainVC, animated: true, completion: nil)
+                                let mainVC = storyboard.instantiateInitialViewController()
+                                self.presentViewController(mainVC!, animated: true, completion: nil)
                             }
                     })
 

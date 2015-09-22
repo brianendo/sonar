@@ -109,8 +109,8 @@ class AddFriendViewController: UIViewController, UITableViewDataSource, UITableV
         let otherUserActivityRef = Firebase(url: otherUserUrl)
         otherUserActivityRef.childByAppendingPath(currentUser).setValue(true)
         
-        print(user)
-        print(currentUser)
+        print(user, terminator: "")
+        print(currentUser, terminator: "")
     }
 
 }

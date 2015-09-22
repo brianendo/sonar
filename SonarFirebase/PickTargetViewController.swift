@@ -95,7 +95,7 @@ class PickTargetViewController: UIViewController, UITableViewDataSource, UITable
         if sender.selected == true {
             
             let target: (String) = targetIdArray[sender.tag]
-            let index = find(postTargets, target)
+            let index = postTargets.indexOf(target)
             postTargets.removeAtIndex(index!)
             if postTargets.count == 0 {
                 self.sendButton.enabled = false
@@ -184,13 +184,13 @@ class PickTargetViewController: UIViewController, UITableViewDataSource, UITable
             // do some stuff once
             if let createdAt = snapshot.value["createdAt"] as? NSTimeInterval {
                 let date = NSDate(timeIntervalSince1970: (createdAt/1000))
-                print(date)
+                print(date, terminator: "")
                 let dateFormatter = NSDateFormatter()
                 dateFormatter.timeStyle = NSDateFormatterStyle.MediumStyle //Set time style
                 dateFormatter.dateStyle = NSDateFormatterStyle.MediumStyle //Set date style
                 dateFormatter.timeZone = NSTimeZone()
                 let localDate = dateFormatter.stringFromDate(date)
-                print(localDate)
+                print(localDate, terminator: "")
             }
             
             

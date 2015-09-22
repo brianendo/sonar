@@ -50,11 +50,11 @@ class LogInViewController: UIViewController {
                     // There was an error logging in to this account
                 } else {
                     // We are now logged in
-                    print(authData.uid)
+                    print(authData.uid, terminator: "")
                     
                     let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                    let mainVC = storyboard.instantiateInitialViewController() as! UIViewController
-                    self.presentViewController(mainVC, animated: true, completion: nil)
+                    let mainVC = storyboard.instantiateInitialViewController()
+                    self.presentViewController(mainVC!, animated: true, completion: nil)
                 }
         })
     }

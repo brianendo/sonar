@@ -28,7 +28,7 @@ class TargetListViewController: UIViewController, UITableViewDelegate, UITableVi
         
         targetRef.observeEventType(.ChildAdded, withBlock: {
             snapshot in
-            print(snapshot.key)
+            print(snapshot.key, terminator: "")
             
             let nameUrl = "https://sonarapp.firebaseio.com/users/" + snapshot.key
             let nameRef = Firebase(url: nameUrl)
@@ -38,7 +38,7 @@ class TargetListViewController: UIViewController, UITableViewDelegate, UITableVi
                     if let lastname = snapshot.value["lastname"] as? String {
                         let name = firstname + " " + lastname
                         self.friendsArray.append(name)
-                        print(name)
+                        print(name, terminator: "")
                         self.tableView.reloadData()
                     }
                 }

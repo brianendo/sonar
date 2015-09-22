@@ -49,7 +49,7 @@ class CreatePulseViewController: UIViewController, UITextViewDelegate {
     func keyboardWillShow(notification: NSNotification) {
         var info = notification.userInfo!
         let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
-        print(keyboardFrame)
+        print(keyboardFrame, terminator: "")
         self.bottomSpaceLayoutConstraint.constant = keyboardFrame.size.height + 5
     }
     
@@ -107,7 +107,7 @@ class CreatePulseViewController: UIViewController, UITextViewDelegate {
     
     func textViewDidChange(textView: UITextView) {
         let trimmedString = pulseTextView.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
-        if count(trimmedString) == 0 {
+        if trimmedString.characters.count == 0 {
             self.doneButton.enabled = false
         } else {
             self.doneButton.enabled = true
