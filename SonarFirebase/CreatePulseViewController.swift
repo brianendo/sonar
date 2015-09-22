@@ -15,6 +15,7 @@ class CreatePulseViewController: UIViewController, UITextViewDelegate {
     
     @IBOutlet weak var charRemainingLabel: UILabel!
     
+    @IBOutlet weak var bottomSpaceLayoutConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var doneButton: UIBarButtonItem!
     
@@ -23,6 +24,8 @@ class CreatePulseViewController: UIViewController, UITextViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
+        
         self.doneButton.enabled = false
         
         // Do any additional setup after loading the view.
@@ -43,7 +46,15 @@ class CreatePulseViewController: UIViewController, UITextViewDelegate {
         // Dispose of any resources that can be recreated.
     }
     
+    func keyboardWillShow(notification: NSNotification) {
+        var info = notification.userInfo!
+        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+        print(keyboardFrame)
+        self.bottomSpaceLayoutConstraint.constant = keyboardFrame.size.height + 5
+    }
+    
     @IBAction func cancelButtonPressed(sender: UIBarButtonItem) {
+        self.pulseTextView.endEditing(true)
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
@@ -78,8 +89,8 @@ class CreatePulseViewController: UIViewController, UITextViewDelegate {
         }
         
         // Limit character limit to 100
-        var newLength: Int = (pulseTextView.text as NSString).length + (text as NSString).length - range.length
-        var remainingChar: Int = 100 - newLength
+        let newLength: Int = (pulseTextView.text as NSString).length + (text as NSString).length - range.length
+        let remainingChar: Int = 100 - newLength
         
         if pulseTextView.text == placeholder {
             charRemainingLabel.text = "100"
@@ -88,7 +99,7 @@ class CreatePulseViewController: UIViewController, UITextViewDelegate {
             charRemainingLabel.text = "\(remainingChar)"
         }
         // Once text > 100 chars, stop ability to change text
-        return (newLength > 100) ? false : true
+        return (newLength == 100) ? false : true
         
         
         
@@ -96,7 +107,6 @@ class CreatePulseViewController: UIViewController, UITextViewDelegate {
     
     func textViewDidChange(textView: UITextView) {
         let trimmedString = pulseTextView.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
-        println(trimmedString)
         if count(trimmedString) == 0 {
             self.doneButton.enabled = false
         } else {

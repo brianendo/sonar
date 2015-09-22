@@ -25,6 +25,13 @@ class ChatTableViewCell: UITableViewCell, UITextViewDelegate {
         super.awakeFromNib()
         // Initialization code
         self.contentTextView.delegate = self
+        self.profileImageView.frame = CGRectMake(0, 0, 40, 40)
+        self.profileImageView.layer.borderWidth=1.0
+        self.profileImageView.layer.masksToBounds = false
+        self.profileImageView.layer.borderColor = UIColor.whiteColor().CGColor
+        self.profileImageView.layer.cornerRadius = 13
+        self.profileImageView.layer.cornerRadius = self.profileImageView.frame.size.height/2
+        self.profileImageView.clipsToBounds = true
     }
 
     override func setSelected(selected: Bool, animated: Bool) {

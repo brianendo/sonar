@@ -26,23 +26,20 @@ class PickTargetViewController: UIViewController, UITableViewDataSource, UITable
     func loadTargetData() {
         self.friendsArray.removeAll(keepCapacity: true)
         
-        var url = "https://sonarapp.firebaseio.com/users" + "/" + currentUser + "/targets/"
-        var targetRef = Firebase(url: url)
+        let url = "https://sonarapp.firebaseio.com/users" + "/" + currentUser + "/targets/"
+        let targetRef = Firebase(url: url)
         
         
         targetRef.observeEventType(.ChildAdded, withBlock: {
             snapshot in
-            println(snapshot.key)
-            
-            var nameUrl = "https://sonarapp.firebaseio.com/users/" + snapshot.key
-            var nameRef = Firebase(url: nameUrl)
+            let nameUrl = "https://sonarapp.firebaseio.com/users/" + snapshot.key
+            let nameRef = Firebase(url: nameUrl)
             nameRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
                 // do some stuff once
                 if let firstname = snapshot.value["firstname"] as? String {
                     if let lastname = snapshot.value["lastname"] as? String {
-                        var name = firstname + " " + lastname
+                        let name = firstname + " " + lastname
                         self.friendsArray.append(name)
-                        println(name)
                         self.targetIdArray.append(snapshot.key)
                         self.tableView.reloadData()
                     }
@@ -100,7 +97,6 @@ class PickTargetViewController: UIViewController, UITableViewDataSource, UITable
             let target: (String) = targetIdArray[sender.tag]
             let index = find(postTargets, target)
             postTargets.removeAtIndex(index!)
-            println(postTargets)
             if postTargets.count == 0 {
                 self.sendButton.enabled = false
             }
@@ -111,7 +107,6 @@ class PickTargetViewController: UIViewController, UITableViewDataSource, UITable
             postTargets.append(target)
             self.sendButton.enabled = true
             sender.selected = true
-            println(postTargets)
 //            if postTargets.count > 0 {
 //                self.sendButton.enabled = true
 //                sender.selected = true
@@ -138,32 +133,32 @@ class PickTargetViewController: UIViewController, UITableViewDataSource, UITable
         let post1Ref = postRef.childByAutoId()
         post1Ref.setValue(post1)
         
-        var postID = post1Ref.key
+        let postID = post1Ref.key
         
         if postTargets.count == 0 {
             
         } else {
             for target in postTargets {
-                var url = "https://sonarapp.firebaseio.com/posts/" + postID + "/targets/"
-                var currentTargetRef = Firebase(url: url)
-                currentTargetRef.childByAppendingPath(target as! String).setValue(true)
+                let url = "https://sonarapp.firebaseio.com/posts/" + postID + "/targets/"
+                let currentTargetRef = Firebase(url: url)
+                currentTargetRef.childByAppendingPath(target ).setValue(true)
                 
-                var targetedUrl = "https://sonarapp.firebaseio.com/users/" + (target as! String) + "/postsReceived/"
-                var targetedRef = Firebase(url: targetedUrl)
+                let targetedUrl = "https://sonarapp.firebaseio.com/users/" + (target ) + "/postsReceived/"
+                let targetedRef = Firebase(url: targetedUrl)
                 targetedRef.childByAppendingPath(postID).setValue(true)
             }
 //            var myurl = "https://sonarapp.firebaseio.com/users/" + currentUser + "/postsSent/"
 //            var myPostsRef = Firebase(url: myurl)
 //            myPostsRef.childByAppendingPath(postID).setValue(true)
-            var userurl = "https://sonarapp.firebaseio.com/users/" + currentUser + "/postsReceived/"
-            var userTargetRef = Firebase(url: userurl)
+            let userurl = "https://sonarapp.firebaseio.com/users/" + currentUser + "/postsReceived/"
+            let userTargetRef = Firebase(url: userurl)
             userTargetRef.childByAppendingPath(postID).setValue(true)
         }
         
         
         // Add Server Side timestamp to post
-        var timeUrl = "https://sonarapp.firebaseio.com/posts/" + postID
-        var timeRef = Firebase(url: timeUrl)
+        let timeUrl = "https://sonarapp.firebaseio.com/posts/" + postID
+        let timeRef = Firebase(url: timeUrl)
         timeRef.childByAppendingPath("createdAt").setValue([".sv":"timestamp"])
         
 //        // Make post as first message
@@ -182,20 +177,20 @@ class PickTargetViewController: UIViewController, UITableViewDataSource, UITable
         
         
         // Convert unix date to local date
-        var dateUrl = "https://sonarapp.firebaseio.com/posts/" + postID
-        var dateRef = Firebase(url: dateUrl)
+        let dateUrl = "https://sonarapp.firebaseio.com/posts/" + postID
+        let dateRef = Firebase(url: dateUrl)
         
         dateRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
             // do some stuff once
             if let createdAt = snapshot.value["createdAt"] as? NSTimeInterval {
-                var date = NSDate(timeIntervalSince1970: (createdAt/1000))
-                println(date)
+                let date = NSDate(timeIntervalSince1970: (createdAt/1000))
+                print(date)
                 let dateFormatter = NSDateFormatter()
                 dateFormatter.timeStyle = NSDateFormatterStyle.MediumStyle //Set time style
                 dateFormatter.dateStyle = NSDateFormatterStyle.MediumStyle //Set date style
                 dateFormatter.timeZone = NSTimeZone()
                 let localDate = dateFormatter.stringFromDate(date)
-                println(localDate)
+                print(localDate)
             }
             
             

@@ -13,11 +13,13 @@ class WebViewController: UIViewController {
     // Accessed from RadarVC
     var urlToLoad: NSURL?
     
+    var isPresented = true
+    
     @IBOutlet weak var webView: UIWebView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
 
         // Set up webView, conver NSURL to request
@@ -25,6 +27,14 @@ class WebViewController: UIViewController {
         webView.loadRequest(request)
     }
 
+//    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+//        return UIInterfaceOrientationMask.All
+//    }
+    
+    override func shouldAutorotate() -> Bool {
+        return true
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -32,6 +42,7 @@ class WebViewController: UIViewController {
     
     
     @IBAction func cancelButtonPressed(sender: UIBarButtonItem) {
+        isPresented = false
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     

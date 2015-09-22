@@ -23,20 +23,25 @@ class PicturesViewController: UIViewController {
         let types: NSTextCheckingType = .Link
         var error : NSError?
         
-        let detector = NSDataDetector(types: types.rawValue, error: &error)
-        var matches = detector!.matchesInString(text, options: nil, range: NSMakeRange(0, count(text)))
-        
-        for match in matches {
-            println(match.URL!)
-        }
+//        let detector: NSDataDetector?
+//        do {
+//            detector = try NSDataDetector(types: types.rawValue)
+//        } catch let error1 as NSError {
+//            error = error1
+//            detector = nil
+//        }
+//        let matches = detector!.matchesInString(text, options: [], range: NSMakeRange(0, text.characters.count))
+//        
+//        for match in matches {
+//            print(match.URL!)
+//        }
         
     }
 
     func download() {
-        let downloadingFilePath1 = NSTemporaryDirectory().stringByAppendingPathComponent("temp-download")
+        let downloadingFilePath1 = (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent("temp-download")
         let downloadingFileURL1 = NSURL(fileURLWithPath: downloadingFilePath1 )
         let transferManager = AWSS3TransferManager.defaultS3TransferManager()
-        
         
         let readRequest1 : AWSS3TransferManagerDownloadRequest = AWSS3TransferManagerDownloadRequest()
         readRequest1.bucket = S3BucketName
@@ -45,7 +50,7 @@ class PicturesViewController: UIViewController {
         
         let task = transferManager.download(readRequest1)
         task.continueWithBlock { (task) -> AnyObject! in
-            println(task.error)
+            print(task.error)
             if task.error != nil {
             } else {
                 dispatch_async(dispatch_get_main_queue()
@@ -55,7 +60,7 @@ class PicturesViewController: UIViewController {
 //                        self.imageView.reloadInputViews()
                         
                 })
-                println("Fetched image")
+                print("Fetched image")
             }
             return nil
         }

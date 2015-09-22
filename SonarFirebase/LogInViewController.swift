@@ -35,6 +35,7 @@ class LogInViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    
     func viewTapped() {
         
         // Force the textfield to end editing
@@ -49,7 +50,7 @@ class LogInViewController: UIViewController {
                     // There was an error logging in to this account
                 } else {
                     // We are now logged in
-                    println(authData.uid)
+                    print(authData.uid)
                     
                     let storyboard = UIStoryboard(name: "Main", bundle: nil)
                     let mainVC = storyboard.instantiateInitialViewController() as! UIViewController

@@ -97,7 +97,7 @@ class AddFriendViewController: UIViewController, UITableViewDataSource, UITableV
         
         let url = "https://sonarapp.firebaseio.com/users/" +   currentUser + "/targets/"
         
-        var currentUserRef = Firebase(url: url)
+        let currentUserRef = Firebase(url: url)
         
         currentUserRef.childByAppendingPath(user as! String).setValue(true)
         
@@ -109,8 +109,8 @@ class AddFriendViewController: UIViewController, UITableViewDataSource, UITableV
         let otherUserActivityRef = Firebase(url: otherUserUrl)
         otherUserActivityRef.childByAppendingPath(currentUser).setValue(true)
         
-        println(user)
-        println(currentUser)
+        print(user)
+        print(currentUser)
     }
 
 }

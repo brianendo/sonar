@@ -19,6 +19,19 @@
 		8EAC77601B8FA07A002D2890 /* RadarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EAC775F1B8FA07A002D2890 /* RadarViewController.swift */; };
 		8EAC77621B8FA0A3002D2890 /* RadarTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EAC77611B8FA0A3002D2890 /* RadarTableViewCell.swift */; };
 		8EAC77641B963B23002D2890 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EAC77631B963B23002D2890 /* Post.swift */; };
+		8EB2170C1BACB76F005DA377 /* MyTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EB2170B1BACB76F005DA377 /* MyTextView.swift */; };
+		8EE225191BB0D13A0079F887 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EE225171BB0D13A0079F887 /* Bolts.framework */; };
+		8EE2251A1BB0D13A0079F887 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EE225181BB0D13A0079F887 /* Parse.framework */; };
+		8EE2251C1BB0D1610079F887 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EE2251B1BB0D1610079F887 /* AudioToolbox.framework */; };
+		8EE2251E1BB0D1660079F887 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EE2251D1BB0D1660079F887 /* CFNetwork.framework */; };
+		8EE225201BB0D16D0079F887 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EE2251F1BB0D16D0079F887 /* CoreGraphics.framework */; };
+		8EE225221BB0D1740079F887 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EE225211BB0D1740079F887 /* CoreLocation.framework */; };
+		8EE225241BB0D17A0079F887 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EE225231BB0D17A0079F887 /* QuartzCore.framework */; };
+		8EE225261BB0D1800079F887 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EE225251BB0D1800079F887 /* Security.framework */; };
+		8EE225281BB0D1880079F887 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EE225271BB0D1880079F887 /* StoreKit.framework */; };
+		8EE2252A1BB0D1910079F887 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EE225291BB0D1910079F887 /* SystemConfiguration.framework */; };
+		8EE2252C1BB0D19D0079F887 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EE2252B1BB0D19D0079F887 /* libz.dylib */; };
+		8EE2252E1BB0D1A50079F887 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EE2252D1BB0D1A50079F887 /* libsqlite3.dylib */; };
 		8EE328161B8B939E000F4500 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE328151B8B939E000F4500 /* AppDelegate.swift */; };
 		8EE3281B1B8B939E000F4500 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8EE328191B8B939E000F4500 /* Main.storyboard */; };
 		8EE3281D1B8B939E000F4500 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8EE3281C1B8B939E000F4500 /* Images.xcassets */; };
@@ -61,6 +74,19 @@
 		8EAC775F1B8FA07A002D2890 /* RadarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadarViewController.swift; sourceTree = "<group>"; };
 		8EAC77611B8FA0A3002D2890 /* RadarTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadarTableViewCell.swift; sourceTree = "<group>"; };
 		8EAC77631B963B23002D2890 /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
+		8EB2170B1BACB76F005DA377 /* MyTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTextView.swift; sourceTree = "<group>"; };
+		8EE225171BB0D13A0079F887 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
+		8EE225181BB0D13A0079F887 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
+		8EE2251B1BB0D1610079F887 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		8EE2251D1BB0D1660079F887 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		8EE2251F1BB0D16D0079F887 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		8EE225211BB0D1740079F887 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		8EE225231BB0D17A0079F887 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		8EE225251BB0D1800079F887 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		8EE225271BB0D1880079F887 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		8EE225291BB0D1910079F887 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		8EE2252B1BB0D19D0079F887 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		8EE2252D1BB0D1A50079F887 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		8EE328101B8B939E000F4500 /* Sonar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sonar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8EE328141B8B939E000F4500 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8EE328151B8B939E000F4500 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -90,9 +116,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8EE2252E1BB0D1A50079F887 /* libsqlite3.dylib in Frameworks */,
+				8EE2252C1BB0D19D0079F887 /* libz.dylib in Frameworks */,
+				8EE2252A1BB0D1910079F887 /* SystemConfiguration.framework in Frameworks */,
+				8EE225281BB0D1880079F887 /* StoreKit.framework in Frameworks */,
+				8EE225261BB0D1800079F887 /* Security.framework in Frameworks */,
+				8EE225241BB0D17A0079F887 /* QuartzCore.framework in Frameworks */,
+				8EE225221BB0D1740079F887 /* CoreLocation.framework in Frameworks */,
+				8EE225201BB0D16D0079F887 /* CoreGraphics.framework in Frameworks */,
+				8EE2251E1BB0D1660079F887 /* CFNetwork.framework in Frameworks */,
+				8EE2251C1BB0D1610079F887 /* AudioToolbox.framework in Frameworks */,
 				8E5226CD1B9A32F2002BD8FA /* MobileCoreServices.framework in Frameworks */,
 				8E5226CB1B9A32EB002BD8FA /* MapKit.framework in Frameworks */,
 				5991A860BBCCE6A32241AC64 /* libPods-Sonar.a in Frameworks */,
+				8EE225191BB0D13A0079F887 /* Bolts.framework in Frameworks */,
+				8EE2251A1BB0D13A0079F887 /* Parse.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -132,6 +170,7 @@
 			children = (
 				8EAC77631B963B23002D2890 /* Post.swift */,
 				8E5226C01B965B1E002BD8FA /* Message.swift */,
+				8EB2170B1BACB76F005DA377 /* MyTextView.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -221,6 +260,18 @@
 		BE90DB4082EAA178505C8105 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8EE2252D1BB0D1A50079F887 /* libsqlite3.dylib */,
+				8EE2252B1BB0D19D0079F887 /* libz.dylib */,
+				8EE225291BB0D1910079F887 /* SystemConfiguration.framework */,
+				8EE225271BB0D1880079F887 /* StoreKit.framework */,
+				8EE225251BB0D1800079F887 /* Security.framework */,
+				8EE225231BB0D17A0079F887 /* QuartzCore.framework */,
+				8EE225211BB0D1740079F887 /* CoreLocation.framework */,
+				8EE2251F1BB0D16D0079F887 /* CoreGraphics.framework */,
+				8EE2251D1BB0D1660079F887 /* CFNetwork.framework */,
+				8EE2251B1BB0D1610079F887 /* AudioToolbox.framework */,
+				8EE225171BB0D13A0079F887 /* Bolts.framework */,
+				8EE225181BB0D13A0079F887 /* Parse.framework */,
 				8E5226CC1B9A32F2002BD8FA /* MobileCoreServices.framework */,
 				8E5226CA1B9A32EB002BD8FA /* MapKit.framework */,
 				00C6A6980C8326AB89321EA4 /* libPods-Sonar.a */,
@@ -283,7 +334,9 @@
 		8EE328081B8B939E000F4500 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0640;
+				LastSwiftMigration = 0700;
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Brian Endo";
 				TargetAttributes = {
 					8EE3280F1B8B939E000F4500 = {
@@ -383,6 +436,7 @@
 				8EE3284F1B8EDFA0000F4500 /* PickTargetViewController.swift in Sources */,
 				8EE328361B8B9530000F4500 /* StartViewController.swift in Sources */,
 				8EE328511B8EDFB8000F4500 /* PickTargetTableViewCell.swift in Sources */,
+				8EB2170C1BACB76F005DA377 /* MyTextView.swift in Sources */,
 				8E5226C91B9A3194002BD8FA /* ProfileViewController.swift in Sources */,
 				8EE328471B8BF062000F4500 /* AddFriendTableViewCell.swift in Sources */,
 				8E5226C31B976DC1002BD8FA /* ChatTableViewController.swift in Sources */,
@@ -455,6 +509,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -523,11 +578,19 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = SonarFirebase/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.brianendo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Sonar;
+				PROVISIONING_PROFILE = "a210617d-5bfd-48ec-a8f5-0d98ad5aef40";
 				SWIFT_OBJC_BRIDGING_HEADER = "SonarFirebase/SonarFirebase-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -537,10 +600,18 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = SonarFirebase/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.brianendo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Sonar;
+				PROVISIONING_PROFILE = "a210617d-5bfd-48ec-a8f5-0d98ad5aef40";
 				SWIFT_OBJC_BRIDGING_HEADER = "SonarFirebase/SonarFirebase-Bridging-Header.h";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -558,6 +629,7 @@
 				);
 				INFOPLIST_FILE = SonarFirebaseTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.brianendo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = SonarTests;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Sonar.app/Sonar";
 			};
@@ -573,6 +645,7 @@
 				);
 				INFOPLIST_FILE = SonarFirebaseTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.brianendo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = SonarTests;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Sonar.app/Sonar";
 			};

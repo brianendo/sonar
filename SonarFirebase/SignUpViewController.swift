@@ -37,6 +37,7 @@ class SignUpViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    
     func viewTapped() {
         
         // Force the textfield to end editing
@@ -53,7 +54,7 @@ class SignUpViewController: UIViewController {
                     // There was an error creating the account
                 } else {
                     let uid = result["uid"] as? String
-                    println("Successfully created user account with uid: \(uid)")
+                    print("Successfully created user account with uid: \(uid)")
                     
                     ref.authUser(self.emailTextField.text, password: self.passwordTextField.text,
                         withCompletionBlock: { error, authData in
@@ -63,8 +64,8 @@ class SignUpViewController: UIViewController {
                                 // We are now logged in
                                 
                                 let newUser = [
-                                    "firstname": self.firstNameTextField.text,
-                                    "lastname": self.lastNameTextField.text
+                                    "firstname": self.firstNameTextField.text!,
+                                    "lastname": self.lastNameTextField.text!
                                 ]
                                 
                                 ref.childByAppendingPath("users").childByAppendingPath(authData.uid).setValue(newUser)

@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import Parse
 
 // Firebase url
 let ref = Firebase(url: "https://sonarapp.firebaseio.com/")
@@ -37,6 +38,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         UIApplication.sharedApplication().statusBarStyle = .LightContent
         
+        // Parse Authentication
+        Parse.setApplicationId("1ZnEzkEJJwfM15A9nwRBycra1ytofbfprHAGDLNa",
+            clientKey: "9zMn4TYWHaJaUSGtRy2X9fxmgTDbT8trZsnQ08pl")
         
         // Check credentials for AWS
         let credentialsProvider = AWSCognitoCredentialsProvider(
@@ -45,9 +49,93 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             region: AWSRegionType.USWest1, credentialsProvider: credentialsProvider)
         AWSServiceManager.defaultServiceManager().defaultServiceConfiguration = defaultServiceConfiguration
         
+        
+        // Register for Push Notitications
+        if application.applicationState != UIApplicationState.Background {
+            // Track an app open here if we launch with a push, unless
+            // "content_available" was used to trigger a background push (introduced in iOS 7).
+            // In that case, we skip tracking here to avoid double counting the app-open.
+            
+            let preBackgroundPush = !application.respondsToSelector("backgroundRefreshStatus")
+            let oldPushHandlerOnly = !self.respondsToSelector("application:didReceiveRemoteNotification:fetchCompletionHandler:")
+            var pushPayload = false
+            if let options = launchOptions {
+                pushPayload = options[UIApplicationLaunchOptionsRemoteNotificationKey] != nil
+            }
+            if (preBackgroundPush || oldPushHandlerOnly || pushPayload) {
+                PFAnalytics.trackAppOpenedWithLaunchOptions(launchOptions)
+            }
+        }
+        if application.respondsToSelector("registerUserNotificationSettings:") {
+            let userNotificationTypes = UIUserNotificationType.Alert | UIUserNotificationType.Badge | UIUserNotificationType.Sound
+            let settings = UIUserNotificationSettings(forTypes: userNotificationTypes, categories: nil)
+            application.registerUserNotificationSettings(settings)
+            application.registerForRemoteNotifications()
+        } else {
+            let types = UIRemoteNotificationType.Badge | UIRemoteNotificationType.Alert | UIRemoteNotificationType.Sound
+            application.registerForRemoteNotificationTypes(types)
+        }
+        
+        
         return true
     }
-
+    
+    func application(application: UIApplication, supportedInterfaceOrientationsForWindow window: UIWindow?) -> Int {
+        
+        if let currentVC = getCurrentViewController(self.window?.rootViewController){
+            
+            //VideoVC is the name of your class that should support landscape
+            if currentVC is WebViewController{
+                
+                return Int(UIInterfaceOrientationMask.All.rawValue)
+            }
+        }
+        return Int(UIInterfaceOrientationMask.Portrait.rawValue)
+    }
+    
+    func getCurrentViewController(viewController:UIViewController?)-> UIViewController?{
+        
+        if let tabBarController = viewController as? UITabBarController{
+            
+            return getCurrentViewController(tabBarController.selectedViewController)
+        }
+        
+        if let navigationController = viewController as? UINavigationController{
+            return getCurrentViewController(navigationController.visibleViewController)
+        }
+        
+        if let viewController = viewController?.presentedViewController {
+            
+            return getCurrentViewController(viewController)
+            
+        }else{
+            
+            return viewController
+        }
+    }
+    
+    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+        let installation = PFInstallation.currentInstallation()
+        installation.setDeviceTokenFromData(deviceToken)
+        installation.saveInBackground()
+    }
+    
+    func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
+        if error.code == 3010 {
+            println("Push notifications are not supported in the iOS Simulator.")
+        } else {
+            println("application:didFailToRegisterForRemoteNotificationsWithError: %@", error)
+        }
+    }
+    
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+        PFPush.handlePush(userInfo)
+        if application.applicationState == UIApplicationState.Inactive {
+            PFAnalytics.trackAppOpenedWithRemoteNotificationPayload(userInfo)
+        }
+    }
+    
+    
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.

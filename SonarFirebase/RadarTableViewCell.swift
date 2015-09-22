@@ -8,17 +8,15 @@
 
 import UIKit
 
-protocol RadarTableViewCellDelegate {
-    func addURL(message: String)
-}
-
 class RadarTableViewCell: UITableViewCell, UITextViewDelegate {
 
     var viewController: RadarViewController?
     
     @IBOutlet weak var nameLabel: UILabel!
     
-    @IBOutlet weak var textView: UITextView!
+    @IBOutlet weak var timeLabel: UILabel!
+    
+    @IBOutlet weak var textView: MyTextView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -33,10 +31,10 @@ class RadarTableViewCell: UITableViewCell, UITextViewDelegate {
         // Configure the view for the selected state
     }
 
+    
     func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
 
         // Use RadarViewController and access its variables
-        
         self.viewController?.cellURL = URL
         self.viewController?.performSegueWithIdentifier("presentWebView", sender: self)
         return false

@@ -30,6 +30,13 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
 //            var decodedImage = UIImage(data: decodedData!)
 //            self.imageView.image = decodedImage
 //        })
+        self.imageView.frame = CGRectMake(0, 0, 100, 100)
+        self.imageView.layer.borderWidth=1.0
+        self.imageView.layer.masksToBounds = false
+        self.imageView.layer.borderColor = UIColor.whiteColor().CGColor
+        self.imageView.layer.cornerRadius = 13
+        self.imageView.layer.cornerRadius = self.imageView.frame.size.height/2
+        self.imageView.clipsToBounds = true
         self.download()
         
     }
@@ -41,7 +48,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     // Download profile image from S3
     func download() {
-        let downloadingFilePath1 = NSTemporaryDirectory().stringByAppendingPathComponent("temp-download")
+        let downloadingFilePath1 = (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent("temp-download")
         let downloadingFileURL1 = NSURL(fileURLWithPath: downloadingFilePath1 )
         let transferManager = AWSS3TransferManager.defaultS3TransferManager()
         
@@ -53,15 +60,16 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         
         let task = transferManager.download(readRequest1)
         task.continueWithBlock { (task) -> AnyObject! in
-            println(task.error)
             if task.error != nil {
+                print(task.error)
             } else {
                 dispatch_async(dispatch_get_main_queue()
                     , { () -> Void in
+                        
                         self.imageView.image = UIImage(contentsOfFile: downloadingFilePath1)
                         
                 })
-                println("Fetched image")
+                print("Fetched image")
             }
             return nil
         }
@@ -72,39 +80,49 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     // Open Camera or Upload image from Camera Roll
     @IBAction func changePictureButtonPressed(sender: UIButton) {
-        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera) {
-            // checking to see if the camera is available
-            var cameraController = UIImagePickerController()
-            //if it is then create an instance of UIImagePickerController
-            cameraController.delegate = self
-            cameraController.sourceType = UIImagePickerControllerSourceType.Camera
-            // set the cameraController to the Camera
-            
-            let mediaTypes:[AnyObject] = [kUTTypeImage]
-            //pass in the image as data
-            
-            cameraController.mediaTypes = mediaTypes
-            cameraController.allowsEditing = false
-            
-            self.presentViewController(cameraController, animated: true, completion: nil)
-        } else if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.PhotoLibrary) {
-            
-            var photoLibraryController = UIImagePickerController()
+        
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
+        let libButton = UIAlertAction(title: "Select photo from library", style: UIAlertActionStyle.Default) { (alert) -> Void in
+            let photoLibraryController = UIImagePickerController()
             photoLibraryController.delegate = self
             photoLibraryController.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
             
-            let mediaTypes:[AnyObject] = [kUTTypeImage]
+            let mediaTypes:[String] = [kUTTypeImage as String]
             photoLibraryController.mediaTypes = mediaTypes
             photoLibraryController.allowsEditing = false
             
             self.presentViewController(photoLibraryController, animated: true, completion: nil)
+        }
+        if(UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)){
+            let cameraButton = UIAlertAction(title: "Take a picture", style: UIAlertActionStyle.Default) { (alert) -> Void in
+                print("Take Photo")
+                let cameraController = UIImagePickerController()
+                //if it is then create an instance of UIImagePickerController
+                cameraController.delegate = self
+                cameraController.sourceType = UIImagePickerControllerSourceType.Camera
+                
+                let mediaTypes:[String] = [kUTTypeImage as String]
+                //pass in the image as data
+                
+                cameraController.mediaTypes = mediaTypes
+                cameraController.allowsEditing = false
+                
+                self.presentViewController(cameraController, animated: true, completion: nil)
+                
+            }
+            alert.addAction(cameraButton)
         } else {
-            var alertController = UIAlertController(title: "Alert", message: "Your device does not support the camera or photo library", preferredStyle: UIAlertControllerStyle.Alert)
-            alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
-            
-            self.presentViewController(alertController, animated: true, completion: nil)
+            print("Camera not available")
             
         }
+        let cancelButton = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel) { (alert) -> Void in
+            print("Cancel Pressed")
+        }
+        
+        alert.addAction(libButton)
+        alert.addAction(cancelButton)
+        self.presentViewController(alert, animated: true, completion: nil)
+        
         
     }
     
@@ -113,6 +131,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
         let image = info[UIImagePickerControllerOriginalImage] as! UIImage
+        
         
         // Save image into base64 String and save in Firebase
 //        let imageData = UIImageJPEGRepresentation(image, 1.0)
@@ -123,11 +142,11 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         
         // Save image in S3 with the userID
         let transferManager = AWSS3TransferManager.defaultS3TransferManager()
-        let testFileURL1 = NSURL(fileURLWithPath: NSTemporaryDirectory().stringByAppendingPathComponent("temp"))
+        let testFileURL1 = NSURL(fileURLWithPath: (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent("temp"))
         let uploadRequest1 : AWSS3TransferManagerUploadRequest = AWSS3TransferManagerUploadRequest()
         
         let data = UIImageJPEGRepresentation(image, 0.01)
-        data.writeToURL(testFileURL1!, atomically: true)
+        data!.writeToURL(testFileURL1!, atomically: true)
         uploadRequest1.bucket = S3BucketName
         uploadRequest1.key =  currentUser
         uploadRequest1.body = testFileURL1
@@ -136,10 +155,10 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         let task = transferManager.upload(uploadRequest1)
         task.continueWithBlock { (task) -> AnyObject! in
             if task.error != nil {
-                println("Error: \(task.error)")
+                print("Error: \(task.error)")
             } else {
                 self.download()
-                println("Upload successful")
+                print("Upload successful")
             }
             return nil
         }

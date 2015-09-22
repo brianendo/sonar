@@ -22,23 +22,23 @@ class TargetListViewController: UIViewController, UITableViewDelegate, UITableVi
     func loadTargetData() {
         self.friendsArray.removeAll(keepCapacity: true)
         
-        var url = "https://sonarapp.firebaseio.com/users" + "/" + currentUser + "/targets/"
-        var targetRef = Firebase(url: url)
+        let url = "https://sonarapp.firebaseio.com/users" + "/" + currentUser + "/targets/"
+        let targetRef = Firebase(url: url)
         
         
         targetRef.observeEventType(.ChildAdded, withBlock: {
             snapshot in
-            println(snapshot.key)
+            print(snapshot.key)
             
-            var nameUrl = "https://sonarapp.firebaseio.com/users/" + snapshot.key
-            var nameRef = Firebase(url: nameUrl)
+            let nameUrl = "https://sonarapp.firebaseio.com/users/" + snapshot.key
+            let nameRef = Firebase(url: nameUrl)
             nameRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
                 // do some stuff once
                 if let firstname = snapshot.value["firstname"] as? String {
                     if let lastname = snapshot.value["lastname"] as? String {
-                        var name = firstname + " " + lastname
+                        let name = firstname + " " + lastname
                         self.friendsArray.append(name)
-                        println(name)
+                        print(name)
                         self.tableView.reloadData()
                     }
                 }
