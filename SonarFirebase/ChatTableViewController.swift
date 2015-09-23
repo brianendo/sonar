@@ -21,44 +21,20 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
     let placeholder = "Send Message"
     var messageCreatorName = ""
     var targetIdArray = [String]()
+    var creatorArray = [String]()
+    var imageCache = [String:UIImage]()
     
     @IBOutlet weak var sendMessageTextView: UITextView!
     
-    @IBOutlet weak var verticalSpaceToDockView: NSLayoutConstraint!
-    
     @IBOutlet weak var bottomLayoutConstraint: NSLayoutConstraint!
     
-    @IBOutlet weak var dockViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableView: UITableView!
 
     @IBOutlet weak var sendButton: UIButton!
     
     @IBOutlet weak var dockView: UIView!
+
     
-    func loadName() {
-        let url = "https://sonarapp.firebaseio.com/users/" + currentUser
-        let userRef = Firebase(url: url)
-        
-        userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
-            if let firstname = snapshot.value["firstname"] as? String {
-                if let lastname = snapshot.value["lastname"] as? String {
-                    let name = firstname + " " + lastname
-                    self.messageCreatorName = name
-                }
-            }
-        })
-    }
-    
-    func loadTargetArray() {
-        let targetUrl = "https://sonarapp.firebaseio.com/posts/" + postID! + "/targets"
-        let targetRef = Firebase(url: targetUrl)
-        targetRef.observeEventType(.ChildAdded, withBlock: {
-            snapshot in
-            if let key = snapshot.key as? String {
-                self.targetIdArray.append(key)
-            }
-        })
-    }
     
     func registerForKeyboardNotifications ()-> Void   {
         
@@ -82,14 +58,15 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         var info = notification.userInfo!
         let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
         
-        UIView.animateWithDuration(0.1, animations: { () -> Void in
+        UIView.animateWithDuration(0.05, animations: { () -> Void in
             self.bottomLayoutConstraint.constant = keyboardFrame.size.height
-            let insets: UIEdgeInsets = UIEdgeInsetsMake(self.tableView.contentInset.top, 0, keyboardFrame.size.height, 0)
+            let insets: UIEdgeInsets = UIEdgeInsetsMake(self.tableView.contentInset.top, 0, 0, 0)
             
             self.tableView.contentInset = insets
             self.tableView.scrollIndicatorInsets = insets
             
             self.tableView.contentOffset = CGPointMake(self.tableView.contentOffset.x, self.tableView.contentOffset.y + keyboardFrame.size.height)
+            self.tableViewScrollToBottom(true)
         })
     }
     
@@ -97,21 +74,19 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         var info = notification.userInfo!
         let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
         
-        UIView.animateWithDuration(0.1, animations: { () -> Void in
+        UIView.animateWithDuration(0.05, animations: { () -> Void in
             self.bottomLayoutConstraint.constant = 0
-            let insets: UIEdgeInsets = UIEdgeInsetsMake(self.tableView.contentInset.top, 0, keyboardFrame.size.height, 0)
+            let insets: UIEdgeInsets = UIEdgeInsetsMake(self.tableView.contentInset.top, 0, 0, 0)
             
             self.tableView.contentInset = insets
             self.tableView.scrollIndicatorInsets = insets
+            self.tableViewScrollToBottom(true)
         })
     }
     
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
-        
-        
-        
         self.registerForKeyboardNotifications()
         
     }
@@ -122,6 +97,7 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         self.deregisterFromKeyboardNotifications()
         
     }
+    
 
     
     func loadMessageData() {
@@ -144,9 +120,37 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         
     }
     
+    func loadName() {
+        let url = "https://sonarapp.firebaseio.com/users/" + currentUser
+        let userRef = Firebase(url: url)
+        
+        userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+            if let firstname = snapshot.value["firstname"] as? String {
+                if let lastname = snapshot.value["lastname"] as? String {
+                    
+                    let name = firstname + " " + lastname
+                    self.messageCreatorName = name
+                    self.tableView.reloadData()
+                }
+            }
+        })
+    }
+    
+    func loadTargetArray() {
+        let targetUrl = "https://sonarapp.firebaseio.com/posts/" + postID! + "/targets"
+        let targetRef = Firebase(url: targetUrl)
+        targetRef.observeEventType(.ChildAdded, withBlock: {
+            snapshot in
+            if let key = snapshot.key as? String {
+                self.targetIdArray.append(key)
+                self.tableView.reloadData()
+            }
+        })
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.tableView.reloadData()
         // Do any additional setup after loading the view.
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -158,25 +162,40 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         
         self.sendMessageTextView.selectedTextRange = self.sendMessageTextView.textRangeFromPosition(self.sendMessageTextView.beginningOfDocument, toPosition: self.sendMessageTextView.beginningOfDocument)
         
+        
+        
         // Add a tap gesture recognizer to the table view
         let tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "tableViewTapped")
         self.tableView.addGestureRecognizer(tapGesture)
         
         self.tableView.tableFooterView = UIView(frame: CGRect.zeroRect)
         
+//        // Remove all posts when reloaded so it updates
+//        self.messages.removeAll(keepCapacity: true)
+        
+//        self.tableViewScrollToBottom(true)
+        
+        
+        
         self.dockView.layer.masksToBounds = true
         self.dockView.layer.borderColor = UIColor(red:0.89, green:0.89, blue:0.89, alpha:1.0).CGColor
         self.dockView.layer.borderWidth = 0.5
-        self.tableView.reloadData()
+        
         self.loadMessageData()
+
+        self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.estimatedRowHeight = 70
+        
         self.loadName()
         self.loadTargetArray()
-    }
-    
-    
-    override func viewDidAppear(animated: Bool) {
         
+        self.tableView.reloadData()
     }
+    
+    override func viewDidDisappear(animated: Bool) {
+    }
+    
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -227,8 +246,10 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         postUpdatedRef.childByAppendingPath("updatedAt").setValue([".sv":"timestamp"])
         
         let index = find(self.targetIdArray, currentUser)
-        self.targetIdArray.removeAtIndex(index!)
-        println(targetIdArray)
+        if index != nil {
+            self.targetIdArray.removeAtIndex(index!)
+        }
+        
         
         for target in targetIdArray {
             let pushURL = "https://sonarapp.firebaseio.com/users/" + target + "/pushId"
@@ -253,16 +274,19 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
                     ]
                     push.setData(data)
                     push.sendPushInBackground()
-                    
                 }
             })
         }
         
         // Call the end editing method for the text field
         self.sendMessageTextView.endEditing(true)
-        self.sendMessageTextView.text = ""
         
+        self.sendMessageTextView.text = placeholder
+        self.sendMessageTextView.textColor = UIColor.lightGrayColor()
         
+        self.sendMessageTextView.selectedTextRange = self.sendMessageTextView.textRangeFromPosition(self.sendMessageTextView.beginningOfDocument, toPosition: self.sendMessageTextView.beginningOfDocument)
+        self.sendButton.enabled = false
+        self.tableView.reloadData()
         
     }
     
@@ -342,7 +366,7 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         let cell:ChatTableViewCell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! ChatTableViewCell
         
         let messageCreator = messages[indexPath.row].creator
-        
+
         let userurl = "https://sonarapp.firebaseio.com/users/" + (messageCreator as String)
         let userRef = Firebase(url: userurl)
         
@@ -360,9 +384,9 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         cell.contentTextView.text = messageContent as? String
         cell.contentTextView.selectable = true
         
+        
         // Need View Controller to segue in TableViewCell
         cell.viewController = self
-
         
         // Pull Profile Image from S3
         
@@ -383,28 +407,47 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
             } else {
                 dispatch_async(dispatch_get_main_queue()
                     , { () -> Void in
-//                        if let image = UIImage(contentsOfFile: downloadingFilePath1) {
-//                            cell.profileImageView.image = image
-//                        } else {
-//                            // Default image or nil
-//                            cell.profileImageView.image = nil
-//                        }
+                        if let image = UIImage(contentsOfFile: downloadingFilePath1) {
+                            cell.profileImageView.image = image
+                        } else {
+                            // Default image or nil
+                            cell.profileImageView.image = UIImage(named: "Placeholder.png")
+                        }
                         
-                        cell.profileImageView.image = UIImage(contentsOfFile: downloadingFilePath1)
-                        
+//                        cell.profileImageView.image = UIImage(contentsOfFile: downloadingFilePath1)
                         
                 })
-                print("Fetched image")
+//                println("Fetched image")
             }
             return nil
         }
-        
+//        cell.setNeedsUpdateConstraints()
+//        cell.updateConstraintsIfNeeded()
+//        cell.layoutIfNeeded()
         return cell
     }
     
-    
-    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
 
+    func tableViewScrollToBottom(animated: Bool) {
+        
+        let delay = 0.1 * Double(NSEC_PER_SEC)
+        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+        
+        dispatch_after(time, dispatch_get_main_queue(), {
+            
+            let numberOfSections = self.tableView.numberOfSections()
+            let numberOfRows = self.tableView.numberOfRowsInSection(numberOfSections-1)
+            
+            if numberOfRows > 0 {
+                let indexPath = NSIndexPath(forRow: numberOfRows-1, inSection: (numberOfSections-1))
+                self.tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: UITableViewScrollPosition.Bottom, animated: animated)
+            }
+            
+        })
+    }
     
     
 

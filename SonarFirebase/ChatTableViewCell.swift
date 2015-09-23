@@ -15,6 +15,7 @@ class ChatTableViewCell: UITableViewCell, UITextViewDelegate {
     
     @IBOutlet weak var profileImageView: UIImageView!
     
+    @IBOutlet weak var cellContentView: UIView!
     
     @IBOutlet weak var creatorLabel: UILabel!
     
@@ -38,6 +39,10 @@ class ChatTableViewCell: UITableViewCell, UITextViewDelegate {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+    
+    override func prepareForReuse() {
+        self.profileImageView.image = UIImage(named: "Placeholder.png")
     }
     
     func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
