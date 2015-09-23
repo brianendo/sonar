@@ -12,7 +12,8 @@ class PickTargetTableViewCell: UITableViewCell {
 
     @IBOutlet weak var nameLabel: UILabel!
     
-    @IBOutlet weak var addTarget: UIButton!
+    
+    @IBOutlet weak var addLabel: UILabel!
     
     
     override func awakeFromNib() {

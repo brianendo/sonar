@@ -74,6 +74,7 @@ class CreatePulseViewController: UIViewController, UITextViewDelegate {
             self.charRemainingLabel.text = "100"
             pulseTextView.selectedTextRange = textView.textRangeFromPosition(textView.beginningOfDocument, toPosition: textView.beginningOfDocument)
             
+            self.doneButton.enabled = false
             return false
         }
             

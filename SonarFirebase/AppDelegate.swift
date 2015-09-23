@@ -49,6 +49,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             region: AWSRegionType.USWest1, credentialsProvider: credentialsProvider)
         AWSServiceManager.defaultServiceManager().defaultServiceConfiguration = defaultServiceConfiguration
         
+
         
         // Register for Push Notitications
         if application.applicationState != UIApplicationState.Background {
@@ -75,6 +76,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let types = UIRemoteNotificationType.Badge | UIRemoteNotificationType.Alert | UIRemoteNotificationType.Sound
             application.registerForRemoteNotificationTypes(types)
         }
+        
+//        // Extract the notification data
+//        if let notificationPayload = launchOptions?[UIApplicationLaunchOptionsRemoteNotificationKey] as? NSDictionary {
+//            
+//            // Create a pointer to the Photo object
+//            let postId = notificationPayload["post"] as? String
+//            println(postId)
+//            let navigationController = UINavigationController()
+//            let chatVC = ChatTableViewController()
+//            chatVC.postID = postId
+//            navigationController.pushViewController(chatVC, animated: true)
+//            
+//        }
         
         
         return true
@@ -118,6 +132,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let installation = PFInstallation.currentInstallation()
         installation.setDeviceTokenFromData(deviceToken)
         installation.saveInBackground()
+        
     }
     
     func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
@@ -129,9 +144,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
-        PFPush.handlePush(userInfo)
         if application.applicationState == UIApplicationState.Inactive {
             PFAnalytics.trackAppOpenedWithRemoteNotificationPayload(userInfo)
+            if let postId = userInfo["post"] as? String {
+                println(postId)
+                
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                
+                let destinationViewController = storyboard.instantiateViewControllerWithIdentifier("ChatTableViewController") as! ChatTableViewController
+                destinationViewController.postID = postId
+                let navigationController = self.window?.rootViewController as! UINavigationController
+                
+                navigationController.pushViewController(destinationViewController, animated: true)
+            }
         }
     }
     
@@ -151,6 +176,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidBecomeActive(application: UIApplication) {
+        let currentInstallation = PFInstallation.currentInstallation()
+        if currentInstallation.badge != 0 {
+            currentInstallation.badge = 0
+            currentInstallation.saveEventually()
+        }
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
 

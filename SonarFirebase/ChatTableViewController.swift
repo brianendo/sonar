@@ -8,14 +8,19 @@
 
 import UIKit
 import Firebase
+import Parse
 
 class ChatTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate {
 
     var postVC: Post?
+    var postID: String?
     var messages = [Message]()
     
     var cellURL: NSURL?
     
+    let placeholder = "Send Message"
+    var messageCreatorName = ""
+    var targetIdArray = [String]()
     
     @IBOutlet weak var sendMessageTextView: UITextView!
     
@@ -29,6 +34,31 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
     @IBOutlet weak var sendButton: UIButton!
     
     @IBOutlet weak var dockView: UIView!
+    
+    func loadName() {
+        let url = "https://sonarapp.firebaseio.com/users/" + currentUser
+        let userRef = Firebase(url: url)
+        
+        userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+            if let firstname = snapshot.value["firstname"] as? String {
+                if let lastname = snapshot.value["lastname"] as? String {
+                    let name = firstname + " " + lastname
+                    self.messageCreatorName = name
+                }
+            }
+        })
+    }
+    
+    func loadTargetArray() {
+        let targetUrl = "https://sonarapp.firebaseio.com/posts/" + postID! + "/targets"
+        let targetRef = Firebase(url: targetUrl)
+        targetRef.observeEventType(.ChildAdded, withBlock: {
+            snapshot in
+            if let key = snapshot.key as? String {
+                self.targetIdArray.append(key)
+            }
+        })
+    }
     
     func registerForKeyboardNotifications ()-> Void   {
         
@@ -95,7 +125,7 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
 
     
     func loadMessageData() {
-        let postID = postVC?.key
+//        let postID = postVC?.key
         let messagesUrl = "https://sonarapp.firebaseio.com/messages/" + postID!
         let messagesRef = Firebase(url: messagesUrl)
         
@@ -116,22 +146,31 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         
         // Do any additional setup after loading the view.
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
         self.sendMessageTextView.delegate = self
-
+        self.sendButton.enabled = false
+        self.sendMessageTextView.text = placeholder
+        self.sendMessageTextView.textColor = UIColor.lightGrayColor()
+        
+        self.sendMessageTextView.selectedTextRange = self.sendMessageTextView.textRangeFromPosition(self.sendMessageTextView.beginningOfDocument, toPosition: self.sendMessageTextView.beginningOfDocument)
+        
         // Add a tap gesture recognizer to the table view
         let tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "tableViewTapped")
         self.tableView.addGestureRecognizer(tapGesture)
         
-        self.tableView.tableFooterView = UIView()
+        self.tableView.tableFooterView = UIView(frame: CGRect.zeroRect)
         
+        self.dockView.layer.masksToBounds = true
+        self.dockView.layer.borderColor = UIColor(red:0.89, green:0.89, blue:0.89, alpha:1.0).CGColor
+        self.dockView.layer.borderWidth = 0.5
         self.tableView.reloadData()
         self.loadMessageData()
+        self.loadName()
+        self.loadTargetArray()
     }
     
     
@@ -165,7 +204,7 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
     @IBAction func sendButtonPressed(sender: AnyObject) {
         
         // Post Message to Firebase
-        let postID = postVC?.key
+//        let postID = postVC?.key
         let messagesUrl = "https://sonarapp.firebaseio.com/messages/" + postID!
         let messagesRef = Firebase(url: messagesUrl)
         let newMessageText = self.sendMessageTextView.text
@@ -187,46 +226,111 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         let postUpdatedRef = Firebase(url: postUpdatedUrl)
         postUpdatedRef.childByAppendingPath("updatedAt").setValue([".sv":"timestamp"])
         
+        let index = find(self.targetIdArray, currentUser)
+        self.targetIdArray.removeAtIndex(index!)
+        println(targetIdArray)
+        
+        for target in targetIdArray {
+            let pushURL = "https://sonarapp.firebaseio.com/users/" + target + "/pushId"
+            let pushRef = Firebase(url: pushURL)
+            pushRef.observeEventType(.Value, withBlock: {
+                snapshot in
+                if snapshot.value is NSNull {
+                    println("Did not enable push notifications")
+                } else {
+                    println("Made it")
+                    // Create our Installation query
+                    let pushQuery = PFInstallation.query()
+                    pushQuery?.whereKey("installationId", equalTo: snapshot.value)
+                    
+                    // Send push notification to query
+                    let push = PFPush()
+                    push.setQuery(pushQuery) // Set our Installation query
+                    let data = [
+                        "alert": "\(self.messageCreatorName): \(newMessageText)",
+                        "badge": "Increment",
+                        "post": self.postID!
+                    ]
+                    push.setData(data)
+                    push.sendPushInBackground()
+                    
+                }
+            })
+        }
+        
         // Call the end editing method for the text field
         self.sendMessageTextView.endEditing(true)
         self.sendMessageTextView.text = ""
+        
+        
         
     }
     
     // MARK: TextView Delegate Methods
     
     func textViewDidBeginEditing(textView: UITextView) {
-        
-        // Perform an animation to grow the dockView
-//        self.view.layoutIfNeeded()
-//        UIView.animateWithDuration(0.4, animations: {
-//            
-//            self.dockViewHeightConstraint.constant = 300
-//            self.view.layoutIfNeeded()
-//            
-//            }, completion: nil)
-        
-        //        var pointInTable:CGPoint = dockView.superview!.convertPoint(dockView.frame.origin, toView: tableView)
-        //        var contentOffset:CGPoint = tableView.contentOffset
-        //        contentOffset.y  = pointInTable.y
-        //        if let accessoryView = dockView.inputAccessoryView {
-        //            contentOffset.y -= accessoryView.frame.size.height
-        //        }
-        //        tableView.contentOffset = contentOffset
+        if self.view.window != nil {
+            if sendMessageTextView.textColor == UIColor.lightGrayColor() {
+                sendMessageTextView.selectedTextRange = sendMessageTextView.textRangeFromPosition(sendMessageTextView.beginningOfDocument, toPosition: sendMessageTextView.beginningOfDocument)
+            }
+        }
 
     }
     
     func textViewDidEndEditing(textView: UITextView) {
-        // Perform an animation to grow the dockView
-//        self.view.layoutIfNeeded()
-//        UIView.animateWithDuration(0.2, animations: {
-//            
-//            self.dockViewHeightConstraint.constant = 60
-//            self.view.layoutIfNeeded()
-//            
-//            }, completion: nil)
+        
     }
     
+    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        // Combine the textView text and the replacement text to
+        // create the updated text string
+        let currentText:NSString = self.sendMessageTextView.text
+        let updatedText = currentText.stringByReplacingCharactersInRange(range, withString:text)
+        
+        // If updated text view will be empty, add the placeholder
+        // and set the cursor to the beginning of the text view
+        if updatedText.isEmpty {
+            
+            self.sendMessageTextView.text = placeholder
+            self.sendMessageTextView.textColor = UIColor.lightGrayColor()
+            
+            self.sendMessageTextView.selectedTextRange = textView.textRangeFromPosition(textView.beginningOfDocument, toPosition: textView.beginningOfDocument)
+            self.sendButton.enabled = false
+            
+            return false
+        }
+            
+            // Else if the text view's placeholder is showing and the
+            // length of the replacement string is greater than 0, clear
+            // the text view and set its color to black to prepare for
+            // the user's entry
+        else if self.sendMessageTextView.textColor == UIColor.lightGrayColor() && !text.isEmpty {
+            self.sendMessageTextView.text = nil
+            self.sendMessageTextView.textColor = UIColor.blackColor()
+            
+        }
+        return true
+        
+    }
+    
+    func textViewDidChange(textView: UITextView) {
+        let trimmedString = sendMessageTextView.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+        if count(trimmedString) == 0 {
+            self.sendButton.enabled = false
+        } else {
+            self.sendButton.enabled = true
+        }
+    }
+    
+    
+    func textViewDidChangeSelection(textView: UITextView) {
+        if self.view.window != nil {
+            if sendMessageTextView.textColor == UIColor.lightGrayColor() {
+                sendMessageTextView.selectedTextRange = sendMessageTextView.textRangeFromPosition(sendMessageTextView.beginningOfDocument, toPosition: sendMessageTextView.beginningOfDocument)
+            }
+        }
+        
+    }
     
     // MARK: TableView Delegate Methods
     

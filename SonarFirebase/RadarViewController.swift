@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import Parse
 
 class RadarViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
@@ -46,7 +47,6 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
                             
                                         let name = firstname + " " + lastname
                                         let date = NSDate(timeIntervalSince1970: (createdAt/1000))
-                                        
                                         let post = Post(content: content, creator: creator, key: key, createdAt: date, name: name)
 
                                         self.posts.append(post)
@@ -77,6 +77,13 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
                 // user authenticated
                 print(authData)
                 currentUser = authData.uid
+                
+                // Add installationID from Parse to Firebase
+                let installationId = PFInstallation.currentInstallation().installationId
+                let userURL = "https://sonarapp.firebaseio.com/users/" + currentUser
+                var userRef = Firebase(url: userURL)
+                userRef.childByAppendingPath("pushId").setValue(installationId)
+                
                 self.tableView.delegate = self
                 self.tableView.dataSource = self
                 
@@ -86,7 +93,7 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
                 // Remove all posts when reloaded so it updates
                 self.posts.removeAll(keepCapacity: true)
                 
-                self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
+//                self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
 
                 self.loadRadarData()
                 
@@ -178,7 +185,7 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
             
             let post = self.posts[indexPath!.row]
             chatVC.postVC = post
-            print(post.key)
+            chatVC.postID = post.key
         }
         // Segue to WebView
         else if segue.identifier == "presentWebView" {
