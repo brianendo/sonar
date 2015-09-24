@@ -127,7 +127,9 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
             if let firstname = snapshot.value["firstname"] as? String {
                 if let lastname = snapshot.value["lastname"] as? String {
-                    
+                    let joinedUrl = "https://sonarapp.firebaseio.com/users/" + currentUser + "/postsReceived/" + self.postID!
+                    let joinedRef = Firebase(url: joinedUrl)
+                    joinedRef.setValue(true)
                     let name = firstname + " " + lastname
                     self.messageCreatorName = name
                     self.tableView.reloadData()
@@ -181,10 +183,10 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         self.dockView.layer.borderColor = UIColor(red:0.89, green:0.89, blue:0.89, alpha:1.0).CGColor
         self.dockView.layer.borderWidth = 0.5
         
-        self.loadMessageData()
-
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 70
+        
+        self.loadMessageData()
         
         self.loadName()
         self.loadTargetArray()

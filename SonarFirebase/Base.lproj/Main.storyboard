@@ -315,21 +315,6 @@
                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="Chat" translatesAutoresizingMaskIntoConstraints="NO" id="TMN-pO-0oX">
-                                                    <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="50" id="16H-C5-xVq">
-                                                            <variation key="heightClass=regular-widthClass=compact" constant="30"/>
-                                                        </constraint>
-                                                        <constraint firstAttribute="width" secondItem="TMN-pO-0oX" secondAttribute="height" multiplier="1:1" id="Pmf-m0-Z8k"/>
-                                                    </constraints>
-                                                    <variation key="heightClass=regular-widthClass=compact">
-                                                        <mask key="constraints">
-                                                            <include reference="16H-C5-xVq"/>
-                                                            <include reference="Pmf-m0-Z8k"/>
-                                                        </mask>
-                                                    </variation>
-                                                </imageView>
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="Content" translatesAutoresizingMaskIntoConstraints="NO" id="dc2-Pt-uwV">
                                                     <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                                     <color key="backgroundColor" red="0.97647058823529409" green="0.97647058823529409" blue="0.97647058823529409" alpha="1" colorSpace="calibratedRGB"/>
@@ -340,6 +325,22 @@
                                                         <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="16"/>
                                                     </variation>
                                                 </textView>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="Chat" translatesAutoresizingMaskIntoConstraints="NO" id="TMN-pO-0oX">
+                                                    <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="50" id="16H-C5-xVq">
+                                                            <variation key="heightClass=regular-widthClass=compact" constant="30"/>
+                                                        </constraint>
+                                                        <constraint firstAttribute="width" secondItem="TMN-pO-0oX" secondAttribute="height" multiplier="1:1" id="Pmf-m0-Z8k"/>
+                                                    </constraints>
+                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="15" y="25" width="30" height="30"/>
+                                                        <mask key="constraints">
+                                                            <include reference="16H-C5-xVq"/>
+                                                            <include reference="Pmf-m0-Z8k"/>
+                                                        </mask>
+                                                    </variation>
+                                                </imageView>
                                             </subviews>
                                             <color key="backgroundColor" red="0.97647058823529409" green="0.97647058823529409" blue="0.97647058823529409" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
@@ -394,6 +395,7 @@
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="15" maxY="0.0"/>
                                         <connections>
                                             <outlet property="nameLabel" destination="55M-Df-lVP" id="OPi-Vo-LNm"/>
+                                            <outlet property="postImageView" destination="TMN-pO-0oX" id="Wqf-nH-4Xg"/>
                                             <outlet property="textView" destination="dc2-Pt-uwV" id="EFp-01-Aqv"/>
                                             <outlet property="timeLabel" destination="JgH-zG-SYj" id="Ksb-V1-4VO"/>
                                         </connections>
@@ -528,15 +530,15 @@
                                         <exclude reference="Chb-tj-3sv"/>
                                         <exclude reference="eIG-Wt-C78"/>
                                         <exclude reference="tUl-2c-xtV"/>
+                                        <exclude reference="O0t-dV-izI"/>
+                                        <exclude reference="dAV-A4-iZ5"/>
+                                        <exclude reference="f4y-hq-MBk"/>
                                         <exclude reference="Iaw-vp-vYv"/>
                                         <exclude reference="Qgl-SI-JVi"/>
                                         <exclude reference="aLn-OD-q7u"/>
                                         <exclude reference="oLi-eC-bc7"/>
                                         <exclude reference="rY8-Ar-tht"/>
                                         <exclude reference="sPb-PH-aAe"/>
-                                        <exclude reference="O0t-dV-izI"/>
-                                        <exclude reference="dAV-A4-iZ5"/>
-                                        <exclude reference="f4y-hq-MBk"/>
                                     </mask>
                                 </variation>
                                 <variation key="widthClass=compact">
@@ -557,13 +559,13 @@
                                         <exclude reference="Chb-tj-3sv"/>
                                         <include reference="eIG-Wt-C78"/>
                                         <exclude reference="tUl-2c-xtV"/>
+                                        <include reference="f4y-hq-MBk"/>
                                         <exclude reference="Iaw-vp-vYv"/>
                                         <exclude reference="Qgl-SI-JVi"/>
                                         <include reference="aLn-OD-q7u"/>
                                         <exclude reference="oLi-eC-bc7"/>
                                         <include reference="rY8-Ar-tht"/>
                                         <include reference="sPb-PH-aAe"/>
-                                        <include reference="f4y-hq-MBk"/>
                                     </mask>
                                 </variation>
                             </view>
@@ -628,9 +630,8 @@
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                     <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES" calendarEvent="YES"/>
-                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                    <variation key="heightClass=regular-widthClass=compact">
                                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
-                                                        <rect key="frame" x="60" y="24" width="298" height="34"/>
                                                     </variation>
                                                 </textView>
                                             </subviews>
@@ -659,6 +660,9 @@
                                                     <exclude reference="zX9-1K-nFi"/>
                                                 </mask>
                                                 <mask key="constraints">
+                                                    <exclude reference="2tL-9a-KwN"/>
+                                                    <exclude reference="GDb-hW-Bjd"/>
+                                                    <exclude reference="euH-Mc-zEM"/>
                                                     <exclude reference="VOr-PJ-MDn"/>
                                                     <exclude reference="jKZ-DQ-mum"/>
                                                     <exclude reference="yjt-K1-Qjz"/>
@@ -667,9 +671,6 @@
                                                     <exclude reference="BZp-yF-5b4"/>
                                                     <exclude reference="Pxa-Q0-0q3"/>
                                                     <exclude reference="mo0-pc-Tsv"/>
-                                                    <exclude reference="2tL-9a-KwN"/>
-                                                    <exclude reference="GDb-hW-Bjd"/>
-                                                    <exclude reference="euH-Mc-zEM"/>
                                                 </mask>
                                             </variation>
                                             <variation key="widthClass=compact">
@@ -683,6 +684,9 @@
                                                     <include reference="zX9-1K-nFi"/>
                                                 </mask>
                                                 <mask key="constraints">
+                                                    <include reference="2tL-9a-KwN"/>
+                                                    <include reference="GDb-hW-Bjd"/>
+                                                    <include reference="euH-Mc-zEM"/>
                                                     <include reference="VOr-PJ-MDn"/>
                                                     <exclude reference="jKZ-DQ-mum"/>
                                                     <include reference="yjt-K1-Qjz"/>
@@ -691,9 +695,6 @@
                                                     <include reference="BZp-yF-5b4"/>
                                                     <exclude reference="Pxa-Q0-0q3"/>
                                                     <include reference="mo0-pc-Tsv"/>
-                                                    <include reference="2tL-9a-KwN"/>
-                                                    <include reference="GDb-hW-Bjd"/>
-                                                    <include reference="euH-Mc-zEM"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -736,6 +737,7 @@
                                 <exclude reference="8Vi-Kf-PN2"/>
                             </mask>
                             <mask key="constraints">
+                                <exclude reference="jk9-X1-XhH"/>
                                 <exclude reference="Pho-ZW-WhB"/>
                                 <exclude reference="UDP-PP-irl"/>
                                 <exclude reference="VZT-Xk-ZFJ"/>
@@ -753,7 +755,6 @@
                                 <exclude reference="njv-HG-jlj"/>
                                 <exclude reference="slI-qb-edH"/>
                                 <exclude reference="uMh-0z-Kzd"/>
-                                <exclude reference="jk9-X1-XhH"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
@@ -778,6 +779,7 @@
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
                             <mask key="constraints">
+                                <include reference="jk9-X1-XhH"/>
                                 <exclude reference="Pho-ZW-WhB"/>
                                 <include reference="UDP-PP-irl"/>
                                 <exclude reference="GJe-PT-LXl"/>
@@ -785,7 +787,6 @@
                                 <exclude reference="n0B-hm-vD0"/>
                                 <exclude reference="njv-HG-jlj"/>
                                 <include reference="uMh-0z-Kzd"/>
-                                <include reference="jk9-X1-XhH"/>
                             </mask>
                         </variation>
                     </view>
@@ -1517,6 +1518,6 @@
         <image name="Chat" width="70" height="67"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="WSE-GU-VoG"/>
+        <segue reference="2LM-PL-md5"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -18,6 +18,9 @@ class RadarTableViewCell: UITableViewCell, UITextViewDelegate {
     
     @IBOutlet weak var textView: MyTextView!
     
+    @IBOutlet weak var postImageView: UIImageView!
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

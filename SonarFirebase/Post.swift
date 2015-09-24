@@ -14,13 +14,15 @@ class Post: NSObject {
     var key: String
     var createdAt: NSDate
     var name: String
+    var joined: Bool
     
-    init(content: String?, creator: String?, key: String?, createdAt: NSDate?, name:String?) {
+    init(content: String?, creator: String?, key: String?, createdAt: NSDate?, name:String?, joined: Bool?) {
         self.content = content!
         self.creator = creator!
         self.key = key!
         self.createdAt = createdAt!
         self.name = name!
+        self.joined = joined!
     }
     
 

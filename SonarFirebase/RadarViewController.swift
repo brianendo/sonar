@@ -34,6 +34,7 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
             let postsUrl = "https://sonarapp.firebaseio.com/posts/" + snapshot.key
             let postsRef = Firebase(url: postsUrl)
             
+            let joined = snapshot.value as? Bool
             postsRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
                 if let key = snapshot.key
                 {if let content = snapshot.value["content"] as? String {
@@ -47,7 +48,7 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
                             
                                         let name = firstname + " " + lastname
                                         let date = NSDate(timeIntervalSince1970: (createdAt/1000))
-                                        let post = Post(content: content, creator: creator, key: key, createdAt: date, name: name)
+                                        let post = Post(content: content, creator: creator, key: key, createdAt: date, name: name, joined: joined!)
 
                                         self.posts.append(post)
                                         
@@ -182,7 +183,8 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
         if segue.identifier == "showChat" {
             let chatVC: ChatTableViewController = segue.destinationViewController as! ChatTableViewController
             let indexPath = self.tableView.indexPathForSelectedRow()
-            
+            posts[indexPath!.row].joined = true
+            self.tableView.reloadData()
             let post = self.posts[indexPath!.row]
             chatVC.postVC = post
             chatVC.postID = post.key
@@ -216,6 +218,15 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
         
         cell.textView.selectable = true
         
+        
+        let joinedStatus = posts[indexPath.row].joined
+        if joinedStatus == true {
+            cell.postImageView.image = UIImage(named: "Chat")
+        } else {
+            cell.postImageView.image = UIImage(named: "Pulse")
+        }
+        
+        
         let date = posts[indexPath.row].createdAt
         
         cell.timeLabel.text = self.timeAgoSinceDate(date, numericDates: true)
@@ -234,8 +245,15 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
 
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
         performSegueWithIdentifier("showChat", sender: self)
         tableView.deselectRowAtIndexPath(indexPath, animated: false)
+    }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == .Delete {
+            println("Delete")
+        }
     }
     
     
