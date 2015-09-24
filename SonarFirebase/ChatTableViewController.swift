@@ -15,6 +15,7 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
     var postVC: Post?
     var postID: String?
     var messages = [Message]()
+    var postContent: String?
     
     var cellURL: NSURL?
     
@@ -98,7 +99,20 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         
     }
     
-
+    func loadPost() {
+        let postUrl = "https://sonarapp.firebaseio.com/posts/" + postID!
+        let postRef = Firebase(url: postUrl)
+        
+        postRef.observeSingleEventOfType(.Value, withBlock: {
+            snapshot in
+            if let content = snapshot.value["content"] as? String {
+                if let creator = snapshot.value["creator"] as? String {
+                    self.postContent = content
+                    self.tableView.reloadData()
+                }
+            }
+        })
+    }
     
     func loadMessageData() {
 //        let postID = postVC?.key
@@ -187,7 +201,7 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         self.tableView.estimatedRowHeight = 70
         
         self.loadMessageData()
-        
+        self.loadPost()
         self.loadName()
         self.loadTargetArray()
         
@@ -429,9 +443,15 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         return cell
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
+//    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//        return UIView()
+//    }
+    
+    
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return self.postContent
     }
+    
 
     func tableViewScrollToBottom(animated: Bool) {
         
