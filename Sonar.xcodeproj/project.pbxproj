@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5991A860BBCCE6A32241AC64 /* libPods-Sonar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C6A6980C8326AB89321EA4 /* libPods-Sonar.a */; };
+		8478BD2AAC09725A494DF853 /* Pods_Sonar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BE26174C57C8B782218DEEF /* Pods_Sonar.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		8E5226C11B965B1E002BD8FA /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5226C01B965B1E002BD8FA /* Message.swift */; };
 		8E5226C31B976DC1002BD8FA /* ChatTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5226C21B976DC1002BD8FA /* ChatTableViewController.swift */; };
 		8E5226C51B976EDD002BD8FA /* ChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5226C41B976EDD002BD8FA /* ChatTableViewCell.swift */; };
@@ -20,6 +20,8 @@
 		8EAC77621B8FA0A3002D2890 /* RadarTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EAC77611B8FA0A3002D2890 /* RadarTableViewCell.swift */; };
 		8EAC77641B963B23002D2890 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EAC77631B963B23002D2890 /* Post.swift */; };
 		8EB2170C1BACB76F005DA377 /* MyTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EB2170B1BACB76F005DA377 /* MyTextView.swift */; };
+		8ED286461BB52E1B006FB6C3 /* AWSS3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ED286451BB52E1B006FB6C3 /* AWSS3.framework */; };
+		8ED286481BB52E2E006FB6C3 /* AWSCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ED286471BB52E2E006FB6C3 /* AWSCore.framework */; };
 		8EE225191BB0D13A0079F887 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EE225171BB0D13A0079F887 /* Bolts.framework */; };
 		8EE2251A1BB0D13A0079F887 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EE225181BB0D13A0079F887 /* Parse.framework */; };
 		8EE2251C1BB0D1610079F887 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EE2251B1BB0D1610079F887 /* AudioToolbox.framework */; };
@@ -61,7 +63,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		00C6A6980C8326AB89321EA4 /* libPods-Sonar.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Sonar.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6B0F24539FB07EAA34BC3582 /* Pods-Sonar.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sonar.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Sonar/Pods-Sonar.debug.xcconfig"; sourceTree = "<group>"; };
+		766DA61A895F6D0E1C87F361 /* Pods-Sonar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sonar.release.xcconfig"; path = "Pods/Target Support Files/Pods-Sonar/Pods-Sonar.release.xcconfig"; sourceTree = "<group>"; };
 		8E5226C01B965B1E002BD8FA /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		8E5226C21B976DC1002BD8FA /* ChatTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatTableViewController.swift; sourceTree = "<group>"; };
 		8E5226C41B976EDD002BD8FA /* ChatTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatTableViewCell.swift; sourceTree = "<group>"; };
@@ -75,6 +78,10 @@
 		8EAC77611B8FA0A3002D2890 /* RadarTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadarTableViewCell.swift; sourceTree = "<group>"; };
 		8EAC77631B963B23002D2890 /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		8EB2170B1BACB76F005DA377 /* MyTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTextView.swift; sourceTree = "<group>"; };
+		8ED286411BB52DF6006FB6C3 /* AWSCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSCore.framework; path = "Pods/../build/Debug-iphoneos/AWSCore.framework"; sourceTree = "<group>"; };
+		8ED286431BB52DFE006FB6C3 /* AWSS3.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSS3.framework; path = "Pods/../build/Debug-iphoneos/AWSS3.framework"; sourceTree = "<group>"; };
+		8ED286451BB52E1B006FB6C3 /* AWSS3.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSS3.framework; sourceTree = "<group>"; };
+		8ED286471BB52E2E006FB6C3 /* AWSCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSCore.framework; sourceTree = "<group>"; };
 		8EE225171BB0D13A0079F887 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
 		8EE225181BB0D13A0079F887 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		8EE2251B1BB0D1610079F887 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -107,8 +114,7 @@
 		8EE3284C1B8E52CD000F4500 /* TargetListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TargetListTableViewCell.swift; sourceTree = "<group>"; };
 		8EE3284E1B8EDFA0000F4500 /* PickTargetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickTargetViewController.swift; sourceTree = "<group>"; };
 		8EE328501B8EDFB8000F4500 /* PickTargetTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickTargetTableViewCell.swift; sourceTree = "<group>"; };
-		DE227886A749075BC941D60A /* Pods-Sonar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sonar.release.xcconfig"; path = "Pods/Target Support Files/Pods-Sonar/Pods-Sonar.release.xcconfig"; sourceTree = "<group>"; };
-		F5F7EA16307762FA11155B70 /* Pods-Sonar.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sonar.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Sonar/Pods-Sonar.debug.xcconfig"; sourceTree = "<group>"; };
+		9BE26174C57C8B782218DEEF /* Pods_Sonar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Sonar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +124,7 @@
 			files = (
 				8EE2252E1BB0D1A50079F887 /* libsqlite3.dylib in Frameworks */,
 				8EE2252C1BB0D19D0079F887 /* libz.dylib in Frameworks */,
+				8ED286481BB52E2E006FB6C3 /* AWSCore.framework in Frameworks */,
 				8EE2252A1BB0D1910079F887 /* SystemConfiguration.framework in Frameworks */,
 				8EE225281BB0D1880079F887 /* StoreKit.framework in Frameworks */,
 				8EE225261BB0D1800079F887 /* Security.framework in Frameworks */,
@@ -128,9 +135,10 @@
 				8EE2251C1BB0D1610079F887 /* AudioToolbox.framework in Frameworks */,
 				8E5226CD1B9A32F2002BD8FA /* MobileCoreServices.framework in Frameworks */,
 				8E5226CB1B9A32EB002BD8FA /* MapKit.framework in Frameworks */,
-				5991A860BBCCE6A32241AC64 /* libPods-Sonar.a in Frameworks */,
+				8ED286461BB52E1B006FB6C3 /* AWSS3.framework in Frameworks */,
 				8EE225191BB0D13A0079F887 /* Bolts.framework in Frameworks */,
 				8EE2251A1BB0D13A0079F887 /* Parse.framework in Frameworks */,
+				8478BD2AAC09725A494DF853 /* Pods_Sonar.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -144,6 +152,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		08043C4344A7DBEDB0EBF4C7 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				6B0F24539FB07EAA34BC3582 /* Pods-Sonar.debug.xcconfig */,
+				766DA61A895F6D0E1C87F361 /* Pods-Sonar.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		8E5227371BA101DF002BD8FA /* CreatePulse */ = {
 			isa = PBXGroup;
 			children = (
@@ -182,7 +199,7 @@
 				8EE328281B8B939F000F4500 /* SonarTests */,
 				8EE328111B8B939E000F4500 /* Products */,
 				BE90DB4082EAA178505C8105 /* Frameworks */,
-				C4CD1D8F5403BFF3539AAFF1 /* Pods */,
+				08043C4344A7DBEDB0EBF4C7 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -260,6 +277,10 @@
 		BE90DB4082EAA178505C8105 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8ED286471BB52E2E006FB6C3 /* AWSCore.framework */,
+				8ED286451BB52E1B006FB6C3 /* AWSS3.framework */,
+				8ED286431BB52DFE006FB6C3 /* AWSS3.framework */,
+				8ED286411BB52DF6006FB6C3 /* AWSCore.framework */,
 				8EE2252D1BB0D1A50079F887 /* libsqlite3.dylib */,
 				8EE2252B1BB0D19D0079F887 /* libz.dylib */,
 				8EE225291BB0D1910079F887 /* SystemConfiguration.framework */,
@@ -274,18 +295,9 @@
 				8EE225181BB0D13A0079F887 /* Parse.framework */,
 				8E5226CC1B9A32F2002BD8FA /* MobileCoreServices.framework */,
 				8E5226CA1B9A32EB002BD8FA /* MapKit.framework */,
-				00C6A6980C8326AB89321EA4 /* libPods-Sonar.a */,
+				9BE26174C57C8B782218DEEF /* Pods_Sonar.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		C4CD1D8F5403BFF3539AAFF1 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				F5F7EA16307762FA11155B70 /* Pods-Sonar.debug.xcconfig */,
-				DE227886A749075BC941D60A /* Pods-Sonar.release.xcconfig */,
-			);
-			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -295,11 +307,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8EE3282F1B8B939F000F4500 /* Build configuration list for PBXNativeTarget "Sonar" */;
 			buildPhases = (
-				66BA8CA546889460CF649E26 /* Check Pods Manifest.lock */,
+				3A01F7C97E15D5140D37407E /* Check Pods Manifest.lock */,
 				8EE3280C1B8B939E000F4500 /* Sources */,
 				8EE3280D1B8B939E000F4500 /* Frameworks */,
 				8EE3280E1B8B939E000F4500 /* Resources */,
-				5A55E76B549CA87EF1DE7151 /* Copy Pods Resources */,
+				896E340B91157D8F79F9B58B /* Copy Pods Resources */,
+				4470792BE0EA032029BAE64E /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -389,22 +402,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		5A55E76B549CA87EF1DE7151 /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Sonar/Pods-Sonar-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		66BA8CA546889460CF649E26 /* Check Pods Manifest.lock */ = {
+		3A01F7C97E15D5140D37407E /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -417,6 +415,36 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		4470792BE0EA032029BAE64E /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Sonar/Pods-Sonar-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		896E340B91157D8F79F9B58B /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Sonar/Pods-Sonar-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -574,13 +602,14 @@
 		};
 		8EE328301B8B939F000F4500 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F5F7EA16307762FA11155B70 /* Pods-Sonar.debug.xcconfig */;
+			baseConfigurationReference = 6B0F24539FB07EAA34BC3582 /* Pods-Sonar.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
 				);
 				INFOPLIST_FILE = SonarFirebase/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
@@ -596,13 +625,14 @@
 		};
 		8EE328311B8B939F000F4500 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DE227886A749075BC941D60A /* Pods-Sonar.release.xcconfig */;
+			baseConfigurationReference = 766DA61A895F6D0E1C87F361 /* Pods-Sonar.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
 				);
 				INFOPLIST_FILE = SonarFirebase/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;

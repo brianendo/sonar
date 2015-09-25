@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AWSS3
 
 class PicturesViewController: UIViewController {
     

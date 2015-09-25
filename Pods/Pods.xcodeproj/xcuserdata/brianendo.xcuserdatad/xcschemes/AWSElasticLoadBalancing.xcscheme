@@ -14,8 +14,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F477A746502EDCAE9395D388"
-               BuildableName = "libAWSElasticLoadBalancing.a"
+               BlueprintIdentifier = "7C0BB5CCD81D91760D54DEED"
+               BuildableName = "AWSElasticLoadBalancing.framework"
                BlueprintName = "AWSElasticLoadBalancing"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>

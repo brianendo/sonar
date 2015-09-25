@@ -14,8 +14,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "1A26D95D4EBAA34B8F095AD8"
-               BuildableName = "libAWSKinesis.a"
+               BlueprintIdentifier = "A61FC5463B6172EA13D83996"
+               BuildableName = "AWSKinesis.framework"
                BlueprintName = "AWSKinesis"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>

@@ -10,6 +10,7 @@ import UIKit
 import MobileCoreServices
 import MapKit
 import Firebase
+import AWSS3
 
 class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
@@ -141,27 +142,27 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         
         
         // Save image in S3 with the userID
-        let transferManager = AWSS3TransferManager.defaultS3TransferManager()
-        let testFileURL1 = NSURL(fileURLWithPath: (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent("temp"))
-        let uploadRequest1 : AWSS3TransferManagerUploadRequest = AWSS3TransferManagerUploadRequest()
-        
-        let data = UIImageJPEGRepresentation(image, 0.01)
-        data!.writeToURL(testFileURL1!, atomically: true)
-        uploadRequest1.bucket = S3BucketName
-        uploadRequest1.key =  currentUser
-        uploadRequest1.body = testFileURL1
-        
-        
-        let task = transferManager.upload(uploadRequest1)
-        task.continueWithBlock { (task) -> AnyObject! in
-            if task.error != nil {
-                print("Error: \(task.error)")
-            } else {
-                self.download()
-                print("Upload successful")
-            }
-            return nil
-        }
+//        let transferManager = AWSS3TransferManager.defaultS3TransferManager()
+//        let testFileURL1 = NSURL(fileURLWithPath: (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent("temp"))
+//        let uploadRequest1 : AWSS3TransferManagerUploadRequest = AWSS3TransferManagerUploadRequest()
+//        
+//        let data = UIImageJPEGRepresentation(image, 0.01)
+//        data!.writeToURL(testFileURL1!, atomically: true)
+//        uploadRequest1.bucket = S3BucketName
+//        uploadRequest1.key =  currentUser
+//        uploadRequest1.body = testFileURL1
+//        
+//        
+//        let task = transferManager.upload(uploadRequest1)
+//        task.continueWithBlock { (task) -> AnyObject! in
+//            if task.error != nil {
+//                print("Error: \(task.error)")
+//            } else {
+//                self.download()
+//                print("Upload successful")
+//            }
+//            return nil
+//        }
         
         // Save image in Firebase database
 //        let url = "https://sonarapp.firebaseio.com/images"

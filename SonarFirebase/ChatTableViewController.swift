@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import Parse
+import AWSS3
 
 class ChatTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate {
 
@@ -516,7 +517,7 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         let downloadingFilePath1 = (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent("temp-download")
         let downloadingFileURL1 = NSURL(fileURLWithPath: downloadingFilePath1 )
         let transferManager = AWSS3TransferManager.defaultS3TransferManager()
-        
+
         let readRequest1 : AWSS3TransferManagerDownloadRequest = AWSS3TransferManagerDownloadRequest()
         readRequest1.bucket = S3BucketName
         readRequest1.key =  messageCreator
