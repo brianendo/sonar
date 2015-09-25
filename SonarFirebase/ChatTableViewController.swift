@@ -25,6 +25,13 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
     var creatorArray = [String]()
     var imageCache = [String:UIImage]()
     
+    
+    @IBOutlet weak var headerView: UIView!
+    @IBOutlet weak var headerTextView: UITextView!
+    
+    @IBOutlet weak var nameLabel: UILabel!
+    
+    
     @IBOutlet weak var sendMessageTextView: UITextView!
     
     @IBOutlet weak var bottomLayoutConstraint: NSLayoutConstraint!
@@ -107,8 +114,18 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
             snapshot in
             if let content = snapshot.value["content"] as? String {
                 if let creator = snapshot.value["creator"] as? String {
-                    self.postContent = content
-                    self.tableView.reloadData()
+                    let url = "https://sonarapp.firebaseio.com/users/" + creator
+                    let userRef = Firebase(url: url)
+                    userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+                        if let firstname = snapshot.value["firstname"] as? String {
+                            if let lastname = snapshot.value["lastname"] as? String {
+                                let name = firstname + " " + lastname
+                                self.nameLabel.text = name
+                                self.headerTextView.text = content
+                                self.tableView.reloadData()
+                            }
+                        }
+                    })
                 }
             }
         })
@@ -121,9 +138,8 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         
         messagesRef.observeEventType(.ChildAdded, withBlock: {
             snapshot in
-            if let content = snapshot.value["content"] as? String {
-                if let creator = snapshot.value["creator"] as? String {
-                    
+            if let creator = snapshot.value["creator"] as? String {
+                if let content = snapshot.value["content"] as? String {
                     let message = Message(content: content, creator: creator)
                     self.messages.append(message)
                     self.tableView.reloadData()
@@ -134,6 +150,52 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         
     }
     
+    
+    // Change message count
+    func messageCountWhenLoading() {
+        
+        let messagesCount = "https://sonarapp.firebaseio.com/posts/" + self.postID! + "/messageCount/"
+        var messagesCountRef = Firebase(url: messagesCount)
+        
+        messagesCountRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+            if let count = snapshot.value as? Int {
+//                println(count)
+                
+                let userMessageCount = "https://sonarapp.firebaseio.com/users/" + currentUser + "/postsReceived/" + self.postID! + "/messageCount/"
+                let userMessageRef = Firebase(url: userMessageCount)
+                userMessageRef.setValue(count)
+                self.tableView.reloadData()
+            }
+        })
+        
+    }
+
+    
+    func messageCountWhenInChat() {
+        
+        // Add messagesCount
+        let postUpdated = "https://sonarapp.firebaseio.com/posts/" + postID!
+        var postUpdatedRef = Firebase(url: postUpdated)
+        
+        postUpdatedRef.observeEventType(.ChildChanged, withBlock: {
+            snapshot in
+            let messagesCount = "https://sonarapp.firebaseio.com/posts/" + self.postID! + "/messageCount/"
+            var messagesCountRef = Firebase(url: messagesCount)
+            
+            messagesCountRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+                if let count = snapshot.value as? Int {
+                    let userMessageCount = "https://sonarapp.firebaseio.com/users/" + currentUser + "/postsReceived/" + self.postID! + "/messageCount/"
+                    let userMessageRef = Firebase(url: userMessageCount)
+                    userMessageRef.setValue(count)
+                    self.tableView.reloadData()
+                }
+            })
+            
+
+        })
+        
+    }
+    
     func loadName() {
         let url = "https://sonarapp.firebaseio.com/users/" + currentUser
         let userRef = Firebase(url: url)
@@ -141,9 +203,12 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
             if let firstname = snapshot.value["firstname"] as? String {
                 if let lastname = snapshot.value["lastname"] as? String {
-                    let joinedUrl = "https://sonarapp.firebaseio.com/users/" + currentUser + "/postsReceived/" + self.postID!
+                    
+                    // Make join true
+                    let joinedUrl = "https://sonarapp.firebaseio.com/users/" + currentUser + "/postsReceived/" + self.postID! + "/joined/"
                     let joinedRef = Firebase(url: joinedUrl)
                     joinedRef.setValue(true)
+                    
                     let name = firstname + " " + lastname
                     self.messageCreatorName = name
                     self.tableView.reloadData()
@@ -192,6 +257,22 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
 //        self.tableViewScrollToBottom(true)
         
         
+        self.headerTextView.delegate = self
+        
+        
+        self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.estimatedRowHeight = 70
+        
+        self.messageCountWhenLoading()
+        self.messageCountWhenInChat()
+        self.loadMessageData()
+        self.loadPost()
+        self.loadName()
+        self.loadTargetArray()
+
+        self.headerView.layer.masksToBounds = true
+        self.headerView.layer.borderColor = UIColor(red:0.89, green:0.89, blue:0.89, alpha:1.0).CGColor
+        self.headerView.layer.borderWidth = 0.7
         
         self.dockView.layer.masksToBounds = true
         self.dockView.layer.borderColor = UIColor(red:0.89, green:0.89, blue:0.89, alpha:1.0).CGColor
@@ -200,12 +281,6 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 70
         
-        self.loadMessageData()
-        self.loadPost()
-        self.loadName()
-        self.loadTargetArray()
-        
-        self.tableView.reloadData()
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -227,6 +302,10 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
             
             webVC.urlToLoad = cellURL
         }
+    }
+    
+    func loadHeaderView() {
+        self.headerTextView.text = self.postContent
     }
     
     
@@ -294,6 +373,20 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
             })
         }
         
+        // Add messagesCount
+        let messageCount = "https://sonarapp.firebaseio.com/posts/" + postID! + "/messageCount/"
+        var messageCountRef = Firebase(url: messageCount)
+        
+        messageCountRef.runTransactionBlock({
+            (currentData:FMutableData!) in
+            var value = currentData.value as? Int
+            if value == nil {
+                value = 0
+            }
+            currentData.value = value! + 1
+            return FTransactionResult.successWithValue(currentData)
+        })
+        
         // Call the end editing method for the text field
         self.sendMessageTextView.endEditing(true)
         
@@ -302,8 +395,10 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         
         self.sendMessageTextView.selectedTextRange = self.sendMessageTextView.textRangeFromPosition(self.sendMessageTextView.beginningOfDocument, toPosition: self.sendMessageTextView.beginningOfDocument)
         self.sendButton.enabled = false
-        self.tableView.reloadData()
         
+        self.tableView.reloadData()
+        self.tableView.layoutIfNeeded()
+        self.tableViewScrollToBottom(true)
     }
     
     // MARK: TextView Delegate Methods
@@ -369,6 +464,16 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
                 sendMessageTextView.selectedTextRange = sendMessageTextView.textRangeFromPosition(sendMessageTextView.beginningOfDocument, toPosition: sendMessageTextView.beginningOfDocument)
             }
         }
+        
+    }
+    
+    func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
+        
+        // Use RadarViewController and access its variables
+        
+        self.cellURL = URL
+        self.performSegueWithIdentifier("presentWebViewFromChat", sender: self)
+        return false
         
     }
     
@@ -439,17 +544,14 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         }
 //        cell.setNeedsUpdateConstraints()
 //        cell.updateConstraintsIfNeeded()
-//        cell.layoutIfNeeded()
+        cell.layoutIfNeeded()
+        
         return cell
     }
     
-//    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//        return UIView()
-//    }
     
-    
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return self.postContent
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
     }
     
 
@@ -470,6 +572,8 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
             
         })
     }
+    
+
     
     
 
