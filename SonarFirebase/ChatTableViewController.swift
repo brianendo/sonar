@@ -102,6 +102,8 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(true)
         
+        
+        
         self.deregisterFromKeyboardNotifications()
         
     }
