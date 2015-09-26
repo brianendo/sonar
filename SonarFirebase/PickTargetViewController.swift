@@ -213,10 +213,10 @@ class PickTargetViewController: UIViewController, UITableViewDataSource, UITable
         let userurl = "https://sonarapp.firebaseio.com/users/" + currentUser + "/postsReceived/" + postID + "/joined/"
         let userTargetRef = Firebase(url: userurl)
         userTargetRef.setValue(true)
-        
-        let messageCountUserUrl = "https://sonarapp.firebaseio.com/users/" + currentUser + "/postsReceived/" + postID + "/messageCount/"
-        let messageCountUserRef = Firebase(url: messageCountUserUrl)
-        messageCountUserRef.setValue(0)
+//
+//        let messageCountUserUrl = "https://sonarapp.firebaseio.com/users/" + currentUser + "/postsReceived/" + postID + "/messageCount/"
+//        let messageCountUserRef = Firebase(url: messageCountUserUrl)
+//        messageCountUserRef.setValue(0)
         
         let url = "https://sonarapp.firebaseio.com/posts/" + postID + "/targets/"
         let currentTargetRef = Firebase(url: url)

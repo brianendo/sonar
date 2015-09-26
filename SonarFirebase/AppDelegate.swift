@@ -22,15 +22,18 @@ let DefaultServiceRegionType = AWSRegionType.USWest1 // e.g. AWSRegionType.USEas
 let CognitoIdentityPoolId = "us-east-1:64427b0c-51a7-4d9a-9d8c-c5c8f5c2f8ea"
 let S3BucketName = "sonarapp"
 
+var imageCache: Dictionary<String, NSData?> = Dictionary<String, NSData>()
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
     
-
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        
+        Firebase.defaultConfig().persistenceEnabled = true
         
         UINavigationBar.appearance().translucent = false
         UINavigationBar.appearance().barTintColor = UIColor(red:0.28, green:0.27, blue:0.43, alpha:1.0)

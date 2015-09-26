@@ -22,6 +22,7 @@
 		8EB2170C1BACB76F005DA377 /* MyTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EB2170B1BACB76F005DA377 /* MyTextView.swift */; };
 		8ED286461BB52E1B006FB6C3 /* AWSS3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ED286451BB52E1B006FB6C3 /* AWSS3.framework */; };
 		8ED286481BB52E2E006FB6C3 /* AWSCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ED286471BB52E2E006FB6C3 /* AWSCore.framework */; };
+		8ED2864A1BB53140006FB6C3 /* FirebaseUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ED286491BB53140006FB6C3 /* FirebaseUI.framework */; };
 		8EE225191BB0D13A0079F887 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EE225171BB0D13A0079F887 /* Bolts.framework */; };
 		8EE2251A1BB0D13A0079F887 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EE225181BB0D13A0079F887 /* Parse.framework */; };
 		8EE2251C1BB0D1610079F887 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EE2251B1BB0D1610079F887 /* AudioToolbox.framework */; };
@@ -82,6 +83,7 @@
 		8ED286431BB52DFE006FB6C3 /* AWSS3.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSS3.framework; path = "Pods/../build/Debug-iphoneos/AWSS3.framework"; sourceTree = "<group>"; };
 		8ED286451BB52E1B006FB6C3 /* AWSS3.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSS3.framework; sourceTree = "<group>"; };
 		8ED286471BB52E2E006FB6C3 /* AWSCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSCore.framework; sourceTree = "<group>"; };
+		8ED286491BB53140006FB6C3 /* FirebaseUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseUI.framework; sourceTree = "<group>"; };
 		8EE225171BB0D13A0079F887 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
 		8EE225181BB0D13A0079F887 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		8EE2251B1BB0D1610079F887 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -123,6 +125,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8EE2252E1BB0D1A50079F887 /* libsqlite3.dylib in Frameworks */,
+				8ED2864A1BB53140006FB6C3 /* FirebaseUI.framework in Frameworks */,
 				8EE2252C1BB0D19D0079F887 /* libz.dylib in Frameworks */,
 				8ED286481BB52E2E006FB6C3 /* AWSCore.framework in Frameworks */,
 				8EE2252A1BB0D1910079F887 /* SystemConfiguration.framework in Frameworks */,
@@ -281,6 +284,7 @@
 				8ED286451BB52E1B006FB6C3 /* AWSS3.framework */,
 				8ED286431BB52DFE006FB6C3 /* AWSS3.framework */,
 				8ED286411BB52DF6006FB6C3 /* AWSCore.framework */,
+				8ED286491BB53140006FB6C3 /* FirebaseUI.framework */,
 				8EE2252D1BB0D1A50079F887 /* libsqlite3.dylib */,
 				8EE2252B1BB0D19D0079F887 /* libz.dylib */,
 				8EE225291BB0D1910079F887 /* SystemConfiguration.framework */,

@@ -12,7 +12,7 @@ import Parse
 import AWSS3
 
 class ChatTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate {
-
+    
     var postVC: Post?
     var postID: String?
     var messages = [Message]()
@@ -24,7 +24,7 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
     var messageCreatorName = ""
     var targetIdArray = [String]()
     var creatorArray = [String]()
-    var imageCache = [String:UIImage]()
+    
     
     
     @IBOutlet weak var headerView: UIView!
@@ -112,6 +112,8 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
     func loadPost() {
         let postUrl = "https://sonarapp.firebaseio.com/posts/" + postID!
         let postRef = Firebase(url: postUrl)
+        
+        postRef.keepSynced(true)
         
         postRef.observeSingleEventOfType(.Value, withBlock: {
             snapshot in
@@ -283,6 +285,8 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 70
+        
+        self.tableViewScrollToBottom(true)
         
     }
     
@@ -512,42 +516,127 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         // Need View Controller to segue in TableViewCell
         cell.viewController = self
         
-        // Pull Profile Image from S3
-        
-        let downloadingFilePath1 = (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent("temp-download")
-        let downloadingFileURL1 = NSURL(fileURLWithPath: downloadingFilePath1 )
-        let transferManager = AWSS3TransferManager.defaultS3TransferManager()
-
-        let readRequest1 : AWSS3TransferManagerDownloadRequest = AWSS3TransferManagerDownloadRequest()
-        readRequest1.bucket = S3BucketName
-        readRequest1.key =  messageCreator
-        readRequest1.downloadingFileURL = downloadingFileURL1
         
         cell.profileImageView.image = UIImage(named: "Placeholder.png")
-        let task = transferManager.download(readRequest1)
-        task.continueWithBlock { (task) -> AnyObject! in
-            print(task.error)
-            if task.error != nil {
-            } else {
-                dispatch_async(dispatch_get_main_queue()
-                    , { () -> Void in
-                        if let image = UIImage(contentsOfFile: downloadingFilePath1) {
-                            cell.profileImageView.image = image
-                        } else {
-                            // Default image or nil
-                            cell.profileImageView.image = UIImage(named: "Placeholder.png")
-                        }
-                        
-//                        cell.profileImageView.image = UIImage(contentsOfFile: downloadingFilePath1)
-                        
-                })
-//                println("Fetched image")
+        if let cachedImageResult = imageCache[messageCreator] {
+            println("pull from cache")
+            cell.profileImageView.image = UIImage(data: cachedImageResult!)
+        } else {
+            // 3
+            cell.profileImageView.image = UIImage(named: "Placeholder.png")
+            
+            // 4
+            let downloadingFilePath1 = (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent("temp-download")
+            let downloadingFileURL1 = NSURL(fileURLWithPath: downloadingFilePath1 )
+            let transferManager = AWSS3TransferManager.defaultS3TransferManager()
+            
+            
+            let readRequest1 : AWSS3TransferManagerDownloadRequest = AWSS3TransferManagerDownloadRequest()
+            readRequest1.bucket = S3BucketName
+            readRequest1.key =  messageCreator
+            readRequest1.downloadingFileURL = downloadingFileURL1
+            
+            let task = transferManager.download(readRequest1)
+            task.continueWithBlock { (task) -> AnyObject! in
+                if task.error != nil {
+                    print(task.error)
+                } else {
+                    let image = UIImage(contentsOfFile: downloadingFilePath1)
+                    let imageData = UIImageJPEGRepresentation(image, 1.0)
+                    imageCache[messageCreator] = imageData
+                    dispatch_async(dispatch_get_main_queue()
+                        , { () -> Void in
+                            
+                            cell.profileImageView.image = UIImage(contentsOfFile: downloadingFilePath1)
+                            cell.setNeedsLayout()
+                            
+                    })
+                    println("Fetched image")
+                }
+                return nil
             }
-            return nil
+            
         }
-//        cell.setNeedsUpdateConstraints()
-//        cell.updateConstraintsIfNeeded()
-        cell.layoutIfNeeded()
+        
+//        let imageCache = NSCache()
+//        
+//        cell.profileImageView.image = UIImage(named: "Placeholder.png")
+//        if let image = imageCache.objectForKey(messageCreator) as? UIImage {
+//            println("pull from cache")
+//            cell.profileImageView.image = image
+//        } else {
+//            // 3
+//            cell.profileImageView.image = UIImage(named: "Placeholder.png")
+//            
+//            // 4
+//            let downloadingFilePath1 = (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent("temp-download")
+//            let downloadingFileURL1 = NSURL(fileURLWithPath: downloadingFilePath1 )
+//            let transferManager = AWSS3TransferManager.defaultS3TransferManager()
+//            
+//            
+//            let readRequest1 : AWSS3TransferManagerDownloadRequest = AWSS3TransferManagerDownloadRequest()
+//            readRequest1.bucket = S3BucketName
+//            readRequest1.key =  messageCreator
+//            readRequest1.downloadingFileURL = downloadingFileURL1
+//            
+//            let task = transferManager.download(readRequest1)
+//            task.continueWithBlock { (task) -> AnyObject! in
+//                if task.error != nil {
+//                    print(task.error)
+//                } else {
+//                    let image = UIImage(contentsOfFile: downloadingFilePath1)
+//                    
+//                    imageCache.setObject(image!, forKey: messageCreator)
+//                    dispatch_async(dispatch_get_main_queue()
+//                        , { () -> Void in
+//                            
+//                            cell.profileImageView.image = UIImage(contentsOfFile: downloadingFilePath1)
+//                            cell.setNeedsLayout()
+//                            
+//                    })
+//                    println("Fetched image")
+//                }
+//                return nil
+//            }
+//            
+//        }
+        
+//        // Pull Profile Image from S3
+//        
+//        let downloadingFilePath1 = (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent("temp-download")
+//        let downloadingFileURL1 = NSURL(fileURLWithPath: downloadingFilePath1 )
+//        let transferManager = AWSS3TransferManager.defaultS3TransferManager()
+//
+//        let readRequest1 : AWSS3TransferManagerDownloadRequest = AWSS3TransferManagerDownloadRequest()
+//        readRequest1.bucket = S3BucketName
+//        readRequest1.key =  messageCreator
+//        readRequest1.downloadingFileURL = downloadingFileURL1
+//        
+//        cell.profileImageView.image = UIImage(named: "Placeholder.png")
+//        let task = transferManager.download(readRequest1)
+//        task.continueWithBlock { (task) -> AnyObject! in
+////            print(task.error)
+//            if task.error != nil {
+//            } else {
+//                dispatch_async(dispatch_get_main_queue()
+//                    , { () -> Void in
+//                        if let image = UIImage(contentsOfFile: downloadingFilePath1) {
+//                            cell.profileImageView.image = image
+//                        } else {
+//                            // Default image or nil
+//                            cell.profileImageView.image = UIImage(named: "Placeholder.png")
+//                        }
+//                        
+////                        cell.profileImageView.image = UIImage(contentsOfFile: downloadingFilePath1)
+//                        
+//                })
+////                println("Fetched image")
+//            }
+//            return nil
+//        }
+////        cell.setNeedsUpdateConstraints()
+////        cell.updateConstraintsIfNeeded()
+//        cell.layoutIfNeeded()
         
         return cell
     }
@@ -575,6 +664,7 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
             
         })
     }
+
     
 
     

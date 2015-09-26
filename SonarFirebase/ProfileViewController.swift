@@ -11,9 +11,11 @@ import MobileCoreServices
 import MapKit
 import Firebase
 import AWSS3
+import Parse
 
 class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
+    var imageCache = NSCache()
     
     @IBOutlet weak var imageView: UIImageView!
     
@@ -39,6 +41,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         self.imageView.layer.cornerRadius = self.imageView.frame.size.height/2
         self.imageView.clipsToBounds = true
         self.download()
+//        self.queryImageFromParse()
         
     }
 
@@ -49,32 +52,109 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     // Download profile image from S3
     func download() {
-        let downloadingFilePath1 = (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent("temp-download")
-        let downloadingFileURL1 = NSURL(fileURLWithPath: downloadingFilePath1 )
-        let transferManager = AWSS3TransferManager.defaultS3TransferManager()
         
         
-        let readRequest1 : AWSS3TransferManagerDownloadRequest = AWSS3TransferManagerDownloadRequest()
-        readRequest1.bucket = S3BucketName
-        readRequest1.key =  currentUser
-        readRequest1.downloadingFileURL = downloadingFileURL1
-        
-        let task = transferManager.download(readRequest1)
-        task.continueWithBlock { (task) -> AnyObject! in
-            if task.error != nil {
-                print(task.error)
-            } else {
-                dispatch_async(dispatch_get_main_queue()
-                    , { () -> Void in
-                        
-                        self.imageView.image = UIImage(contentsOfFile: downloadingFilePath1)
-                        
-                })
-                print("Fetched image")
+        if let image = self.imageCache.objectForKey(currentUser) as? UIImage {
+            self.imageView.image = image
+        } else {
+            // 3
+            self.imageView.image = nil
+            
+            // 4
+            let downloadingFilePath1 = (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent("temp-download")
+            let downloadingFileURL1 = NSURL(fileURLWithPath: downloadingFilePath1 )
+            let transferManager = AWSS3TransferManager.defaultS3TransferManager()
+            
+            
+            let readRequest1 : AWSS3TransferManagerDownloadRequest = AWSS3TransferManagerDownloadRequest()
+            readRequest1.bucket = S3BucketName
+            readRequest1.key =  currentUser
+            readRequest1.downloadingFileURL = downloadingFileURL1
+            
+            let task = transferManager.download(readRequest1)
+            task.continueWithBlock { (task) -> AnyObject! in
+                if task.error != nil {
+                    print(task.error)
+                } else {
+                    dispatch_async(dispatch_get_main_queue()
+                        , { () -> Void in
+                            let image = UIImage(contentsOfFile: downloadingFilePath1)
+                            
+                            self.imageCache.setObject(image!, forKey: currentUser)
+                            self.imageView.image = UIImage(contentsOfFile: downloadingFilePath1)
+                            
+                    })
+                    print("Fetched image")
+                }
+                return nil
             }
-            return nil
+            
         }
         
+//        let downloadingFilePath1 = (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent("temp-download")
+//        let downloadingFileURL1 = NSURL(fileURLWithPath: downloadingFilePath1 )
+//        let transferManager = AWSS3TransferManager.defaultS3TransferManager()
+//        
+//        
+//        let readRequest1 : AWSS3TransferManagerDownloadRequest = AWSS3TransferManagerDownloadRequest()
+//        readRequest1.bucket = S3BucketName
+//        readRequest1.key =  currentUser
+//        readRequest1.downloadingFileURL = downloadingFileURL1
+//        
+//        let task = transferManager.download(readRequest1)
+//        task.continueWithBlock { (task) -> AnyObject! in
+//            if task.error != nil {
+//                print(task.error)
+//            } else {
+//                dispatch_async(dispatch_get_main_queue()
+//                    , { () -> Void in
+//                        
+//                        self.imageView.image = UIImage(contentsOfFile: downloadingFilePath1)
+//                        
+//                })
+//                print("Fetched image")
+//            }
+//            return nil
+//        }
+        
+    }
+    
+    func queryImageFromParse() {
+        var query = PFQuery(className: "profilePicture")
+        query.whereKey("userID", equalTo: currentUser)
+        query.findObjectsInBackgroundWithBlock { (objects: [AnyObject]?, error: NSError?) -> Void in
+            if error == nil {
+                // The find succeeded.
+                println("Successfully retrieved \(objects!.count) scores.")
+                // Do something with the found objects
+                if let objects = objects as? [PFObject] {
+                    for object in objects {
+                        let userImageFile = object.objectForKey("profilePicture") as! PFFile
+                        userImageFile.getDataInBackgroundWithBlock({ (imageData: NSData?, error: NSError?) -> Void in
+                            if error == nil {
+                                if let imageData = imageData {
+                                    self.imageView.image = UIImage(data: imageData)
+                                }
+                            }
+                        })
+                    }
+                }
+            } else {
+                // Log details of the failure
+                println("Error: \(error!) \(error!.userInfo!)")
+            }
+        }
+
+        
+//        let userImageFile = anotherPhoto["imageFile"] as PFFile
+//        userImageFile.getDataInBackgroundWithBlock {
+//            (imageData: NSData?, error: NSError?) -> Void in
+//            if error == nil {
+//                if let imageData = imageData {
+//                    let image = UIImage(data:imageData)
+//                }
+//            }
+//        }
     }
     
 
@@ -140,29 +220,43 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         
 //        var base64 = imageData.base64EncodedStringWithOptions(.allZeros)
         
+        // Pare Image Integration
+//        let data = UIImageJPEGRepresentation(image, 0.01)
+//        
+//        let imageFile = PFFile(name: "profilePic.png", data: data)
+//        
+//        imageFile.saveInBackground()
+//        
+//        var profileImage = PFObject(className: "profilePicture")
+//        profileImage.setObject(currentUser, forKey: "userID")
+//        profileImage.setObject(imageFile, forKey: "profilePicture")
+//        profileImage.saveInBackground()
+        
+        
+        
         
         // Save image in S3 with the userID
-//        let transferManager = AWSS3TransferManager.defaultS3TransferManager()
-//        let testFileURL1 = NSURL(fileURLWithPath: (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent("temp"))
-//        let uploadRequest1 : AWSS3TransferManagerUploadRequest = AWSS3TransferManagerUploadRequest()
-//        
-//        let data = UIImageJPEGRepresentation(image, 0.01)
-//        data!.writeToURL(testFileURL1!, atomically: true)
-//        uploadRequest1.bucket = S3BucketName
-//        uploadRequest1.key =  currentUser
-//        uploadRequest1.body = testFileURL1
-//        
-//        
-//        let task = transferManager.upload(uploadRequest1)
-//        task.continueWithBlock { (task) -> AnyObject! in
-//            if task.error != nil {
-//                print("Error: \(task.error)")
-//            } else {
-//                self.download()
-//                print("Upload successful")
-//            }
-//            return nil
-//        }
+        let transferManager = AWSS3TransferManager.defaultS3TransferManager()
+        let testFileURL1 = NSURL(fileURLWithPath: (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent("temp"))
+        let uploadRequest1 : AWSS3TransferManagerUploadRequest = AWSS3TransferManagerUploadRequest()
+        
+        let data = UIImageJPEGRepresentation(image, 0.01)
+        data!.writeToURL(testFileURL1!, atomically: true)
+        uploadRequest1.bucket = S3BucketName
+        uploadRequest1.key =  currentUser
+        uploadRequest1.body = testFileURL1
+        
+        
+        let task = transferManager.upload(uploadRequest1)
+        task.continueWithBlock { (task) -> AnyObject! in
+            if task.error != nil {
+                print("Error: \(task.error)")
+            } else {
+                self.download()
+                print("Upload successful")
+            }
+            return nil
+        }
         
         // Save image in Firebase database
 //        let url = "https://sonarapp.firebaseio.com/images"
