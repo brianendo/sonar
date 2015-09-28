@@ -177,13 +177,18 @@ class PickTargetViewController: UIViewController, UITableViewDataSource, UITable
             let currentTargetRef = Firebase(url: url)
             currentTargetRef.childByAppendingPath(target ).setValue(true)
             
-            let targetedUrl = "https://sonarapp.firebaseio.com/users/" + (target) + "/postsReceived/" + postID + "/joined/"
-            let targetedRef = Firebase(url: targetedUrl)
-            targetedRef.setValue(false)
+            let postReceivedURL = "https://sonarapp.firebaseio.com/users/" + (target) + "/postsReceived/" + postID
+            let postReceived = ["joined": false, "messageCount": 0]
+            let postReceivedRef = Firebase(url: postReceivedURL)
+            postReceivedRef.setValue(postReceived)
             
-            let messageCountUrl = "https://sonarapp.firebaseio.com/users/" + (target) + "/postsReceived/" + postID + "/messageCount/"
-            let messageCountRef = Firebase(url: messageCountUrl)
-            messageCountRef.setValue(0)
+//            let targetedUrl = "https://sonarapp.firebaseio.com/users/" + (target) + "/postsReceived/" + postID + "/joined/"
+//            let targetedRef = Firebase(url: targetedUrl)
+//            targetedRef.setValue(false)
+//            
+//            let messageCountUrl = "https://sonarapp.firebaseio.com/users/" + (target) + "/postsReceived/" + postID + "/messageCount/"
+//            let messageCountRef = Firebase(url: messageCountUrl)
+//            messageCountRef.setValue(0)
             
             let pushURL = "https://sonarapp.firebaseio.com/users/" + target + "/pushId"
             let pushRef = Firebase(url: pushURL)
@@ -210,9 +215,10 @@ class PickTargetViewController: UIViewController, UITableViewDataSource, UITable
             })
         }
         
-        let userurl = "https://sonarapp.firebaseio.com/users/" + currentUser + "/postsReceived/" + postID + "/joined/"
-        let userTargetRef = Firebase(url: userurl)
-        userTargetRef.setValue(true)
+        let userUrl = "https://sonarapp.firebaseio.com/users/" + currentUser + "/postsReceived/" + postID 
+        let userReceived = ["joined": true, "messageCount": 0]
+        let userReceivedRef = Firebase(url: userUrl)
+        userReceivedRef.setValue(userReceived)
 //
 //        let messageCountUserUrl = "https://sonarapp.firebaseio.com/users/" + currentUser + "/postsReceived/" + postID + "/messageCount/"
 //        let messageCountUserRef = Firebase(url: messageCountUserUrl)

@@ -27,7 +27,7 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
         let targetRef = Firebase(url: url)
 
         
-        targetRef.queryLimitedToLast(2).observeEventType(.Value, withBlock: {
+        targetRef.queryLimitedToLast(1).observeEventType(.Value, withBlock: {
             snapshot in
             
             println("get added")
@@ -42,7 +42,7 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
         let targetRef = Firebase(url: url)
         
         
-        targetRef.queryLimitedToLast(2).observeEventType(.ChildChanged, withBlock: {
+        targetRef.queryLimitedToLast(1).observeEventType(.ChildChanged, withBlock: {
             snapshot in
             println("get changed")
             println(snapshot.key)
@@ -56,7 +56,7 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
         let url = "https://sonarapp.firebaseio.com/users/" + currentUser + "/postsReceived/"
         let targetRef = Firebase(url: url)
         
-        targetRef.keepSynced(true)
+//        targetRef.keepSynced(true)
         
         targetRef.observeEventType(.ChildAdded, withBlock: {
             snapshot in
@@ -86,8 +86,10 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
                                         var date: NSDate?
                                         if joined == true {
                                             date = updatedDate
+                                            println("updated at")
                                         } else {
                                             date = createdDate
+                                            println("created at")
                                         }
                                         let post = Post(content: content, creator: creator, key: key, createdAt: date!, name: name, joined: joined!, messageCount: messageCount!)
                                         self.posts.append(post)
@@ -108,6 +110,13 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
         })
     }
     
+    func messageCountChanges() {
+        
+        
+        
+        
+    }
+    
     func changedRadarData() {
         
         let url = "https://sonarapp.firebaseio.com/users/" + currentUser + "/postsReceived/"
@@ -123,9 +132,12 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
                 self.posts.removeAtIndex(found)
             }
             
-            
             println("childChanged")
             
+//            var postUpdatedAt = snapshot.value["updatedAt"] as? NSTimeInterval
+//            if postUpdatedAt == nil {
+//                postUpdatedAt = 0
+//            }
             
             let postsUrl = "https://sonarapp.firebaseio.com/posts/" + snapshot.key
             let postsRef = Firebase(url: postsUrl)
@@ -135,6 +147,7 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
             if messageCount == nil {
                 messageCount = 0
             }
+            println(messageCount)
             postsRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
                 if let key = snapshot.key
                 {if let content = snapshot.value["content"] as? String {
@@ -152,15 +165,20 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
                                             var date: NSDate?
                                             if joined == true {
                                                 date = updatedDate
+                                                println(updatedDate)
                                             } else {
                                                 date = createdDate
                                             }
+                                            
+                                            println(date)
                                             let post = Post(content: content, creator: creator, key: key, createdAt: date!, name: name, joined: joined!, messageCount: messageCount!)
                                             
                                             self.posts.append(post)
                                             
                                             // Sort posts in descending order
                                             self.posts.sort({ $0.createdAt.compare($1.createdAt) == .OrderedDescending })
+                                            
+                                            println(self.posts)
                                             self.tableView.reloadData()
                                         }
                                     }
@@ -177,21 +195,9 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     
     override func viewDidAppear(animated: Bool) {
-//        self.tableView.delegate = self
-//        self.tableView.dataSource = self
-//        
-//        self.tableView.rowHeight = UITableViewAutomaticDimension
-//        self.tableView.estimatedRowHeight = 70
-//        
-//        // Remove all posts when reloaded so it updates
-        
-//
-//        self.loadRadarData()
     }
     
     override func viewWillAppear(animated: Bool) {
-//        self.changedRadarData()
-//        self.posts.removeAll(keepCapacity: true)
     }
     
     override func viewDidLoad() {
@@ -216,7 +222,7 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
                 self.tableView.estimatedRowHeight = 70
                 
                 // Remove all posts when reloaded so it updates
-//                self.posts.removeAll(keepCapacity: true)
+                self.posts.removeAll(keepCapacity: true)
 
                 self.loadRadarData()
                 self.changedRadarData()

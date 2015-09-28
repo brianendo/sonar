@@ -104,6 +104,7 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         super.viewWillDisappear(true)
         
         
+        self.messageCountWhenLoading()
         
         self.deregisterFromKeyboardNotifications()
         
@@ -269,7 +270,7 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         self.tableView.estimatedRowHeight = 70
         
         self.messageCountWhenLoading()
-        self.messageCountWhenInChat()
+//        self.messageCountWhenInChat()
         self.loadMessageData()
         self.loadPost()
         self.loadName()
@@ -289,6 +290,7 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         self.tableViewScrollToBottom(true)
         
     }
+    
     
     override func viewDidDisappear(animated: Bool) {
     }
@@ -324,28 +326,25 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
     
     @IBAction func sendButtonPressed(sender: AnyObject) {
         
+        // Time updated of Post
+        let postUpdatedUrl = "https://sonarapp.firebaseio.com/posts/" + postID! 
+        let postUpdatedRef = Firebase(url: postUpdatedUrl)
+        let updatedAt = ["updatedAt": [".sv":"timestamp"] ]
+        postUpdatedRef.updateChildValues(updatedAt)
+        
         // Post Message to Firebase
 //        let postID = postVC?.key
         let messagesUrl = "https://sonarapp.firebaseio.com/messages/" + postID!
         let messagesRef = Firebase(url: messagesUrl)
         let newMessageText = self.sendMessageTextView.text
-        let message1 = ["creator": currentUser, "content": newMessageText]
+        let message1 = ["creator": currentUser, "content": newMessageText, "createdAt": [".sv":"timestamp"]]
         let messages = messagesRef.childByAutoId()
         messages.setValue(message1)
+        
         
         // Get messageID
         let messageID = messages.key
         
-        // Timestamp of Message
-        let timeMessageUrl = "https://sonarapp.firebaseio.com/messages/" + postID! + "/" + messageID
-        let timeMessageRef = Firebase(url: timeMessageUrl)
-        timeMessageRef.childByAppendingPath("createdAt").setValue([".sv":"timestamp"])
-        
-        
-        // Time updated of Message
-        let postUpdatedUrl = "https://sonarapp.firebaseio.com/posts/" + postID!
-        let postUpdatedRef = Firebase(url: postUpdatedUrl)
-        postUpdatedRef.childByAppendingPath("updatedAt").setValue([".sv":"timestamp"])
         
         let index = find(self.targetIdArray, currentUser)
         if index != nil {
@@ -378,9 +377,38 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
                     push.sendPushInBackground()
                 }
             })
+            // Add realMessageCount to target
+            let realMessageCount = "https://sonarapp.firebaseio.com/users/" + target + "/postsReceived/" + postID! + "/realMessageCount/"
+            var realMessageCountRef = Firebase(url: realMessageCount)
+            
+            realMessageCountRef.runTransactionBlock({
+                (currentData:FMutableData!) in
+                var value = currentData.value as? Int
+                if value == nil {
+                    value = 0
+                }
+                currentData.value = value! + 1
+                return FTransactionResult.successWithValue(currentData)
+            })
+
         }
         
-        // Add messagesCount
+        // Add realMessageCount to currentUser
+        let realMessageCount = "https://sonarapp.firebaseio.com/users/" + currentUser + "/postsReceived/" + postID! + "/realMessageCount/"
+        var realMessageCountRef = Firebase(url: realMessageCount)
+        
+        realMessageCountRef.runTransactionBlock({
+            (currentData:FMutableData!) in
+            var value = currentData.value as? Int
+            if value == nil {
+                value = 0
+            }
+            currentData.value = value! + 1
+            return FTransactionResult.successWithValue(currentData)
+        })
+        
+        
+        // Add messageCount
         let messageCount = "https://sonarapp.firebaseio.com/posts/" + postID! + "/messageCount/"
         var messageCountRef = Firebase(url: messageCount)
         
@@ -391,6 +419,7 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
                 value = 0
             }
             currentData.value = value! + 1
+            println("added counter to the post")
             return FTransactionResult.successWithValue(currentData)
         })
         
