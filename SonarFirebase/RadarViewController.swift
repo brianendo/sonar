@@ -65,6 +65,7 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
             let postsRef = Firebase(url: postsUrl)
             let joined = snapshot.value["joined"] as? Bool
             
+            
             var messageCount = snapshot.value["messageCount"] as? Int
             if messageCount == nil {
                 messageCount = 0
@@ -92,7 +93,9 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
                                             println("created at")
                                         }
                                         let post = Post(content: content, creator: creator, key: key, createdAt: date!, name: name, joined: joined!, messageCount: messageCount!)
+                                        
                                         self.posts.append(post)
+                                        
                                         
                                         // Sort posts in descending order
                                         self.posts.sort({ $0.createdAt.compare($1.createdAt) == .OrderedDescending })
@@ -131,6 +134,12 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
                 println(found)
                 self.posts.removeAtIndex(found)
             }
+            
+            // Update post to ensure that Feed is in correct order
+            let postUpdatedUrl = "https://sonarapp.firebaseio.com/posts/" + snapshot.key
+            let postUpdatedRef = Firebase(url: postUpdatedUrl)
+            let updatedAt = ["updatedAt": [".sv":"timestamp"] ]
+            postUpdatedRef.updateChildValues(updatedAt)
             
             println("childChanged")
             

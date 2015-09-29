@@ -332,6 +332,7 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         let updatedAt = ["updatedAt": [".sv":"timestamp"] ]
         postUpdatedRef.updateChildValues(updatedAt)
         
+        
         // Post Message to Firebase
 //        let postID = postVC?.key
         let messagesUrl = "https://sonarapp.firebaseio.com/messages/" + postID!
@@ -377,35 +378,43 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
                     push.sendPushInBackground()
                 }
             })
-            // Add realMessageCount to target
-            let realMessageCount = "https://sonarapp.firebaseio.com/users/" + target + "/postsReceived/" + postID! + "/realMessageCount/"
-            var realMessageCountRef = Firebase(url: realMessageCount)
+//            // Add realMessageCount to target
+//            let realMessageCount = "https://sonarapp.firebaseio.com/users/" + target + "/postsReceived/" + postID! + "/realMessageCount/"
+//            var realMessageCountRef = Firebase(url: realMessageCount)
+//            
+//            realMessageCountRef.runTransactionBlock({
+//                (currentData:FMutableData!) in
+//                var value = currentData.value as? Int
+//                if value == nil {
+//                    value = 0
+//                }
+//                currentData.value = value! + 1
+//                return FTransactionResult.successWithValue(currentData)
+//            })
             
-            realMessageCountRef.runTransactionBlock({
-                (currentData:FMutableData!) in
-                var value = currentData.value as? Int
-                if value == nil {
-                    value = 0
-                }
-                currentData.value = value! + 1
-                return FTransactionResult.successWithValue(currentData)
-            })
+            let updatePost = "https://sonarapp.firebaseio.com/users/" + target + "/postsReceived/" + postID! + "/updatedAt/"
+            var updatePostRef = Firebase(url: updatePost)
+            updatePostRef.setValue([".sv":"timestamp"])
 
         }
         
-        // Add realMessageCount to currentUser
-        let realMessageCount = "https://sonarapp.firebaseio.com/users/" + currentUser + "/postsReceived/" + postID! + "/realMessageCount/"
-        var realMessageCountRef = Firebase(url: realMessageCount)
+//        // Add realMessageCount to currentUser
+//        let realMessageCount = "https://sonarapp.firebaseio.com/users/" + currentUser + "/postsReceived/" + postID! + "/realMessageCount/"
+//        var realMessageCountRef = Firebase(url: realMessageCount)
+//        
+//        realMessageCountRef.runTransactionBlock({
+//            (currentData:FMutableData!) in
+//            var value = currentData.value as? Int
+//            if value == nil {
+//                value = 0
+//            }
+//            currentData.value = value! + 1
+//            return FTransactionResult.successWithValue(currentData)
+//        })
         
-        realMessageCountRef.runTransactionBlock({
-            (currentData:FMutableData!) in
-            var value = currentData.value as? Int
-            if value == nil {
-                value = 0
-            }
-            currentData.value = value! + 1
-            return FTransactionResult.successWithValue(currentData)
-        })
+//        let updatePost = "https://sonarapp.firebaseio.com/users/" + currentUser + "/postsReceived/" + postID! + "/updatedAt/"
+//        var updatePostRef = Firebase(url: updatePost)
+//        updatePostRef.setValue([".sv":"timestamp"])
         
         
         // Add messageCount
