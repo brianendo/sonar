@@ -165,8 +165,11 @@ class PickTargetViewController: UIViewController, UITableViewDataSource, UITable
     
     @IBAction func sendButtonPressed(sender: UIBarButtonItem) {
         
+        let dateLater = (NSDate().timeIntervalSince1970 + (60*15)) * 1000
+        let quickDate = (NSDate().timeIntervalSince1970 + (20)) * 1000
+        
         let postRef = ref.childByAppendingPath("posts")
-        let post1 = ["content": content, "creator": currentUser, "messageCount": 0, "createdAt": [".sv":"timestamp"], "updatedAt": [".sv":"timestamp"] ]
+        let post1 = ["content": content, "creator": currentUser, "messageCount": 0, "createdAt": [".sv":"timestamp"], "updatedAt": [".sv":"timestamp"], "endAt": quickDate ]
         let post1Ref = postRef.childByAutoId()
         post1Ref.setValue(post1)
         

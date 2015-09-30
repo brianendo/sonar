@@ -14,17 +14,19 @@ class Post: NSObject {
     var key: String
     var createdAt: NSDate
     var name: String
-    var joined: Bool
+    var joined: Bool?
     var messageCount: Int
+    var endAt: NSDate
     
-    init(content: String?, creator: String?, key: String?, createdAt: NSDate?, name:String?, joined: Bool?, messageCount: Int?) {
+    init(content: String?, creator: String?, key: String?, createdAt: NSDate?, name:String?, joined: Bool?, messageCount: Int?, endAt: NSDate?) {
         self.content = content!
         self.creator = creator!
         self.key = key!
         self.createdAt = createdAt!
         self.name = name!
-        self.joined = joined!
+        self.joined = joined
         self.messageCount = messageCount!
+        self.endAt = endAt!
     }
     
     
