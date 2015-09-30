@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import Parse
 
 class SignUpViewController: UIViewController {
 
@@ -119,7 +120,7 @@ class SignUpViewController: UIViewController {
 //    }
     
     @IBAction func signUpButtonPressed(sender: UIButton) {
-        if count(self.passwordTextField.text) < 8 {
+        if count(self.passwordTextField.text) < 6 {
             var alert = UIAlertController(title: "Password not secure", message: "Make sure it is at least 8 characters", preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "Back", style: UIAlertActionStyle.Default, handler: nil))
             self.presentViewController(alert, animated: true, completion: nil)
@@ -144,10 +145,30 @@ class SignUpViewController: UIViewController {
                                 // We are now logged in
                                 
                                 let newUser = [
-                                    "name": self.nameTextField.text!
+                                    "name": self.nameTextField.text!,
+                                    "email": self.emailTextField.text!
                                 ]
                                 
                                 ref.childByAppendingPath("users").childByAppendingPath(authData.uid).setValue(newUser)
+                                
+                                
+                                // Add data to parse
+                                var user = PFObject(className:"FirebaseUser")
+                                
+                                user.setObject(self.nameTextField.text!, forKey: "name")
+                                user.setObject(self.emailTextField.text!, forKey: "email")
+                                user.setObject(uid!, forKey: "firebaseId")
+
+                                user.saveInBackgroundWithBlock {
+                                    (success: Bool, error: NSError?) -> Void in
+                                    if (success) {
+                                        // The object has been saved.
+                                        println("saved")
+                                    } else {
+                                        // There was a problem, check error.description
+                                        println("erro")
+                                    }
+                                }
                                 
 //                                let storyboard = UIStoryboard(name: "Main", bundle: nil)
 //                                let mainVC = storyboard.instantiateInitialViewController() as! UIViewController

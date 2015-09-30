@@ -21,8 +21,10 @@ class StartViewController: UIViewController {
         
     }
     
+    
     override func viewWillAppear(animated: Bool) {
         self.navigationController?.navigationBarHidden = true
+        ref.unauth()
     }
     
 

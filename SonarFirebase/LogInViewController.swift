@@ -120,5 +120,39 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
                 }
         })
     }
+    
+    @IBAction func forgotPasswordButtonPressed(sender: UIButton) {
+        
+        let alertController = UIAlertController(title: "Forgot password?", message: "Please input your email:", preferredStyle: .Alert)
+        
+        let confirmAction = UIAlertAction(title: "Confirm", style: .Default) { (_) in
+            if let field = alertController.textFields![0] as? UITextField {
+                // store your data
+                ref.resetPasswordForUser(field.text) { (err) -> Void in
+                    if err != nil{
+                        println("Didn't work")
+                    } else {
+                        println("Worked")
+                    }
+                }
+            } else {
+                // user did not fill field
+            }
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (_) in }
+        
+        alertController.addTextFieldWithConfigurationHandler { (textField) in
+            textField.placeholder = "Email"
+        }
+        
+        alertController.addAction(confirmAction)
+        alertController.addAction(cancelAction)
+        
+        self.presentViewController(alertController, animated: true, completion: nil)
+        
+        
+    }
+    
 
 }
