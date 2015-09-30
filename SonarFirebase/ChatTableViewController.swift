@@ -153,9 +153,7 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
                     let url = "https://sonarapp.firebaseio.com/users/" + creator
                     let userRef = Firebase(url: url)
                     userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
-                        if let firstname = snapshot.value["firstname"] as? String {
-                            if let lastname = snapshot.value["lastname"] as? String {
-                                let name = firstname + " " + lastname
+                        if let name = snapshot.value["name"] as? String {
                                 println(endAt)
                                 let endedDate = NSDate(timeIntervalSince1970: (endAt!/1000))
                                 var timeLeft = endedDate.timeIntervalSinceDate(NSDate())
@@ -165,7 +163,6 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
                                 self.headerTextView.text = content
                                 self.tableView.reloadData()
                             }
-                        }
                     })
                     }
                 
@@ -217,7 +214,6 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         
         messagesCountRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
             if let count = snapshot.value as? Int {
-//                println(count)
                 
                 let userMessageCount = "https://sonarapp.firebaseio.com/users/" + currentUser + "/postsReceived/" + self.postID! + "/messageCount/"
                 let userMessageRef = Firebase(url: userMessageCount)
@@ -259,18 +255,15 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         let userRef = Firebase(url: url)
         
         userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
-            if let firstname = snapshot.value["firstname"] as? String {
-                if let lastname = snapshot.value["lastname"] as? String {
+            if let name = snapshot.value["name"] as? String {
                     
                     // Make join true
                     let joinedUrl = "https://sonarapp.firebaseio.com/users/" + currentUser + "/postsReceived/" + self.postID! + "/joined/"
                     let joinedRef = Firebase(url: joinedUrl)
                     joinedRef.setValue(true)
-                    
-                    let name = firstname + " " + lastname
+                
                     self.messageCreatorName = name
                     self.tableView.reloadData()
-                }
             }
         })
     }
@@ -312,17 +305,6 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
-//        // Check if the post still exists
-//        let url = "https://sonarapp.firebaseio.com/users/" + currentUser + "/postsReceived/" + self.postID!
-//        let userRef = Firebase(url: url)
-//        userRef.observeEventType(.Value, withBlock: { snap in
-//            if snap.value is NSNull {
-//                // The value is null
-//                self.navigationController?.popViewControllerAnimated(true)
-//            }
-//        })
-        
-        
         self.sendMessageTextView.delegate = self
         self.sendButton.enabled = false
         self.sendMessageTextView.text = placeholder
@@ -338,19 +320,11 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         
         self.tableView.tableFooterView = UIView(frame: CGRect.zeroRect)
         
-//        // Remove all posts when reloaded so it updates
-//        self.messages.removeAll(keepCapacity: true)
-        
-//        self.tableViewScrollToBottom(true)
-        
-        
         self.headerTextView.delegate = self
         
         
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 70
-        
-        
         
         
         self.messageCountWhenLoading()
@@ -393,9 +367,6 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
-    func applicationWillResign(notification : NSNotification) {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
-    }
     
     override func viewDidDisappear(animated: Bool) {
     }
@@ -486,10 +457,12 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
                         }
                     })
                     
+                    
+
+                } else {
                     let updatePost = "https://sonarapp.firebaseio.com/users/" + target + "/postsReceived/" + self.postID! + "/updatedAt/"
                     var updatePostRef = Firebase(url: updatePost)
                     updatePostRef.setValue([".sv":"timestamp"])
-
                 }
             })
             
@@ -663,10 +636,8 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         let userRef = Firebase(url: userurl)
         
         userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
-            if let firstname = snapshot.value["firstname"] as? String {
-                if let lastname = snapshot.value["lastname"] as? String {
-                    cell.creatorLabel.text = firstname + " " + lastname
-                }
+            if let name = snapshot.value["name"] as? String {
+                    cell.creatorLabel.text = name
             }
         })
         
@@ -721,86 +692,6 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
             }
             
         }
-        
-//        let imageCache = NSCache()
-//        
-//        cell.profileImageView.image = UIImage(named: "Placeholder.png")
-//        if let image = imageCache.objectForKey(messageCreator) as? UIImage {
-//            println("pull from cache")
-//            cell.profileImageView.image = image
-//        } else {
-//            // 3
-//            cell.profileImageView.image = UIImage(named: "Placeholder.png")
-//            
-//            // 4
-//            let downloadingFilePath1 = (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent("temp-download")
-//            let downloadingFileURL1 = NSURL(fileURLWithPath: downloadingFilePath1 )
-//            let transferManager = AWSS3TransferManager.defaultS3TransferManager()
-//            
-//            
-//            let readRequest1 : AWSS3TransferManagerDownloadRequest = AWSS3TransferManagerDownloadRequest()
-//            readRequest1.bucket = S3BucketName
-//            readRequest1.key =  messageCreator
-//            readRequest1.downloadingFileURL = downloadingFileURL1
-//            
-//            let task = transferManager.download(readRequest1)
-//            task.continueWithBlock { (task) -> AnyObject! in
-//                if task.error != nil {
-//                    print(task.error)
-//                } else {
-//                    let image = UIImage(contentsOfFile: downloadingFilePath1)
-//                    
-//                    imageCache.setObject(image!, forKey: messageCreator)
-//                    dispatch_async(dispatch_get_main_queue()
-//                        , { () -> Void in
-//                            
-//                            cell.profileImageView.image = UIImage(contentsOfFile: downloadingFilePath1)
-//                            cell.setNeedsLayout()
-//                            
-//                    })
-//                    println("Fetched image")
-//                }
-//                return nil
-//            }
-//            
-//        }
-        
-//        // Pull Profile Image from S3
-//        
-//        let downloadingFilePath1 = (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent("temp-download")
-//        let downloadingFileURL1 = NSURL(fileURLWithPath: downloadingFilePath1 )
-//        let transferManager = AWSS3TransferManager.defaultS3TransferManager()
-//
-//        let readRequest1 : AWSS3TransferManagerDownloadRequest = AWSS3TransferManagerDownloadRequest()
-//        readRequest1.bucket = S3BucketName
-//        readRequest1.key =  messageCreator
-//        readRequest1.downloadingFileURL = downloadingFileURL1
-//        
-//        cell.profileImageView.image = UIImage(named: "Placeholder.png")
-//        let task = transferManager.download(readRequest1)
-//        task.continueWithBlock { (task) -> AnyObject! in
-////            print(task.error)
-//            if task.error != nil {
-//            } else {
-//                dispatch_async(dispatch_get_main_queue()
-//                    , { () -> Void in
-//                        if let image = UIImage(contentsOfFile: downloadingFilePath1) {
-//                            cell.profileImageView.image = image
-//                        } else {
-//                            // Default image or nil
-//                            cell.profileImageView.image = UIImage(named: "Placeholder.png")
-//                        }
-//                        
-////                        cell.profileImageView.image = UIImage(contentsOfFile: downloadingFilePath1)
-//                        
-//                })
-////                println("Fetched image")
-//            }
-//            return nil
-//        }
-////        cell.setNeedsUpdateConstraints()
-////        cell.updateConstraintsIfNeeded()
-//        cell.layoutIfNeeded()
         
         return cell
     }

@@ -57,9 +57,6 @@ class PicturesViewController: UIViewController {
                 dispatch_async(dispatch_get_main_queue()
                     , { () -> Void in
                         self.imageView.image = UIImage(contentsOfFile: downloadingFilePath1)
-//                        self.imageView.setNeedsDisplay()
-//                        self.imageView.reloadInputViews()
-                        
                 })
                 print("Fetched image")
             }

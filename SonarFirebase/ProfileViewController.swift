@@ -25,14 +25,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-//        var newUrl = "https://sonarapp.firebaseio.com/images/" + currentUser
-//        var newRef = Firebase(url: newUrl)
-//        newRef.observeEventType(.Value, withBlock: { snapshot in
-//            var baseString = snapshot.value as! String
-//            var decodedData = NSData(base64EncodedString: baseString, options: NSDataBase64DecodingOptions())
-//            var decodedImage = UIImage(data: decodedData!)
-//            self.imageView.image = decodedImage
-//        })
         self.imageView.frame = CGRectMake(0, 0, 100, 100)
         self.imageView.layer.borderWidth=1.0
         self.imageView.layer.masksToBounds = false
@@ -144,17 +136,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
                 println("Error: \(error!) \(error!.userInfo!)")
             }
         }
-
-        
-//        let userImageFile = anotherPhoto["imageFile"] as PFFile
-//        userImageFile.getDataInBackgroundWithBlock {
-//            (imageData: NSData?, error: NSError?) -> Void in
-//            if error == nil {
-//                if let imageData = imageData {
-//                    let image = UIImage(data:imageData)
-//                }
-//            }
-//        }
     }
     
 
@@ -213,28 +194,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
         let image = info[UIImagePickerControllerOriginalImage] as! UIImage
         
-        
-        // Save image into base64 String and save in Firebase
-//        let imageData = UIImageJPEGRepresentation(image, 1.0)
-//        let thumbNailData = UIImageJPEGRepresentation(image, 0.1)
-        
-//        var base64 = imageData.base64EncodedStringWithOptions(.allZeros)
-        
-        // Pare Image Integration
-//        let data = UIImageJPEGRepresentation(image, 0.01)
-//        
-//        let imageFile = PFFile(name: "profilePic.png", data: data)
-//        
-//        imageFile.saveInBackground()
-//        
-//        var profileImage = PFObject(className: "profilePicture")
-//        profileImage.setObject(currentUser, forKey: "userID")
-//        profileImage.setObject(imageFile, forKey: "profilePicture")
-//        profileImage.saveInBackground()
-        
-        
-        
-        
         // Save image in S3 with the userID
         let transferManager = AWSS3TransferManager.defaultS3TransferManager()
         let testFileURL1 = NSURL(fileURLWithPath: (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent("temp"))
@@ -257,23 +216,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             }
             return nil
         }
-        
-        // Save image in Firebase database
-//        let url = "https://sonarapp.firebaseio.com/images"
-//        let imageRef = Firebase(url: url)
-//        imageRef.childByAppendingPath(currentUser).setValue(base64)
-        
-//        var newUrl = "https://sonarapp.firebaseio.com/images/" + currentUser
-//        var newRef = Firebase(url: newUrl)
-//        newRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
-//            var baseString = snapshot.value as! String
-//            var decodedData = NSData(base64EncodedString: baseString, options: NSDataBase64DecodingOptions())
-//            var decodedImage = UIImage(data: decodedData!)
-//            self.imageView.image = decodedImage
-//        })
-        
-//        self.imageView.image = UIImage(data: imageData)
-        
         
         self.dismissViewControllerAnimated(true, completion: nil)
         

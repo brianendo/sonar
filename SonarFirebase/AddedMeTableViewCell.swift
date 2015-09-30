@@ -1,16 +1,20 @@
 //
-//  PickTargetTableViewCell.swift
-//  SonarFirebase
+//  AddedMeTableViewCell.swift
+//  Sonar
 //
-//  Created by Brian Endo on 8/26/15.
+//  Created by Brian Endo on 9/30/15.
 //  Copyright (c) 2015 Brian Endo. All rights reserved.
 //
 
 import UIKit
 
-class PickTargetTableViewCell: UITableViewCell {
+class AddedMeTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var nameLabel: UILabel!
+    
+    @IBOutlet weak var friendLabel: UILabel!
+    
+    @IBOutlet weak var toggleButton: UIButton!
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -22,5 +26,6 @@ class PickTargetTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
+    
 
 }

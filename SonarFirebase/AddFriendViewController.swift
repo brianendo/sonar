@@ -21,10 +21,10 @@ class AddFriendViewController: UIViewController, UITableViewDataSource, UITableV
     var friendArray = [AnyObject]()
     
     func loadData() {
-        userRef.queryOrderedByChild("firstname").observeEventType(.ChildAdded, withBlock: { snapshot in
-            if let firstname = snapshot.value["firstname"] as? String {
+        userRef.queryOrderedByChild("name").observeEventType(.ChildAdded, withBlock: { snapshot in
+            if let name = snapshot.value["name"] as? String {
                 self.friendArray.append(snapshot.key)
-                self.firstnameArray.append(firstname)
+                self.firstnameArray.append(name)
                 self.tableView.reloadData()
                 
             }
@@ -95,11 +95,11 @@ class AddFriendViewController: UIViewController, UITableViewDataSource, UITableV
     func addButton(sender: UIButton!) {
         let user: (AnyObject) = friendArray[sender.tag]
         
-        let url = "https://sonarapp.firebaseio.com/users/" +   currentUser + "/targets/"
-        
-        let currentUserRef = Firebase(url: url)
-        
-        currentUserRef.childByAppendingPath(user as! String).setValue(true)
+//        let url = "https://sonarapp.firebaseio.com/users/" +   currentUser + "/targets/"
+//        
+//        let currentUserRef = Firebase(url: url)
+//        
+//        currentUserRef.childByAppendingPath(user as! String).setValue(true)
         
         let userUrl = "https://sonarapp.firebaseio.com/user_activity/" + currentUser + "/added/"
         let userActivityRef = Firebase(url: userUrl)

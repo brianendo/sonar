@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class LogInViewController: UIViewController {
+class LogInViewController: UIViewController, UITextFieldDelegate {
 
     
     @IBOutlet weak var emailTextField: UITextField!
@@ -19,15 +19,74 @@ class LogInViewController: UIViewController {
     
     @IBOutlet var logInView: UIView!
     
+    @IBOutlet weak var bottomSpaceToLayout: NSLayoutConstraint!
+    
+    @IBOutlet weak var logInButton: UIButton!
+    
+    
+    func registerForKeyboardNotifications ()-> Void   {
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardDidShowNotification, object: nil)
+        
+    }
+    
+    
+    func keyboardWillShow(notification: NSNotification) {
+        var info = notification.userInfo!
+        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+        
+        self.bottomSpaceToLayout.constant = keyboardFrame.size.height
+    }
+    
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
+        self.registerForKeyboardNotifications()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         self.navigationController?.navigationBarHidden = false
         
-        // Add a tap gesture recognizer to the table view
-        let tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "viewTapped")
-        self.logInView.addGestureRecognizer(tapGesture)
+//        // Add a tap gesture recognizer to the table view
+//        let tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "viewTapped")
+//        self.logInView.addGestureRecognizer(tapGesture)
+        
+        self.emailTextField.becomeFirstResponder()
+        self.logInButton.enabled = false
+        
+        self.emailTextField.addTarget(self, action: "textFieldDidChange:", forControlEvents: UIControlEvents.EditingChanged)
+        self.passwordTextField.addTarget(self, action: "textFieldDidChange:", forControlEvents: UIControlEvents.EditingChanged)
+    }
+    
+    func textFieldDidChange(textField: UITextField) {
+        if self.emailTextField.text != "" &&  self.passwordTextField.text != "" {
+            self.logInButton.enabled = true
+        } else if self.emailTextField.text == "" || self.passwordTextField.text == "" {
+            self.logInButton.enabled = false
+        }
+    }
+    
+    override func viewDidLayoutSubviews() {
+        let border = CALayer()
+        let width = CGFloat(0.5)
+        border.borderColor = UIColor.lightGrayColor().CGColor
+        border.frame = CGRect(x: 0, y: self.emailTextField.frame.size.height - width, width:  self.emailTextField.frame.size.width, height: self.emailTextField.frame.size.height)
+        
+        border.borderWidth = width
+        self.emailTextField.layer.addSublayer(border)
+        self.emailTextField.layer.masksToBounds = true
+        
+        let passwordBorder = CALayer()
+        let passwordWidth = CGFloat(0.5)
+        passwordBorder.borderColor = UIColor.lightGrayColor().CGColor
+        passwordBorder.frame = CGRect(x: 0, y: self.passwordTextField.frame.size.height - passwordWidth, width:  self.passwordTextField.frame.size.width, height: self.emailTextField.frame.size.height)
+        
+        passwordBorder.borderWidth = passwordWidth
+        self.passwordTextField.layer.addSublayer(passwordBorder)
+        self.passwordTextField.layer.masksToBounds = true
     }
 
     override func didReceiveMemoryWarning() {
@@ -36,18 +95,21 @@ class LogInViewController: UIViewController {
     }
     
     
-    func viewTapped() {
-        
-        // Force the textfield to end editing
-        self.passwordTextField.endEditing(true)
-        self.emailTextField.endEditing(true)
-    }
+//    func viewTapped() {
+//        
+//        // Force the textfield to end editing
+//        self.passwordTextField.endEditing(true)
+//        self.emailTextField.endEditing(true)
+//    }
     
     @IBAction func logInButtonPressed(sender: UIButton) {
         ref.authUser(emailTextField.text, password: passwordTextField.text,
             withCompletionBlock: { error, authData in
                 if error != nil {
                     // There was an error logging in to this account
+                    var alert = UIAlertController(title: "Please try again", message: "Username and password do not match", preferredStyle: UIAlertControllerStyle.Alert)
+                    alert.addAction(UIAlertAction(title: "Try again", style: UIAlertActionStyle.Default, handler: nil))
+                    self.presentViewController(alert, animated: true, completion: nil)
                 } else {
                     // We are now logged in
                     print(authData.uid)

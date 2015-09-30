@@ -22,7 +22,7 @@ class TargetListViewController: UIViewController, UITableViewDelegate, UITableVi
     func loadTargetData() {
         self.friendsArray.removeAll(keepCapacity: true)
         
-        let url = "https://sonarapp.firebaseio.com/users" + "/" + currentUser + "/targets/"
+        let url = "https://sonarapp.firebaseio.com/users/" + currentUser + "/targets/"
         let targetRef = Firebase(url: url)
         
         
@@ -34,13 +34,10 @@ class TargetListViewController: UIViewController, UITableViewDelegate, UITableVi
             let nameRef = Firebase(url: nameUrl)
             nameRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
                 // do some stuff once
-                if let firstname = snapshot.value["firstname"] as? String {
-                    if let lastname = snapshot.value["lastname"] as? String {
-                        let name = firstname + " " + lastname
+                if let name = snapshot.value["name"] as? String {
                         self.friendsArray.append(name)
                         print(name)
                         self.tableView.reloadData()
-                    }
                 }
                 
                 
