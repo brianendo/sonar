@@ -56,6 +56,10 @@
 		8EE3284F1B8EDFA0000F4500 /* PickTargetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE3284E1B8EDFA0000F4500 /* PickTargetViewController.swift */; };
 		8EE328511B8EDFB8000F4500 /* PickTargetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE328501B8EDFB8000F4500 /* PickTargetTableViewCell.swift */; };
 		8EE7F6481BBCD8C2007AB71D /* VerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE7F6471BBCD8C2007AB71D /* VerificationViewController.swift */; };
+		8EE7F64A1BBDAA89007AB71D /* AddressBookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE7F6491BBDAA89007AB71D /* AddressBookViewController.swift */; };
+		8EE7F64C1BBDBA84007AB71D /* AddressBookTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE7F64B1BBDBA84007AB71D /* AddressBookTableViewCell.swift */; };
+		8EE7F64E1BBDD818007AB71D /* AddressBookPerson.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE7F64D1BBDD818007AB71D /* AddressBookPerson.swift */; };
+		8EE7F6501BBDE685007AB71D /* ProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE7F64F1BBDE685007AB71D /* ProfileTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -126,6 +130,10 @@
 		8EE3284E1B8EDFA0000F4500 /* PickTargetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickTargetViewController.swift; sourceTree = "<group>"; };
 		8EE328501B8EDFB8000F4500 /* PickTargetTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickTargetTableViewCell.swift; sourceTree = "<group>"; };
 		8EE7F6471BBCD8C2007AB71D /* VerificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerificationViewController.swift; sourceTree = "<group>"; };
+		8EE7F6491BBDAA89007AB71D /* AddressBookViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressBookViewController.swift; sourceTree = "<group>"; };
+		8EE7F64B1BBDBA84007AB71D /* AddressBookTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressBookTableViewCell.swift; sourceTree = "<group>"; };
+		8EE7F64D1BBDD818007AB71D /* AddressBookPerson.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressBookPerson.swift; sourceTree = "<group>"; };
+		8EE7F64F1BBDE685007AB71D /* ProfileTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileTableViewController.swift; sourceTree = "<group>"; };
 		9BE26174C57C8B782218DEEF /* Pods_Sonar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Sonar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -201,6 +209,7 @@
 			isa = PBXGroup;
 			children = (
 				8EAC77631B963B23002D2890 /* Post.swift */,
+				8EE7F64D1BBDD818007AB71D /* AddressBookPerson.swift */,
 				8E5226C01B965B1E002BD8FA /* Message.swift */,
 				8EB2170B1BACB76F005DA377 /* MyTextView.swift */,
 			);
@@ -235,9 +244,12 @@
 				8E5227371BA101DF002BD8FA /* CreatePulse */,
 				8E5227381BA10202002BD8FA /* Friends */,
 				8E5226C81B9A3194002BD8FA /* ProfileViewController.swift */,
+				8EE7F64F1BBDE685007AB71D /* ProfileTableViewController.swift */,
 				8E5227331B9F972F002BD8FA /* PicturesViewController.swift */,
 				8EE328191B8B939E000F4500 /* Main.storyboard */,
 				8E5227351BA0E3D0002BD8FA /* WebViewController.swift */,
+				8EE7F6491BBDAA89007AB71D /* AddressBookViewController.swift */,
+				8EE7F64B1BBDBA84007AB71D /* AddressBookTableViewCell.swift */,
 				8EAC775F1B8FA07A002D2890 /* RadarViewController.swift */,
 				8EAC77611B8FA0A3002D2890 /* RadarTableViewCell.swift */,
 				8E5226C21B976DC1002BD8FA /* ChatTableViewController.swift */,
@@ -474,10 +486,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				8EE7F6481BBCD8C2007AB71D /* VerificationViewController.swift in Sources */,
+				8EE7F64C1BBDBA84007AB71D /* AddressBookTableViewCell.swift in Sources */,
 				8EAC77621B8FA0A3002D2890 /* RadarTableViewCell.swift in Sources */,
 				8EE328161B8B939E000F4500 /* AppDelegate.swift in Sources */,
 				8E5226C11B965B1E002BD8FA /* Message.swift in Sources */,
 				8EE328451B8BF047000F4500 /* AddFriendViewController.swift in Sources */,
+				8EE7F6501BBDE685007AB71D /* ProfileTableViewController.swift in Sources */,
 				8E5227361BA0E3D0002BD8FA /* WebViewController.swift in Sources */,
 				8EE3284D1B8E52CD000F4500 /* TargetListTableViewCell.swift in Sources */,
 				8EAC77601B8FA07A002D2890 /* RadarViewController.swift in Sources */,
@@ -485,6 +499,7 @@
 				8EE328361B8B9530000F4500 /* StartViewController.swift in Sources */,
 				8EE328511B8EDFB8000F4500 /* PickTargetTableViewCell.swift in Sources */,
 				8EB2170C1BACB76F005DA377 /* MyTextView.swift in Sources */,
+				8EE7F64A1BBDAA89007AB71D /* AddressBookViewController.swift in Sources */,
 				8E5226C91B9A3194002BD8FA /* ProfileViewController.swift in Sources */,
 				8E483BC41BBCC1C300FAE0B6 /* PhoneNumberViewController.swift in Sources */,
 				8EE328471B8BF062000F4500 /* AddFriendTableViewCell.swift in Sources */,
@@ -497,6 +512,7 @@
 				8E5226C51B976EDD002BD8FA /* ChatTableViewCell.swift in Sources */,
 				8E5227341B9F972F002BD8FA /* PicturesViewController.swift in Sources */,
 				8EE328401B8BAB75000F4500 /* CreatePulseViewController.swift in Sources */,
+				8EE7F64E1BBDD818007AB71D /* AddressBookPerson.swift in Sources */,
 				8E06720C1BBC9ADB00DD872F /* UsernameViewController.swift in Sources */,
 				8EE328381B8B953F000F4500 /* LogInViewController.swift in Sources */,
 			);

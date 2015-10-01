@@ -95,6 +95,11 @@ class VerificationViewController: UIViewController {
                 let userRef = Firebase(url: userUrl)
                 userRef.setValue(self.phoneNumber)
                 println("Made It")
+                
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let mainVC = storyboard.instantiateInitialViewController() as! UIViewController
+                self.presentViewController(mainVC, animated: true, completion: nil)
+
             } else {
                 var alert = UIAlertController(title: "Wrong verification code", message: "Please retry", preferredStyle: UIAlertControllerStyle.Alert)
                 alert.addAction(UIAlertAction(title: "Back", style: UIAlertActionStyle.Default, handler: nil))
@@ -105,7 +110,7 @@ class VerificationViewController: UIViewController {
     }
     
     @IBAction func resendCodeButtonPressed(sender: UIButton) {
-        let alertController = UIAlertController(title: "Code not working?", message: "Please input your phone number:", preferredStyle: .Alert)
+        let alertController = UIAlertController(title: "Code not working?", message: "Please input your phone number with your country code:", preferredStyle: .Alert)
         
         let confirmAction = UIAlertAction(title: "Confirm", style: .Default) { (_) in
             if let field = alertController.textFields![0] as? UITextField {
