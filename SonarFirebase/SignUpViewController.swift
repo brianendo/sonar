@@ -166,9 +166,10 @@ class SignUpViewController: UIViewController {
                                         println("saved")
                                     } else {
                                         // There was a problem, check error.description
-                                        println("erro")
+                                        println("error")
                                     }
                                 }
+                                self.performSegueWithIdentifier("showUsername", sender: self)
                                 
 //                                let storyboard = UIStoryboard(name: "Main", bundle: nil)
 //                                let mainVC = storyboard.instantiateInitialViewController() as! UIViewController

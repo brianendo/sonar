@@ -11,6 +11,7 @@
 		8E06720C1BBC9ADB00DD872F /* UsernameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E06720B1BBC9ADB00DD872F /* UsernameViewController.swift */; };
 		8E3927BE1BBC5636004E1674 /* AddedMeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E3927BD1BBC5636004E1674 /* AddedMeViewController.swift */; };
 		8E3927C01BBC5793004E1674 /* AddedMeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E3927BF1BBC5793004E1674 /* AddedMeTableViewCell.swift */; };
+		8E483BC41BBCC1C300FAE0B6 /* PhoneNumberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E483BC31BBCC1C300FAE0B6 /* PhoneNumberViewController.swift */; };
 		8E5226C11B965B1E002BD8FA /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5226C01B965B1E002BD8FA /* Message.swift */; };
 		8E5226C31B976DC1002BD8FA /* ChatTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5226C21B976DC1002BD8FA /* ChatTableViewController.swift */; };
 		8E5226C51B976EDD002BD8FA /* ChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5226C41B976EDD002BD8FA /* ChatTableViewCell.swift */; };
@@ -54,6 +55,7 @@
 		8EE3284D1B8E52CD000F4500 /* TargetListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE3284C1B8E52CD000F4500 /* TargetListTableViewCell.swift */; };
 		8EE3284F1B8EDFA0000F4500 /* PickTargetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE3284E1B8EDFA0000F4500 /* PickTargetViewController.swift */; };
 		8EE328511B8EDFB8000F4500 /* PickTargetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE328501B8EDFB8000F4500 /* PickTargetTableViewCell.swift */; };
+		8EE7F6481BBCD8C2007AB71D /* VerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE7F6471BBCD8C2007AB71D /* VerificationViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,6 +74,7 @@
 		8E06720B1BBC9ADB00DD872F /* UsernameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsernameViewController.swift; sourceTree = "<group>"; };
 		8E3927BD1BBC5636004E1674 /* AddedMeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddedMeViewController.swift; sourceTree = "<group>"; };
 		8E3927BF1BBC5793004E1674 /* AddedMeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddedMeTableViewCell.swift; sourceTree = "<group>"; };
+		8E483BC31BBCC1C300FAE0B6 /* PhoneNumberViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhoneNumberViewController.swift; sourceTree = "<group>"; };
 		8E5226C01B965B1E002BD8FA /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		8E5226C21B976DC1002BD8FA /* ChatTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatTableViewController.swift; sourceTree = "<group>"; };
 		8E5226C41B976EDD002BD8FA /* ChatTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatTableViewCell.swift; sourceTree = "<group>"; };
@@ -122,6 +125,7 @@
 		8EE3284C1B8E52CD000F4500 /* TargetListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TargetListTableViewCell.swift; sourceTree = "<group>"; };
 		8EE3284E1B8EDFA0000F4500 /* PickTargetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickTargetViewController.swift; sourceTree = "<group>"; };
 		8EE328501B8EDFB8000F4500 /* PickTargetTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickTargetTableViewCell.swift; sourceTree = "<group>"; };
+		8EE7F6471BBCD8C2007AB71D /* VerificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerificationViewController.swift; sourceTree = "<group>"; };
 		9BE26174C57C8B782218DEEF /* Pods_Sonar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Sonar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -183,9 +187,9 @@
 		8E5227381BA10202002BD8FA /* Friends */ = {
 			isa = PBXGroup;
 			children = (
-				8EE328441B8BF047000F4500 /* AddFriendViewController.swift */,
 				8E3927BD1BBC5636004E1674 /* AddedMeViewController.swift */,
 				8E3927BF1BBC5793004E1674 /* AddedMeTableViewCell.swift */,
+				8EE328441B8BF047000F4500 /* AddFriendViewController.swift */,
 				8EE328461B8BF062000F4500 /* AddFriendTableViewCell.swift */,
 				8EE3284A1B8E52B1000F4500 /* TargetListViewController.swift */,
 				8EE3284C1B8E52CD000F4500 /* TargetListTableViewCell.swift */,
@@ -278,6 +282,8 @@
 			isa = PBXGroup;
 			children = (
 				8EE328421B8BD8AF000F4500 /* LogIn.storyboard */,
+				8EE7F6471BBCD8C2007AB71D /* VerificationViewController.swift */,
+				8E483BC31BBCC1C300FAE0B6 /* PhoneNumberViewController.swift */,
 				8EE328351B8B9530000F4500 /* StartViewController.swift */,
 				8EE328371B8B953F000F4500 /* LogInViewController.swift */,
 				8EE328391B8B9548000F4500 /* SignUpViewController.swift */,
@@ -467,6 +473,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8EE7F6481BBCD8C2007AB71D /* VerificationViewController.swift in Sources */,
 				8EAC77621B8FA0A3002D2890 /* RadarTableViewCell.swift in Sources */,
 				8EE328161B8B939E000F4500 /* AppDelegate.swift in Sources */,
 				8E5226C11B965B1E002BD8FA /* Message.swift in Sources */,
@@ -479,6 +486,7 @@
 				8EE328511B8EDFB8000F4500 /* PickTargetTableViewCell.swift in Sources */,
 				8EB2170C1BACB76F005DA377 /* MyTextView.swift in Sources */,
 				8E5226C91B9A3194002BD8FA /* ProfileViewController.swift in Sources */,
+				8E483BC41BBCC1C300FAE0B6 /* PhoneNumberViewController.swift in Sources */,
 				8EE328471B8BF062000F4500 /* AddFriendTableViewCell.swift in Sources */,
 				8E3927BE1BBC5636004E1674 /* AddedMeViewController.swift in Sources */,
 				8E5226C31B976DC1002BD8FA /* ChatTableViewController.swift in Sources */,

@@ -48,6 +48,7 @@ class UsernameViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         self.nextButton.enabled = false
+        self.usernameTextField.becomeFirstResponder()
         
         self.usernameTextField.addTarget(self, action: "textFieldDidChange:", forControlEvents: UIControlEvents.EditingChanged)
     }

@@ -1525,6 +1525,7 @@
                         <viewControllerLayoutGuide type="bottom" id="nbW-mJ-7LM"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="aYP-3s-7Wn">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Y4e-9Q-mFQ">

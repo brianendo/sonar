@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import Foundation
+import Parse
 
 class AddFriendViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
@@ -19,6 +20,19 @@ class AddFriendViewController: UIViewController, UITableViewDataSource, UITableV
     
     var firstnameArray = [String]()
     var friendArray = [AnyObject]()
+    
+    var creatorname = ""
+    
+    func loadName() {
+        let url = "https://sonarapp.firebaseio.com/users/" + currentUser
+        let userRef = Firebase(url: url)
+        
+        userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+            if let name = snapshot.value["name"] as? String {
+                self.creatorname = name
+            }
+        })
+    }
     
     func loadData() {
         userRef.queryOrderedByChild("name").observeEventType(.ChildAdded, withBlock: { snapshot in
@@ -52,7 +66,7 @@ class AddFriendViewController: UIViewController, UITableViewDataSource, UITableV
         self.tableView.dataSource = self
         self.tableView.reloadData()
         
-        
+        self.loadName()
         self.loadData()
     }
     
@@ -108,6 +122,29 @@ class AddFriendViewController: UIViewController, UITableViewDataSource, UITableV
         let otherUserUrl = "https://sonarapp.firebaseio.com/user_activity/" + (user as! String) + "/addedme/"
         let otherUserActivityRef = Firebase(url: otherUserUrl)
         otherUserActivityRef.childByAppendingPath(currentUser).setValue(true)
+        
+        let pushURL = "https://sonarapp.firebaseio.com/users/" + (user as! String) + "/pushId"
+        let pushRef = Firebase(url: pushURL)
+        pushRef.observeEventType(.Value, withBlock: {
+            snapshot in
+            if snapshot.value is NSNull {
+                println("Did not enable push notifications")
+            } else {
+                // Create our Installation query
+                let pushQuery = PFInstallation.query()
+                pushQuery?.whereKey("installationId", equalTo: snapshot.value)
+                
+                // Send push notification to query
+                let push = PFPush()
+                push.setQuery(pushQuery) // Set our Installation query
+                let data = [
+                    "alert": "\(self.creatorname) added you",
+                    "badge": "Increment",
+                ]
+                push.setData(data)
+                push.sendPushInBackground()
+            }
+        })
         
         print(user)
         print(currentUser)

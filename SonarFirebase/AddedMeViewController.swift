@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import Parse
 
 class AddedMeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
@@ -16,6 +17,19 @@ class AddedMeViewController: UIViewController, UITableViewDataSource, UITableVie
     
     var userIdArray = [String]()
     var nameArray = [String]()
+    
+    var creatorname = ""
+    
+    func loadName() {
+        let url = "https://sonarapp.firebaseio.com/users/" + currentUser
+        let userRef = Firebase(url: url)
+        
+        userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+            if let name = snapshot.value["name"] as? String {
+                    self.creatorname = name
+            }
+        })
+    }
     
     func loadData() {
         let addedMeUrl = "https://sonarapp.firebaseio.com/user_activity/" + currentUser + "/addedme/"
@@ -45,6 +59,7 @@ class AddedMeViewController: UIViewController, UITableViewDataSource, UITableVie
         self.tableView.dataSource = self
         self.tableView.delegate = self
         self.loadData()
+        self.loadName()
     }
 
     override func didReceiveMemoryWarning() {
@@ -103,6 +118,30 @@ class AddedMeViewController: UIViewController, UITableViewDataSource, UITableVie
             let friendUrl = "https://sonarapp.firebaseio.com/users/" + user + "/friends/"
             let friendRef = Firebase(url: friendUrl)
             friendRef.childByAppendingPath(currentUser).setValue(true)
+            
+            let pushURL = "https://sonarapp.firebaseio.com/users/" + user + "/pushId"
+            let pushRef = Firebase(url: pushURL)
+            pushRef.observeEventType(.Value, withBlock: {
+                snapshot in
+                if snapshot.value is NSNull {
+                    println("Did not enable push notifications")
+                } else {
+                    // Create our Installation query
+                    let pushQuery = PFInstallation.query()
+                    pushQuery?.whereKey("installationId", equalTo: snapshot.value)
+                    
+                    println("Reached")
+                    // Send push notification to query
+                    let push = PFPush()
+                    push.setQuery(pushQuery) // Set our Installation query
+                    let data = [
+                        "alert": "You are now friends with \(self.creatorname)",
+                        "badge": "Increment"
+                    ]
+                    push.setData(data)
+                    push.sendPushInBackground()
+                }
+            })
         } else {
             sender.selected = false
             let userUrl = "https://sonarapp.firebaseio.com/user_activity/" + currentUser + "/added/" + user

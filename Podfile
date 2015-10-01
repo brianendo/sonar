@@ -20,6 +20,7 @@ target 'Sonar' do
     pod 'AWSSQS'
     pod 'AWSCognito'
     pod 'AWSCognitoSync'
+    pod 'Alamofire', '~> 1.x'
 end
 
 target 'SonarTests' do
