@@ -20,6 +20,10 @@
 		8E5226CD1B9A32F2002BD8FA /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E5226CC1B9A32F2002BD8FA /* MobileCoreServices.framework */; };
 		8E5227341B9F972F002BD8FA /* PicturesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5227331B9F972F002BD8FA /* PicturesViewController.swift */; };
 		8E5227361BA0E3D0002BD8FA /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5227351BA0E3D0002BD8FA /* WebViewController.swift */; };
+		8E9F733B1BBF07BD00D0850E /* AddUsernameTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9F733A1BBF07BD00D0850E /* AddUsernameTableViewCell.swift */; };
+		8E9F733E1BBF109B00D0850E /* Username.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9F733D1BBF109B00D0850E /* Username.swift */; };
+		8E9F73401BBF2B1B00D0850E /* SelfieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9F733F1BBF2B1B00D0850E /* SelfieViewController.swift */; };
+		8E9F73421BBF3D0E00D0850E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E9F73411BBF3D0E00D0850E /* AVFoundation.framework */; };
 		8EAC77601B8FA07A002D2890 /* RadarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EAC775F1B8FA07A002D2890 /* RadarViewController.swift */; };
 		8EAC77621B8FA0A3002D2890 /* RadarTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EAC77611B8FA0A3002D2890 /* RadarTableViewCell.swift */; };
 		8EAC77641B963B23002D2890 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EAC77631B963B23002D2890 /* Post.swift */; };
@@ -60,6 +64,7 @@
 		8EE7F64C1BBDBA84007AB71D /* AddressBookTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE7F64B1BBDBA84007AB71D /* AddressBookTableViewCell.swift */; };
 		8EE7F64E1BBDD818007AB71D /* AddressBookPerson.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE7F64D1BBDD818007AB71D /* AddressBookPerson.swift */; };
 		8EE7F6501BBDE685007AB71D /* ProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE7F64F1BBDE685007AB71D /* ProfileTableViewController.swift */; };
+		8EE7F6521BBE0503007AB71D /* AddUsernameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE7F6511BBE0503007AB71D /* AddUsernameViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,6 +93,10 @@
 		8E52272F1B9F925D002BD8FA /* SonarFirebase-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SonarFirebase-Bridging-Header.h"; sourceTree = "<group>"; };
 		8E5227331B9F972F002BD8FA /* PicturesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PicturesViewController.swift; sourceTree = "<group>"; };
 		8E5227351BA0E3D0002BD8FA /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
+		8E9F733A1BBF07BD00D0850E /* AddUsernameTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddUsernameTableViewCell.swift; sourceTree = "<group>"; };
+		8E9F733D1BBF109B00D0850E /* Username.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Username.swift; sourceTree = "<group>"; };
+		8E9F733F1BBF2B1B00D0850E /* SelfieViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelfieViewController.swift; sourceTree = "<group>"; };
+		8E9F73411BBF3D0E00D0850E /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		8EAC775F1B8FA07A002D2890 /* RadarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadarViewController.swift; sourceTree = "<group>"; };
 		8EAC77611B8FA0A3002D2890 /* RadarTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadarTableViewCell.swift; sourceTree = "<group>"; };
 		8EAC77631B963B23002D2890 /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
@@ -134,6 +143,7 @@
 		8EE7F64B1BBDBA84007AB71D /* AddressBookTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressBookTableViewCell.swift; sourceTree = "<group>"; };
 		8EE7F64D1BBDD818007AB71D /* AddressBookPerson.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressBookPerson.swift; sourceTree = "<group>"; };
 		8EE7F64F1BBDE685007AB71D /* ProfileTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileTableViewController.swift; sourceTree = "<group>"; };
+		8EE7F6511BBE0503007AB71D /* AddUsernameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddUsernameViewController.swift; sourceTree = "<group>"; };
 		9BE26174C57C8B782218DEEF /* Pods_Sonar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Sonar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -142,6 +152,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8E9F73421BBF3D0E00D0850E /* AVFoundation.framework in Frameworks */,
 				8EE2252E1BB0D1A50079F887 /* libsqlite3.dylib in Frameworks */,
 				8ED2864A1BB53140006FB6C3 /* FirebaseUI.framework in Frameworks */,
 				8EE2252C1BB0D19D0079F887 /* libz.dylib in Frameworks */,
@@ -201,6 +212,8 @@
 				8EE328461B8BF062000F4500 /* AddFriendTableViewCell.swift */,
 				8EE3284A1B8E52B1000F4500 /* TargetListViewController.swift */,
 				8EE3284C1B8E52CD000F4500 /* TargetListTableViewCell.swift */,
+				8EE7F6511BBE0503007AB71D /* AddUsernameViewController.swift */,
+				8E9F733A1BBF07BD00D0850E /* AddUsernameTableViewCell.swift */,
 			);
 			name = Friends;
 			sourceTree = "<group>";
@@ -212,8 +225,18 @@
 				8EE7F64D1BBDD818007AB71D /* AddressBookPerson.swift */,
 				8E5226C01B965B1E002BD8FA /* Message.swift */,
 				8EB2170B1BACB76F005DA377 /* MyTextView.swift */,
+				8E9F733D1BBF109B00D0850E /* Username.swift */,
 			);
 			name = Models;
+			sourceTree = "<group>";
+		};
+		8E9F733C1BBF095300D0850E /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				8E5226C81B9A3194002BD8FA /* ProfileViewController.swift */,
+				8E5227331B9F972F002BD8FA /* PicturesViewController.swift */,
+			);
+			name = Other;
 			sourceTree = "<group>";
 		};
 		8EE328071B8B939E000F4500 = {
@@ -243,9 +266,8 @@
 				8EE328411B8BAB84000F4500 /* LogIn */,
 				8E5227371BA101DF002BD8FA /* CreatePulse */,
 				8E5227381BA10202002BD8FA /* Friends */,
-				8E5226C81B9A3194002BD8FA /* ProfileViewController.swift */,
+				8E9F733C1BBF095300D0850E /* Other */,
 				8EE7F64F1BBDE685007AB71D /* ProfileTableViewController.swift */,
-				8E5227331B9F972F002BD8FA /* PicturesViewController.swift */,
 				8EE328191B8B939E000F4500 /* Main.storyboard */,
 				8E5227351BA0E3D0002BD8FA /* WebViewController.swift */,
 				8EE7F6491BBDAA89007AB71D /* AddressBookViewController.swift */,
@@ -294,6 +316,7 @@
 			isa = PBXGroup;
 			children = (
 				8EE328421B8BD8AF000F4500 /* LogIn.storyboard */,
+				8E9F733F1BBF2B1B00D0850E /* SelfieViewController.swift */,
 				8EE7F6471BBCD8C2007AB71D /* VerificationViewController.swift */,
 				8E483BC31BBCC1C300FAE0B6 /* PhoneNumberViewController.swift */,
 				8EE328351B8B9530000F4500 /* StartViewController.swift */,
@@ -307,6 +330,7 @@
 		BE90DB4082EAA178505C8105 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8E9F73411BBF3D0E00D0850E /* AVFoundation.framework */,
 				8ED286471BB52E2E006FB6C3 /* AWSCore.framework */,
 				8ED286451BB52E1B006FB6C3 /* AWSS3.framework */,
 				8ED286431BB52DFE006FB6C3 /* AWSS3.framework */,
@@ -489,7 +513,9 @@
 				8EE7F64C1BBDBA84007AB71D /* AddressBookTableViewCell.swift in Sources */,
 				8EAC77621B8FA0A3002D2890 /* RadarTableViewCell.swift in Sources */,
 				8EE328161B8B939E000F4500 /* AppDelegate.swift in Sources */,
+				8E9F73401BBF2B1B00D0850E /* SelfieViewController.swift in Sources */,
 				8E5226C11B965B1E002BD8FA /* Message.swift in Sources */,
+				8E9F733B1BBF07BD00D0850E /* AddUsernameTableViewCell.swift in Sources */,
 				8EE328451B8BF047000F4500 /* AddFriendViewController.swift in Sources */,
 				8EE7F6501BBDE685007AB71D /* ProfileTableViewController.swift in Sources */,
 				8E5227361BA0E3D0002BD8FA /* WebViewController.swift in Sources */,
@@ -497,8 +523,10 @@
 				8EAC77601B8FA07A002D2890 /* RadarViewController.swift in Sources */,
 				8EE3284F1B8EDFA0000F4500 /* PickTargetViewController.swift in Sources */,
 				8EE328361B8B9530000F4500 /* StartViewController.swift in Sources */,
+				8EE7F6521BBE0503007AB71D /* AddUsernameViewController.swift in Sources */,
 				8EE328511B8EDFB8000F4500 /* PickTargetTableViewCell.swift in Sources */,
 				8EB2170C1BACB76F005DA377 /* MyTextView.swift in Sources */,
+				8E9F733E1BBF109B00D0850E /* Username.swift in Sources */,
 				8EE7F64A1BBDAA89007AB71D /* AddressBookViewController.swift in Sources */,
 				8E5226C91B9A3194002BD8FA /* ProfileViewController.swift in Sources */,
 				8E483BC41BBCC1C300FAE0B6 /* PhoneNumberViewController.swift in Sources */,

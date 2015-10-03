@@ -96,7 +96,8 @@ class AddedMeViewController: UIViewController, UITableViewDataSource, UITableVie
         
         cell.toggleButton.tag = indexPath.row
         cell.toggleButton.addTarget(self, action: "toggleButton:", forControlEvents: .TouchUpInside)
-        
+        cell.toggleButton.setTitle("Added", forState: .Selected)
+        cell.toggleButton.setTitle("Add", forState: .Normal)
 
         
         return cell

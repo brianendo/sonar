@@ -228,6 +228,7 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     override func viewWillAppear(animated: Bool) {
+
     }
     
     override func viewDidLoad() {
@@ -253,7 +254,7 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
                 
                 // Remove all posts when reloaded so it updates
                 self.posts.removeAll(keepCapacity: true)
-
+                
                 self.loadRadarData()
                 self.changedRadarData()
                 self.dataRemove()
@@ -274,7 +275,6 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
                 self.presentViewController(loginVC, animated: true, completion: nil)
             }
         })
-        
     }
     
     deinit {
@@ -443,24 +443,39 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
         let userMessageCount = posts[indexPath.row].messageCount
         
         let joinedStatus = posts[indexPath.row].joined
-        if joinedStatus == true {
-            cell.postImageView.image = UIImage(named: "Chat")
-            cell.backgroundColor = UIColor(red:0.98, green:0.98, blue:0.98, alpha:1.0)
-
-            let url = "https://sonarapp.firebaseio.com/posts/" + key + "/messageCount/"
-            let messageRef = Firebase(url: url)
-            messageRef.observeEventType(.Value, withBlock: {
-                snapshot in
-                let messageCount = snapshot.value as? Int
-                
-                if userMessageCount < messageCount {
-                    cell.backgroundColor = UIColor(red:0.92, green:0.92, blue:0.92, alpha:1.0)
-                } else {
-                    cell.backgroundColor = UIColor(red:0.98, green:0.98, blue:0.98, alpha:1.0)
-                }
-                
-            })
+        
+        let url = "https://sonarapp.firebaseio.com/posts/" + key + "/messageCount/"
+        let messageRef = Firebase(url: url)
+        messageRef.observeEventType(.Value, withBlock: {
+            snapshot in
+            let messageCount = snapshot.value as? Int
             
+            if userMessageCount < messageCount {
+                cell.backgroundColor = UIColor(red:0.92, green:0.92, blue:0.92, alpha:1.0)
+            } else {
+                cell.backgroundColor = UIColor(red:0.98, green:0.98, blue:0.98, alpha:1.0)
+            }
+            
+        })
+        
+//        if joinedStatus == true {
+//            cell.postImageView.image = UIImage(named: "Chat")
+//            cell.backgroundColor = UIColor(red:0.98, green:0.98, blue:0.98, alpha:1.0)
+//
+//            let url = "https://sonarapp.firebaseio.com/posts/" + key + "/messageCount/"
+//            let messageRef = Firebase(url: url)
+//            messageRef.observeEventType(.Value, withBlock: {
+//                snapshot in
+//                let messageCount = snapshot.value as? Int
+//                
+//                if userMessageCount < messageCount {
+//                    cell.backgroundColor = UIColor(red:0.92, green:0.92, blue:0.92, alpha:1.0)
+//                } else {
+//                    cell.backgroundColor = UIColor(red:0.98, green:0.98, blue:0.98, alpha:1.0)
+//                }
+//                
+//            })
+//            
 //            let changedUrl = "https://sonarapp.firebaseio.com/posts/" + key + "/messageCount/"
 //            let changeMessageRef = Firebase(url: changedUrl)
 //            changeMessageRef.observeEventType(.ChildChanged, withBlock: {
@@ -475,10 +490,10 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
 //                }
 //                
 //            })
-        } else {
-            cell.postImageView.image = UIImage(named: "Pulse")
-            cell.backgroundColor = UIColor(red:0.92, green:0.92, blue:0.92, alpha:1.0)
-        }
+//        } else {
+//            cell.postImageView.image = UIImage(named: "Pulse")
+//            cell.backgroundColor = UIColor(red:0.92, green:0.92, blue:0.92, alpha:1.0)
+//        }
         
         
         

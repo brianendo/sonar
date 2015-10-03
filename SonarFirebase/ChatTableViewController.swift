@@ -426,75 +426,75 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         
         
         for target in targetIdArray {
-            let targetUrl = "https://sonarapp.firebaseio.com/users/" + target + "/postsReceived/" + postID! + "/joined/"
-            let targetRef = Firebase(url: targetUrl)
-            targetRef.observeSingleEventOfType(.Value, withBlock: {
-                snapshot in
-                let joined = snapshot.value as? Bool
-                if joined == true {
-                    let pushURL = "https://sonarapp.firebaseio.com/users/" + target + "/pushId"
-                    let pushRef = Firebase(url: pushURL)
-                    pushRef.observeSingleEventOfType(.Value, withBlock: {
-                        snapshot in
-                        if snapshot.value is NSNull {
-                            println("Did not enable push notifications")
-                        } else {
-                            println("Made it")
-                            // Create our Installation query
-                            let pushQuery = PFInstallation.query()
-                            pushQuery?.whereKey("installationId", equalTo: snapshot.value)
-                            
-                            // Send push notification to query
-                            let push = PFPush()
-                            push.setQuery(pushQuery) // Set our Installation query
-                            let data = [
-                                "alert": "\(self.messageCreatorName): \(newMessageText)",
-                                "badge": "Increment",
-                                "post": self.postID!
-                            ]
-                            push.setData(data)
-                            push.sendPushInBackground()
-                        }
-                    })
-                    
-                    
-
-                } else {
-                    let updatePost = "https://sonarapp.firebaseio.com/users/" + target + "/postsReceived/" + self.postID! + "/updatedAt/"
-                    var updatePostRef = Firebase(url: updatePost)
-                    updatePostRef.setValue([".sv":"timestamp"])
-                }
-            })
-            
-//            let pushURL = "https://sonarapp.firebaseio.com/users/" + target + "/pushId"
-//            let pushRef = Firebase(url: pushURL)
-//            pushRef.observeEventType(.Value, withBlock: {
+//            let targetUrl = "https://sonarapp.firebaseio.com/users/" + target + "/postsReceived/" + postID! + "/joined/"
+//            let targetRef = Firebase(url: targetUrl)
+//            targetRef.observeSingleEventOfType(.Value, withBlock: {
 //                snapshot in
-//                if snapshot.value is NSNull {
-//                    println("Did not enable push notifications")
-//                } else {
-//                    println("Made it")
-//                    // Create our Installation query
-//                    let pushQuery = PFInstallation.query()
-//                    pushQuery?.whereKey("installationId", equalTo: snapshot.value)
+//                let joined = snapshot.value as? Bool
+//                if joined == true {
+//                    let pushURL = "https://sonarapp.firebaseio.com/users/" + target + "/pushId"
+//                    let pushRef = Firebase(url: pushURL)
+//                    pushRef.observeSingleEventOfType(.Value, withBlock: {
+//                        snapshot in
+//                        if snapshot.value is NSNull {
+//                            println("Did not enable push notifications")
+//                        } else {
+//                            println("Made it")
+//                            // Create our Installation query
+//                            let pushQuery = PFInstallation.query()
+//                            pushQuery?.whereKey("installationId", equalTo: snapshot.value)
+//                            
+//                            // Send push notification to query
+//                            let push = PFPush()
+//                            push.setQuery(pushQuery) // Set our Installation query
+//                            let data = [
+//                                "alert": "\(self.messageCreatorName): \(newMessageText)",
+//                                "badge": "Increment",
+//                                "post": self.postID!
+//                            ]
+//                            push.setData(data)
+//                            push.sendPushInBackground()
+//                        }
+//                    })
 //                    
-//                    // Send push notification to query
-//                    let push = PFPush()
-//                    push.setQuery(pushQuery) // Set our Installation query
-//                    let data = [
-//                        "alert": "\(self.messageCreatorName): \(newMessageText)",
-//                        "badge": "Increment",
-//                        "post": self.postID!
-//                    ]
-//                    push.setData(data)
-//                    push.sendPushInBackground()
+//                    
+//
+//                } else {
+//                    let updatePost = "https://sonarapp.firebaseio.com/users/" + target + "/postsReceived/" + self.postID! + "/updatedAt/"
+//                    var updatePostRef = Firebase(url: updatePost)
+//                    updatePostRef.setValue([".sv":"timestamp"])
 //                }
 //            })
-//            
-//            let updatePost = "https://sonarapp.firebaseio.com/users/" + target + "/postsReceived/" + postID! + "/updatedAt/"
-//            var updatePostRef = Firebase(url: updatePost)
-//            updatePostRef.setValue([".sv":"timestamp"])
-//
+            
+            let pushURL = "https://sonarapp.firebaseio.com/users/" + target + "/pushId"
+            let pushRef = Firebase(url: pushURL)
+            pushRef.observeEventType(.Value, withBlock: {
+                snapshot in
+                if snapshot.value is NSNull {
+                    println("Did not enable push notifications")
+                } else {
+                    println("Made it")
+                    // Create our Installation query
+                    let pushQuery = PFInstallation.query()
+                    pushQuery?.whereKey("installationId", equalTo: snapshot.value)
+                    
+                    // Send push notification to query
+                    let push = PFPush()
+                    push.setQuery(pushQuery) // Set our Installation query
+                    let data = [
+                        "alert": "\(self.messageCreatorName): \(newMessageText)",
+                        "badge": "Increment",
+                        "post": self.postID!
+                    ]
+                    push.setData(data)
+                    push.sendPushInBackground()
+                }
+            })
+
+            let updatePost = "https://sonarapp.firebaseio.com/users/" + target + "/postsReceived/" + postID! + "/updatedAt/"
+            var updatePostRef = Firebase(url: updatePost)
+            updatePostRef.setValue([".sv":"timestamp"])
+
         }
         
         // Add messageCount

@@ -140,7 +140,7 @@ class ProfileTableViewController: UITableViewController, UIImagePickerController
             
             let mediaTypes:[String] = [kUTTypeImage as String]
             photoLibraryController.mediaTypes = mediaTypes
-            photoLibraryController.allowsEditing = false
+            photoLibraryController.allowsEditing = true
             
             self.presentViewController(photoLibraryController, animated: true, completion: nil)
         }
@@ -156,7 +156,7 @@ class ProfileTableViewController: UITableViewController, UIImagePickerController
                 //pass in the image as data
                 
                 cameraController.mediaTypes = mediaTypes
-                cameraController.allowsEditing = false
+                cameraController.allowsEditing = true
                 
                 self.presentViewController(cameraController, animated: true, completion: nil)
                 
@@ -180,13 +180,16 @@ class ProfileTableViewController: UITableViewController, UIImagePickerController
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
         let image = info[UIImagePickerControllerOriginalImage] as! UIImage
+        let editedImage = info[UIImagePickerControllerEditedImage] as! UIImage
+        
+        let squareImage = RBSquareImage(editedImage)
         
         // Save image in S3 with the userID
         let transferManager = AWSS3TransferManager.defaultS3TransferManager()
         let testFileURL1 = NSURL(fileURLWithPath: (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent("temp"))
         let uploadRequest1 : AWSS3TransferManagerUploadRequest = AWSS3TransferManagerUploadRequest()
         
-        let data = UIImageJPEGRepresentation(image, 0.01)
+        let data = UIImageJPEGRepresentation(squareImage, 0.01)
         data!.writeToURL(testFileURL1!, atomically: true)
         uploadRequest1.bucket = S3BucketName
         uploadRequest1.key =  currentUser
@@ -209,7 +212,26 @@ class ProfileTableViewController: UITableViewController, UIImagePickerController
         
     }
 
-
+    func RBSquareImage(image: UIImage) -> UIImage {
+        var originalWidth  = image.size.width
+        var originalHeight = image.size.height
+        
+        var edge: CGFloat
+        if originalWidth > originalHeight {
+            edge = originalHeight
+        } else {
+            edge = originalWidth
+        }
+        
+        var posX = (originalWidth  - edge) / 2.0
+        var posY = (originalHeight - edge) / 2.0
+        
+        var cropSquare = CGRectMake(posX, posY, edge, edge)
+        
+        var imageRef = CGImageCreateWithImageInRect(image.CGImage, cropSquare);
+        return UIImage(CGImage: imageRef, scale: UIScreen.mainScreen().scale, orientation: image.imageOrientation)!
+    }
+    
     
 
 }

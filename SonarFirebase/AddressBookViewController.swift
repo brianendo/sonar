@@ -222,6 +222,7 @@ class AddressBookViewController: UIViewController, UITableViewDataSource, UITabl
             cell.nameLabel.text = person
             cell.toggleButton.setTitle("Add", forState: .Normal)
             cell.toggleButton.setTitle("Added", forState: .Selected)
+            
             cell.toggleButton.tag = indexPath.row
             cell.toggleButton.addTarget(self, action: "addContact:", forControlEvents: .TouchUpInside)
         } else {
