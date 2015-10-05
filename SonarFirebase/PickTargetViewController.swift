@@ -40,7 +40,7 @@ class PickTargetViewController: UIViewController, UITableViewDataSource, UITable
     func loadTargetData() {
         self.friendsArray.removeAll(keepCapacity: true)
         
-        let url = "https://sonarapp.firebaseio.com/users/" + currentUser + "/targets/"
+        let url = "https://sonarapp.firebaseio.com/users/" + currentUser + "/friends/"
         let targetRef = Firebase(url: url)
         
         
@@ -84,16 +84,31 @@ class PickTargetViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.friendsArray.count
+        if section == 0 {
+            return 1
+        } else {
+            return self.friendsArray.count
+        }
+    }
+    
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 2
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell: PickTargetTableViewCell = tableView.dequeueReusableCellWithIdentifier("pickTargetCell", forIndexPath: indexPath) as! PickTargetTableViewCell
         
-        let target: (AnyObject) = friendsArray[indexPath.row]
-        cell.nameLabel.text = target as? String
+        if indexPath.section == 0 {
+            cell.nameLabel.text = "All Friends"
+            return cell
+        } else {
+            let target: (AnyObject) = friendsArray[indexPath.row]
+            cell.nameLabel.text = target as? String
+            
+            return cell
+        }
         
-        return cell
+        
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -101,30 +116,72 @@ class PickTargetViewController: UIViewController, UITableViewDataSource, UITable
         cell.contentView.backgroundColor = UIColor(red:0.89, green:0.89, blue:0.89, alpha:1.0)
         cell.nameLabel.textColor = UIColor(red:0.28, green:0.27, blue:0.43, alpha:1.0)
         cell.nameLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 18)
-        let target: (String) = targetIdArray[indexPath.row]
-        postTargets.append(target)
-        self.sendButton.enabled = true
+        
+        if indexPath.section == 0 {
+            var count = 0
+            for (count; count < targetIdArray.count; count++) {
+                var indexPath = NSIndexPath(forRow: count, inSection: 1)
+                tableView.deselectRowAtIndexPath(indexPath, animated: false)
+            }
+            postTargets = targetIdArray
+            self.sendButton.enabled = true
+            println(postTargets)
+        } else {
+            var allFriends = NSIndexPath(forRow: 0, inSection: 0)
+            let selectedIndexPaths = indexPathsForSelectedRowsInSection(indexPath.section)
+            if selectedIndexPaths?.count == 1 {
+                tableView.deselectRowAtIndexPath(allFriends, animated: false)
+                postTargets = []
+            }
+            
+            let target: (String) = targetIdArray[indexPath.row]
+            postTargets.append(target)
+            self.sendButton.enabled = true
+            println(postTargets)
+        }
+
+    }
+    
+    func indexPathsForSelectedRowsInSection(section: Int) -> [NSIndexPath]? {
+        return (tableView.indexPathsForSelectedRows() as? [NSIndexPath])?.filter({ (indexPath) -> Bool in
+            indexPath.section == section
+        })
     }
     
     func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
         let cell = self.tableView.cellForRowAtIndexPath(indexPath) as! PickTargetTableViewCell
         cell.contentView.backgroundColor = UIColor(red:0.98, green:0.98, blue:0.98, alpha:1.0)
-        let target: (String) = targetIdArray[indexPath.row]
-        let index = find(postTargets, target)
-        postTargets.removeAtIndex(index!)
         cell.nameLabel.textColor = UIColor.blackColor()
         cell.nameLabel.font = UIFont(name: "Helvetica Neue", size: 18)
-        if postTargets.count == 0 {
+        
+        if indexPath.section == 0 {
+            postTargets = []
             self.sendButton.enabled = false
+            println(postTargets)
+        } else {
+            let target: (String) = targetIdArray[indexPath.row]
+            let index = find(postTargets, target)
+            postTargets.removeAtIndex(index!)
+            
+            if postTargets.count == 0 {
+                self.sendButton.enabled = false
+            }
+            println(postTargets)
         }
-
     }
     
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if section == 1{
+            return "Friends List"
+        } else {
+            return nil
+        }
+    }
     
     @IBAction func sendButtonPressed(sender: UIBarButtonItem) {
         
         let dateLater = (NSDate().timeIntervalSince1970 + (60*15)) * 1000
-        let quickDate = (NSDate().timeIntervalSince1970 + (20)) * 1000
+        let quickDate = (NSDate().timeIntervalSince1970 + (65)) * 1000
         
         let postRef = ref.childByAppendingPath("posts")
         let post1 = ["content": content, "creator": currentUser, "messageCount": 0, "createdAt": [".sv":"timestamp"], "updatedAt": [".sv":"timestamp"], "endAt": quickDate ]
@@ -134,19 +191,6 @@ class PickTargetViewController: UIViewController, UITableViewDataSource, UITable
         let postID = post1Ref.key
         
         for target in postTargets {
-            
-//            let friendUrl = "https://sonarapp.firebaseio.com/users/" + target + "/targets/" + currentUser
-//            let friendRef = Firebase(url: friendUrl)
-//            friendRef.observeEventType(.Value, withBlock: {
-//                snapshot in
-//                let friendship = snapshot.value as? Bool
-//                println(friendship)
-//                if friendship == true {
-//                    println("Friends")
-//                } else {
-//                    println("Not Friends")
-//                }
-//            })
             
             let url = "https://sonarapp.firebaseio.com/posts/" + postID + "/targets/"
             let currentTargetRef = Firebase(url: url)
@@ -164,7 +208,7 @@ class PickTargetViewController: UIViewController, UITableViewDataSource, UITable
             
             let pushURL = "https://sonarapp.firebaseio.com/users/" + target + "/pushId"
             let pushRef = Firebase(url: pushURL)
-            pushRef.observeEventType(.Value, withBlock: {
+            pushRef.observeSingleEventOfType(.Value, withBlock: {
                 snapshot in
                 if snapshot.value is NSNull {
                     println("Did not enable push notifications")

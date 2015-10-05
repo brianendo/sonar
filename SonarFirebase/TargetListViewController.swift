@@ -18,11 +18,10 @@ class TargetListViewController: UIViewController, UITableViewDelegate, UITableVi
     var friendsArray = [AnyObject]()
 
     
-    
     func loadTargetData() {
         self.friendsArray.removeAll(keepCapacity: true)
         
-        let url = "https://sonarapp.firebaseio.com/users/" + currentUser + "/targets/"
+        let url = "https://sonarapp.firebaseio.com/users/" + currentUser + "/friends/"
         let targetRef = Firebase(url: url)
         
         

@@ -106,7 +106,6 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(true)
         self.messageCountUpdate()
-//        self.messageCountWhenLoading()
         
         self.deregisterFromKeyboardNotifications()
         
@@ -139,35 +138,6 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
     func fireUpdate() {
         let notification = NSNotification(name: "UpdateChatView", object: nil)
         NSNotificationCenter.defaultCenter().postNotification(notification)
-    }
-    
-    func loadPost() {
-        let postUrl = "https://sonarapp.firebaseio.com/posts/" + postID!
-        let postRef = Firebase(url: postUrl)
-        
-        postRef.observeEventType(.Value, withBlock: {
-            snapshot in
-            if let content = snapshot.value["content"] as? String {
-                if let creator = snapshot.value["creator"] as? String {
-                    let endAt = snapshot.value["endAt"] as? NSTimeInterval
-                    let url = "https://sonarapp.firebaseio.com/users/" + creator
-                    let userRef = Firebase(url: url)
-                    userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
-                        if let name = snapshot.value["name"] as? String {
-                                println(endAt)
-                                let endedDate = NSDate(timeIntervalSince1970: (endAt!/1000))
-                                var timeLeft = endedDate.timeIntervalSinceDate(NSDate())
-                                
-                                self.timeInterval = round(timeLeft)
-                                self.nameLabel.text = name
-                                self.headerTextView.text = content
-                                self.tableView.reloadData()
-                            }
-                    })
-                    }
-                
-            }
-        })
     }
     
     func loadPostData() {
@@ -211,7 +181,6 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
     }
     
     func loadMessageData() {
-//        let postID = postVC?.key
         let messagesUrl = "https://sonarapp.firebaseio.com/messages/" + postID!
         let messagesRef = Firebase(url: messagesUrl)
         
@@ -229,21 +198,6 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         
     }
     
-    
-    func updatePostTime() {
-        let lastMessageUrl = "https://sonarapp.firebaseio.com/messages/" + self.postID!
-        let lastMessageRef = Firebase(url: lastMessageUrl)
-        lastMessageRef.queryLimitedToLast(1).observeEventType(.ChildAdded, withBlock: {
-            snapshot in
-            if let messageTime = snapshot.value["createdAt"] as? String {
-                println(messageTime)
-                let postUpdatedUrl = "https://sonarapp.firebaseio.com/posts/" + self.postID!
-                let postUpdatedRef = Firebase(url: postUpdatedUrl)
-                let updatedAt = ["updatedAt": messageTime ]
-            postUpdatedRef.updateChildValues(updatedAt)
-            }
-        })
-    }
     
     func messageCountUpdate() {
         
@@ -313,11 +267,6 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         
         userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
             if let name = snapshot.value["name"] as? String {
-                    
-                    // Make join true
-                    let joinedUrl = "https://sonarapp.firebaseio.com/users/" + currentUser + "/postsReceived/" + self.postID! + "/joined/"
-                    let joinedRef = Firebase(url: joinedUrl)
-                    joinedRef.setValue(true)
                 
                     self.messageCreatorName = name
                     self.tableView.reloadData()
@@ -363,29 +312,24 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         self.tableView.dataSource = self
         
         self.sendMessageTextView.delegate = self
-        self.sendButton.enabled = false
+        
         self.sendMessageTextView.text = placeholder
         self.sendMessageTextView.textColor = UIColor.lightGrayColor()
         
         self.sendMessageTextView.selectedTextRange = self.sendMessageTextView.textRangeFromPosition(self.sendMessageTextView.beginningOfDocument, toPosition: self.sendMessageTextView.beginningOfDocument)
         
-        
+        self.sendButton.enabled = false
         
         // Add a tap gesture recognizer to the table view
         let tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "tableViewTapped")
         self.tableView.addGestureRecognizer(tapGesture)
-        
         self.tableView.tableFooterView = UIView(frame: CGRect.zeroRect)
-        
-        self.headerTextView.delegate = self
-        
-        
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 70
         
+        
+        
         self.messageCountUpdate()
-//        self.messageCountWhenLoading()
-//        self.messageCountWhenInChat()
         self.loadMessageData()
         self.loadName()
         self.loadTargetArray()
@@ -394,6 +338,8 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         self.loadPostData()
         
         self.removeFromTargetArray()
+        
+        self.headerTextView.delegate = self
         
         self.headerView.layer.masksToBounds = true
         self.headerView.layer.borderColor = UIColor(red:0.89, green:0.89, blue:0.89, alpha:1.0).CGColor
@@ -476,17 +422,10 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         messages.setValue(message1)
         
         
-        
-//        let index = find(self.targetIdArray, currentUser)
-//        if index != nil {
-//            self.targetIdArray.removeAtIndex(index!)
-//        }
-        
-        
         for target in targetIdArray {
             let pushURL = "https://sonarapp.firebaseio.com/users/" + target + "/pushId"
             let pushRef = Firebase(url: pushURL)
-            pushRef.observeEventType(.Value, withBlock: {
+            pushRef.observeSingleEventOfType(.Value, withBlock: {
                 snapshot in
                 if snapshot.value is NSNull {
                     println("Did not enable push notifications")
@@ -542,10 +481,10 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
                 
                 if messageCount == 1 {
                     let updates = ["updatedAt": [".sv":"timestamp"], "endAt": quickDate]
-                    postReceivedRef.setValue(updates)
+                    postReceivedRef.updateChildValues(updates as [NSObject : AnyObject])
                 } else {
                     let updates = ["updatedAt": [".sv":"timestamp"], "endAt": quickDate]
-                    postReceivedRef.setValue(updates)
+                    postReceivedRef.updateChildValues(updates as [NSObject : AnyObject])
                 }
                 
                 return FTransactionResult.successWithValue(currentData)

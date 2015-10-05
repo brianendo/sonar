@@ -15,9 +15,14 @@ class CreatePulseViewController: UIViewController, UITextViewDelegate {
     
     @IBOutlet weak var charRemainingLabel: UILabel!
     
-    @IBOutlet weak var bottomSpaceLayoutConstraint: NSLayoutConstraint!
+    @IBOutlet weak var bottomSpaceToLayoutGuide: NSLayoutConstraint!
+    
+    @IBOutlet weak var bottomView: UIView!
     
     @IBOutlet weak var doneButton: UIBarButtonItem!
+    
+    @IBOutlet weak var nextButton: UIButton!
+    
     
     var placeholder = "Ask your friends anything"
     
@@ -27,6 +32,7 @@ class CreatePulseViewController: UIViewController, UITextViewDelegate {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
         
         self.doneButton.enabled = false
+        self.nextButton.enabled = false
         
         // Do any additional setup after loading the view.
         pulseTextView.delegate = self
@@ -39,6 +45,17 @@ class CreatePulseViewController: UIViewController, UITextViewDelegate {
         pulseTextView.textColor = UIColor.lightGrayColor()
         
         pulseTextView.selectedTextRange = pulseTextView.textRangeFromPosition(pulseTextView.beginningOfDocument, toPosition: pulseTextView.beginningOfDocument)
+        
+        var nav = self.navigationController?.navigationBar
+        
+//        let font = UIFont(name: "Helvetica Neue", size: 20)
+        let font = UIFont.systemFontOfSize(25)
+        self.navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: font], forState: UIControlState.Normal)
+        
+        self.bottomView.layer.masksToBounds = true
+        self.bottomView.layer.borderColor = UIColor(red:0.89, green:0.89, blue:0.89, alpha:1.0).CGColor
+        self.bottomView.layer.borderWidth = 0.7
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -50,7 +67,7 @@ class CreatePulseViewController: UIViewController, UITextViewDelegate {
         var info = notification.userInfo!
         let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
         print(keyboardFrame)
-        self.bottomSpaceLayoutConstraint.constant = keyboardFrame.size.height + 5
+        self.bottomSpaceToLayoutGuide.constant = keyboardFrame.size.height
     }
     
     @IBAction func cancelButtonPressed(sender: UIBarButtonItem) {
@@ -75,6 +92,7 @@ class CreatePulseViewController: UIViewController, UITextViewDelegate {
             pulseTextView.selectedTextRange = textView.textRangeFromPosition(textView.beginningOfDocument, toPosition: textView.beginningOfDocument)
             
             self.doneButton.enabled = false
+            self.nextButton.enabled = false
             return false
         }
             
@@ -110,8 +128,10 @@ class CreatePulseViewController: UIViewController, UITextViewDelegate {
         let trimmedString = pulseTextView.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
         if count(trimmedString) == 0 {
             self.doneButton.enabled = false
+            self.nextButton.enabled = false
         } else {
             self.doneButton.enabled = true
+            self.nextButton.enabled = true
         }
     }
     

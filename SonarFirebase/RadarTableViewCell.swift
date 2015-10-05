@@ -31,10 +31,16 @@ class RadarTableViewCell: UITableViewCell, UITextViewDelegate {
             if timeInterval > 60 {
                 let time = Int(timeInterval/60)
                 self.timeLeftLabel.text = "\(time) m"
-            } else if timeInterval <= 60 {
+                self.postImageView.image = UIImage(named: "GreenPulse")
+            } else if (timeInterval <= 60 && timeInterval > 50) {
                 let time = Int(timeInterval)
                 self.timeLeftLabel.text = "\(time) s"
-            } else if timeInterval <= 0 {
+                self.postImageView.image = UIImage(named: "YellowPulse")
+            } else if timeInterval <= 50 {
+                let time = Int(timeInterval)
+                self.timeLeftLabel.text = "\(time) s"
+                self.postImageView.image = UIImage(named: "RedPulse")
+            }else if timeInterval <= 0 {
                 self.timeLeftLabel.text = "Dead"
             }
         }
