@@ -135,27 +135,32 @@ class PickTargetViewController: UIViewController, UITableViewDataSource, UITable
         
         for target in postTargets {
             
-            let friendUrl = "https://sonarapp.firebaseio.com/users/" + target + "/targets/" + currentUser
-            let friendRef = Firebase(url: friendUrl)
-            friendRef.observeEventType(.Value, withBlock: {
-                snapshot in
-                let friendship = snapshot.value as? Bool
-                println(friendship)
-                if friendship == true {
-                    println("Friends")
-                } else {
-                    println("Not Friends")
-                }
-            })
+//            let friendUrl = "https://sonarapp.firebaseio.com/users/" + target + "/targets/" + currentUser
+//            let friendRef = Firebase(url: friendUrl)
+//            friendRef.observeEventType(.Value, withBlock: {
+//                snapshot in
+//                let friendship = snapshot.value as? Bool
+//                println(friendship)
+//                if friendship == true {
+//                    println("Friends")
+//                } else {
+//                    println("Not Friends")
+//                }
+//            })
             
             let url = "https://sonarapp.firebaseio.com/posts/" + postID + "/targets/"
             let currentTargetRef = Firebase(url: url)
             currentTargetRef.childByAppendingPath(target).setValue(true)
             
             let postReceivedURL = "https://sonarapp.firebaseio.com/users/" + target + "/postsReceived/" + postID
-            let postReceived = ["joined": false, "messageCount": 0]
+            let postReceived = ["updatedAt": [".sv":"timestamp"], "endAt": quickDate]
             let postReceivedRef = Firebase(url: postReceivedURL)
             postReceivedRef.setValue(postReceived)
+            
+            let messageCountURL = "https://sonarapp.firebaseio.com/messageCount/" + target + "/postsReceived/" + postID
+            let messageCount = ["myMessageCount": -1, "realMessageCount": 0]
+            let messageCountRef = Firebase(url: messageCountURL)
+            messageCountRef.setValue(messageCount)
             
             let pushURL = "https://sonarapp.firebaseio.com/users/" + target + "/pushId"
             let pushRef = Firebase(url: pushURL)
@@ -183,9 +188,14 @@ class PickTargetViewController: UIViewController, UITableViewDataSource, UITable
         }
         
         let userUrl = "https://sonarapp.firebaseio.com/users/" + currentUser + "/postsReceived/" + postID 
-        let userReceived = ["joined": true, "messageCount": 0]
+        let userReceived = ["updatedAt": [".sv":"timestamp"], "endAt": quickDate]
         let userReceivedRef = Firebase(url: userUrl)
         userReceivedRef.setValue(userReceived)
+        
+        let userMessageCountURL = "https://sonarapp.firebaseio.com/messageCount/" + currentUser + "/postsReceived/" + postID
+        let userMessageCount = ["myMessageCount": 0, "realMessageCount": 0]
+        let userMessageCountRef = Firebase(url: userMessageCountURL)
+        userMessageCountRef.setValue(userMessageCount)
         
         let url = "https://sonarapp.firebaseio.com/posts/" + postID + "/targets/"
         let currentTargetRef = Firebase(url: url)

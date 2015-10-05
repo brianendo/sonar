@@ -33,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         
-        Firebase.defaultConfig().persistenceEnabled = true
+//        Firebase.defaultConfig().persistenceEnabled = true
         
         UINavigationBar.appearance().translucent = false
         UINavigationBar.appearance().barTintColor = UIColor(red:0.28, green:0.27, blue:0.43, alpha:1.0)

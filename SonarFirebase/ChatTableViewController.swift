@@ -105,8 +105,8 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(true)
-        
-        self.messageCountWhenLoading()
+        self.messageCountUpdate()
+//        self.messageCountWhenLoading()
         
         self.deregisterFromKeyboardNotifications()
         
@@ -170,6 +170,46 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         })
     }
     
+    func loadPostData() {
+        let postUpdatedUrl = "https://sonarapp.firebaseio.com/users/" + currentUser + "/postsReceived/" + self.postID!
+        let postUpdatedRef = Firebase(url: postUpdatedUrl)
+        
+        postUpdatedRef.observeEventType(.Value, withBlock: {
+            snapshot in
+            var endAt = snapshot.value["endAt"] as? NSTimeInterval
+            
+            let postUrl = "https://sonarapp.firebaseio.com/posts/" + self.postID!
+            let postRef = Firebase(url: postUrl)
+            
+            postRef.observeEventType(.Value, withBlock: {
+                snapshot in
+                if let content = snapshot.value["content"] as? String {
+                    if let creator = snapshot.value["creator"] as? String {
+                        let url = "https://sonarapp.firebaseio.com/users/" + creator
+                        let userRef = Firebase(url: url)
+                        userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+                            if let name = snapshot.value["name"] as? String {
+                                println(endAt)
+                                if endAt == nil {
+                                    endAt = 0
+                                }
+                                let endedDate = NSDate(timeIntervalSince1970: (endAt!/1000))
+                                var timeLeft = endedDate.timeIntervalSinceDate(NSDate())
+                                
+                                self.timeInterval = round(timeLeft)
+                                self.nameLabel.text = name
+                                self.headerTextView.text = content
+                                self.tableView.reloadData()
+                            }
+                        })
+                    }
+                    
+                }
+            })
+            
+        })
+    }
+    
     func loadMessageData() {
 //        let postID = postVC?.key
         let messagesUrl = "https://sonarapp.firebaseio.com/messages/" + postID!
@@ -203,6 +243,23 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
             postUpdatedRef.updateChildValues(updatedAt)
             }
         })
+    }
+    
+    func messageCountUpdate() {
+        
+        let messagesCount = "https://sonarapp.firebaseio.com/messageCount/" + currentUser + "/postsReceived/" + self.postID! + "/realMessageCount/"
+        var messagesCountRef = Firebase(url: messagesCount)
+        
+        messagesCountRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+            if let count = snapshot.value as? Int {
+                
+                let userMessageCount = "https://sonarapp.firebaseio.com/messageCount/" + currentUser + "/postsReceived/" + self.postID! + "/myMessageCount/"
+                let userMessageRef = Firebase(url: userMessageCount)
+                userMessageRef.setValue(count)
+                self.tableView.reloadData()
+            }
+        })
+        
     }
     
     
@@ -326,15 +383,16 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 70
         
-        
-        self.messageCountWhenLoading()
+        self.messageCountUpdate()
+//        self.messageCountWhenLoading()
 //        self.messageCountWhenInChat()
         self.loadMessageData()
-        self.loadPost()
         self.loadName()
         self.loadTargetArray()
         
-        self.updatePostTime()
+        
+        self.loadPostData()
+        
         self.removeFromTargetArray()
         
         self.headerView.layer.masksToBounds = true
@@ -419,53 +477,13 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         
         
         
-        let index = find(self.targetIdArray, currentUser)
-        if index != nil {
-            self.targetIdArray.removeAtIndex(index!)
-        }
+//        let index = find(self.targetIdArray, currentUser)
+//        if index != nil {
+//            self.targetIdArray.removeAtIndex(index!)
+//        }
         
         
         for target in targetIdArray {
-//            let targetUrl = "https://sonarapp.firebaseio.com/users/" + target + "/postsReceived/" + postID! + "/joined/"
-//            let targetRef = Firebase(url: targetUrl)
-//            targetRef.observeSingleEventOfType(.Value, withBlock: {
-//                snapshot in
-//                let joined = snapshot.value as? Bool
-//                if joined == true {
-//                    let pushURL = "https://sonarapp.firebaseio.com/users/" + target + "/pushId"
-//                    let pushRef = Firebase(url: pushURL)
-//                    pushRef.observeSingleEventOfType(.Value, withBlock: {
-//                        snapshot in
-//                        if snapshot.value is NSNull {
-//                            println("Did not enable push notifications")
-//                        } else {
-//                            println("Made it")
-//                            // Create our Installation query
-//                            let pushQuery = PFInstallation.query()
-//                            pushQuery?.whereKey("installationId", equalTo: snapshot.value)
-//                            
-//                            // Send push notification to query
-//                            let push = PFPush()
-//                            push.setQuery(pushQuery) // Set our Installation query
-//                            let data = [
-//                                "alert": "\(self.messageCreatorName): \(newMessageText)",
-//                                "badge": "Increment",
-//                                "post": self.postID!
-//                            ]
-//                            push.setData(data)
-//                            push.sendPushInBackground()
-//                        }
-//                    })
-//                    
-//                    
-//
-//                } else {
-//                    let updatePost = "https://sonarapp.firebaseio.com/users/" + target + "/postsReceived/" + self.postID! + "/updatedAt/"
-//                    var updatePostRef = Firebase(url: updatePost)
-//                    updatePostRef.setValue([".sv":"timestamp"])
-//                }
-//            })
-            
             let pushURL = "https://sonarapp.firebaseio.com/users/" + target + "/pushId"
             let pushRef = Firebase(url: pushURL)
             pushRef.observeEventType(.Value, withBlock: {
@@ -474,6 +492,11 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
                     println("Did not enable push notifications")
                 } else {
                     println("Made it")
+                    
+                    if target == currentUser {
+                        
+                    } else {
+                    
                     // Create our Installation query
                     let pushQuery = PFInstallation.query()
                     pushQuery?.whereKey("installationId", equalTo: snapshot.value)
@@ -488,48 +511,48 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
                     ]
                     push.setData(data)
                     push.sendPushInBackground()
+                    }
                 }
             })
 
-            let updatePost = "https://sonarapp.firebaseio.com/users/" + target + "/postsReceived/" + postID! + "/updatedAt/"
-            var updatePostRef = Firebase(url: updatePost)
-            updatePostRef.setValue([".sv":"timestamp"])
-
+            // Add messageCount
+            let messageCount = "https://sonarapp.firebaseio.com/messageCount/" + target + "/postsReceived/" + self.postID! + "/realMessageCount/"
+            var messageCountRef = Firebase(url: messageCount)
+            
+            messageCountRef.runTransactionBlock({
+                (currentData:FMutableData!) in
+                var value = currentData.value as? Int
+                if value == nil {
+                    value = 0
+                }
+                currentData.value = value! + 1
+                println("added counter to the post")
+                
+                let messageCount = currentData.value as? Int
+                
+                let postReceivedUrl = "https://sonarapp.firebaseio.com/users/" + target + "/postsReceived/" + self.postID!
+                let postReceivedRef = Firebase(url: postReceivedUrl)
+                
+                
+                let dateNow = NSDate().timeIntervalSince1970 * 1000
+                let dateLater = (NSDate().timeIntervalSince1970 + (60*15)) * 1000
+                let quickDate = Int((NSDate().timeIntervalSince1970 + (60)) * 1000)
+                
+                
+                
+                if messageCount == 1 {
+                    let updates = ["updatedAt": [".sv":"timestamp"], "endAt": quickDate]
+                    postReceivedRef.setValue(updates)
+                } else {
+                    let updates = ["updatedAt": [".sv":"timestamp"], "endAt": quickDate]
+                    postReceivedRef.setValue(updates)
+                }
+                
+                return FTransactionResult.successWithValue(currentData)
+            })
+            
         }
-        
-        // Add messageCount
-        let messageCount = "https://sonarapp.firebaseio.com/posts/" + postID! + "/messageCount/"
-        var messageCountRef = Firebase(url: messageCount)
-        
-        messageCountRef.runTransactionBlock({
-            (currentData:FMutableData!) in
-            var value = currentData.value as? Int
-            if value == nil {
-                value = 0
-            }
-            currentData.value = value! + 1
-            println("added counter to the post")
-            
-            let messageCount = currentData.value as? Int
-            
-            let postUpdatedUrl = "https://sonarapp.firebaseio.com/posts/" + self.postID!
-            let postUpdatedRef = Firebase(url: postUpdatedUrl)
-            
-            
-            let dateNow = NSDate().timeIntervalSince1970 * 1000
-            let dateLater = (NSDate().timeIntervalSince1970 + (60*15)) * 1000
-            let quickDate = (NSDate().timeIntervalSince1970 + (30)) * 1000
-            
-            if messageCount == 1 {
-                let endAt = ["endAt": quickDate]
-                postUpdatedRef.updateChildValues(endAt)
-            } else {
-                let endAt = ["endAt": quickDate]
-                postUpdatedRef.updateChildValues(endAt)
-            }
-            
-            return FTransactionResult.successWithValue(currentData)
-        })
+
         
         // Call the end editing method for the text field
         self.sendMessageTextView.endEditing(true)
@@ -554,10 +577,6 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
             }
         }
 
-    }
-    
-    func textViewDidEndEditing(textView: UITextView) {
-        
     }
     
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {

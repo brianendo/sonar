@@ -55,6 +55,122 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
         })
     }
 
+    func getRadarData() {
+        let url = "https://sonarapp.firebaseio.com/users/" + currentUser + "/postsReceived/"
+        let targetRef = Firebase(url: url)
+        
+        targetRef.observeEventType(.ChildAdded, withBlock: {
+            snapshot in
+            println("child")
+            
+            if let found = find(self.posts.map({ $0.key }), snapshot.key) {
+                let obj = self.posts[found]
+                println(obj)
+                println(found)
+                self.posts.removeAtIndex(found)
+            }
+            
+            let postsUrl = "https://sonarapp.firebaseio.com/posts/" + snapshot.key
+            let postsRef = Firebase(url: postsUrl)
+            var updatedAt = snapshot.value["updatedAt"] as? NSTimeInterval
+            var endAt = snapshot.value["endAt"] as? NSTimeInterval
+            
+            if updatedAt == nil {
+                updatedAt = 0
+            }
+            
+            if endAt == nil {
+                endAt = 0
+            }
+            
+            postsRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+                if let key = snapshot.key
+                {if let content = snapshot.value["content"] as? String {
+                    if let creator = snapshot.value["creator"] as? String {
+                        if let createdAt = snapshot.value["createdAt"] as? NSTimeInterval {
+                                    let userurl = "https://sonarapp.firebaseio.com/users/" + (creator)
+                                    let userRef = Firebase(url: userurl)
+                                    userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+                                        if let name = snapshot.value["name"] as? String {
+                                            let updatedDate = NSDate(timeIntervalSince1970: (updatedAt!/1000))
+                                            let createdDate = NSDate(timeIntervalSince1970: (createdAt/1000))
+                                            let endedDate = NSDate(timeIntervalSince1970: (endAt!/1000))
+                                            
+                                            let post = Post(content: content, creator: creator, key: key, createdAt: updatedDate, name: name, joined: true, messageCount: 0, endAt: endedDate)
+                                            
+                                            self.posts.append(post)
+                                            
+                                            // Sort posts in descending order
+                                            self.posts.sort({ $0.createdAt.compare($1.createdAt) == .OrderedDescending })
+                                            self.tableView.reloadData()
+                                            
+                                        }
+                                    })
+                            
+                        }
+                    }
+                    }
+                    
+                }
+            })
+        })
+    }
+    
+    func getChangedRadarData() {
+        let url = "https://sonarapp.firebaseio.com/users/" + currentUser + "/postsReceived/"
+        let targetRef = Firebase(url: url)
+        
+        targetRef.observeEventType(.ChildChanged, withBlock: {
+            snapshot in
+            println("child")
+            if let found = find(self.posts.map({ $0.key }), snapshot.key) {
+                let obj = self.posts[found]
+                println(obj)
+                println(found)
+                self.posts.removeAtIndex(found)
+            }
+            
+            let postsUrl = "https://sonarapp.firebaseio.com/posts/" + snapshot.key
+            let postsRef = Firebase(url: postsUrl)
+            //            let joined = snapshot.value["joined"] as? Bool
+            let updatedAt = snapshot.value["updatedAt"] as? NSTimeInterval
+            let endAt = snapshot.value["endAt"] as? NSTimeInterval
+            
+            postsRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+                if let key = snapshot.key
+                {if let content = snapshot.value["content"] as? String {
+                    if let creator = snapshot.value["creator"] as? String {
+                        if let createdAt = snapshot.value["createdAt"] as? NSTimeInterval {
+                            let userurl = "https://sonarapp.firebaseio.com/users/" + (creator)
+                            let userRef = Firebase(url: userurl)
+                            userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+                                if let name = snapshot.value["name"] as? String {
+                                    let updatedDate = NSDate(timeIntervalSince1970: (updatedAt!/1000))
+                                    let createdDate = NSDate(timeIntervalSince1970: (createdAt/1000))
+                                    let endedDate = NSDate(timeIntervalSince1970: (endAt!/1000))
+                                    
+                                    let post = Post(content: content, creator: creator, key: key, createdAt: updatedDate, name: name, joined: true, messageCount: 0, endAt: endedDate)
+                                    
+                                    self.posts.append(post)
+                                    
+                                    
+                                    // Sort posts in descending order
+                                    self.posts.sort({ $0.createdAt.compare($1.createdAt) == .OrderedDescending })
+                                    self.tableView.reloadData()
+                                    
+
+                                }
+                            })
+                            
+                        }
+                    }
+                    }
+                    
+                }
+            })
+        })
+    }
+    
     
     func loadRadarData() {
         
@@ -116,7 +232,6 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
                             })
                             }
                             }
-                            
                         }
                     }
                 }
@@ -225,10 +340,27 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     override func viewDidAppear(animated: Bool) {
+        self.tableView.reloadData()
     }
     
     override func viewWillAppear(animated: Bool) {
-
+        
+        let url = "https://sonarapp.firebaseio.com/users/" + currentUser + "/postsReceived/"
+        let targetRef = Firebase(url: url)
+        
+        targetRef.observeSingleEventOfType(.Value, withBlock: {
+            snapshot in
+            println("clean")
+            
+            if let found = find(self.posts.map({ $0.key }), snapshot.key) {
+                let obj = self.posts[found]
+                println(obj)
+                println(found)
+                self.posts.removeAtIndex(found)
+            }
+        })
+        
+        self.tableView.reloadData()
     }
     
     override func viewDidLoad() {
@@ -255,13 +387,10 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
                 // Remove all posts when reloaded so it updates
                 self.posts.removeAll(keepCapacity: true)
                 
-                self.loadRadarData()
-                self.changedRadarData()
                 self.dataRemove()
                 
-                
-                self.getLastAdded()
-                self.getLastChanged()
+                self.getRadarData()
+                self.getChangedRadarData()
                 
                 self.timer = NSTimer(timeInterval: 1.0, target: self, selector: Selector("fireCellsUpdate"), userInfo: nil, repeats: true)
                 NSRunLoop.currentRunLoop().addTimer(self.timer, forMode: NSRunLoopCommonModes)
@@ -399,9 +528,9 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
         if segue.identifier == "showChat" {
             let chatVC: ChatTableViewController = segue.destinationViewController as! ChatTableViewController
             let indexPath = self.tableView.indexPathForSelectedRow()
-            tableView.cellForRowAtIndexPath(indexPath!)?.backgroundColor = UIColor(red:0.98, green:0.98, blue:0.98, alpha:1.0)
-            posts[indexPath!.row].joined = true
-            self.tableView.reloadData()
+//            tableView.cellForRowAtIndexPath(indexPath!)?.backgroundColor = UIColor(red:0.98, green:0.98, blue:0.98, alpha:1.0)
+//            posts[indexPath!.row].joined = true
+//            self.tableView.reloadData()
             let post = self.posts[indexPath!.row]
             chatVC.postVC = post
             chatVC.postID = post.key
@@ -440,23 +569,52 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
         
         cell.textView.selectable = true
         
-        let userMessageCount = posts[indexPath.row].messageCount
+//        let userMessageCount = posts[indexPath.row].messageCount
         
-        let joinedStatus = posts[indexPath.row].joined
-        
-        let url = "https://sonarapp.firebaseio.com/posts/" + key + "/messageCount/"
+        let url = "https://sonarapp.firebaseio.com/messageCount/" + currentUser + "/postsReceived/" + key
         let messageRef = Firebase(url: url)
         messageRef.observeEventType(.Value, withBlock: {
             snapshot in
-            let messageCount = snapshot.value as? Int
+            let myMessageCount = snapshot.value["myMessageCount"] as? Int
+            let realMessageCount = snapshot.value["realMessageCount"] as? Int
             
-            if userMessageCount < messageCount {
+            if myMessageCount < realMessageCount {
                 cell.backgroundColor = UIColor(red:0.92, green:0.92, blue:0.92, alpha:1.0)
             } else {
                 cell.backgroundColor = UIColor(red:0.98, green:0.98, blue:0.98, alpha:1.0)
             }
             
         })
+        
+//        let changedUrl = "https://sonarapp.firebaseio.com/messageCount/" + currentUser + "/postsReceived/" + key + "/realMessageCount/"
+//        let changedMessageRef = Firebase(url: changedUrl)
+//        changedMessageRef.observeEventType(.ChildChanged, withBlock: {
+//            snapshot in
+//            let messageCount = snapshot.value as? Int
+//            
+//            if userMessageCount < messageCount {
+//                cell.backgroundColor = UIColor(red:0.92, green:0.92, blue:0.92, alpha:1.0)
+//            } else {
+//                cell.backgroundColor = UIColor(red:0.98, green:0.98, blue:0.98, alpha:1.0)
+//            }
+//            
+//        })
+        
+//        let joinedStatus = posts[indexPath.row].joined
+        
+//        let url = "https://sonarapp.firebaseio.com/posts/" + key + "/messageCount/"
+//        let messageRef = Firebase(url: url)
+//        messageRef.observeEventType(.Value, withBlock: {
+//            snapshot in
+//            let messageCount = snapshot.value as? Int
+//            
+//            if userMessageCount < messageCount {
+//                cell.backgroundColor = UIColor(red:0.92, green:0.92, blue:0.92, alpha:1.0)
+//            } else {
+//                cell.backgroundColor = UIColor(red:0.98, green:0.98, blue:0.98, alpha:1.0)
+//            }
+//            
+//        })
         
 //        if joinedStatus == true {
 //            cell.postImageView.image = UIImage(named: "Chat")
