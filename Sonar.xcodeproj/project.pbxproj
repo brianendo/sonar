@@ -214,6 +214,8 @@
 				8EE3284C1B8E52CD000F4500 /* TargetListTableViewCell.swift */,
 				8EE7F6511BBE0503007AB71D /* AddUsernameViewController.swift */,
 				8E9F733A1BBF07BD00D0850E /* AddUsernameTableViewCell.swift */,
+				8EE7F6491BBDAA89007AB71D /* AddressBookViewController.swift */,
+				8EE7F64B1BBDBA84007AB71D /* AddressBookTableViewCell.swift */,
 			);
 			name = Friends;
 			sourceTree = "<group>";
@@ -270,8 +272,6 @@
 				8EE7F64F1BBDE685007AB71D /* ProfileTableViewController.swift */,
 				8EE328191B8B939E000F4500 /* Main.storyboard */,
 				8E5227351BA0E3D0002BD8FA /* WebViewController.swift */,
-				8EE7F6491BBDAA89007AB71D /* AddressBookViewController.swift */,
-				8EE7F64B1BBDBA84007AB71D /* AddressBookTableViewCell.swift */,
 				8EAC775F1B8FA07A002D2890 /* RadarViewController.swift */,
 				8EAC77611B8FA0A3002D2890 /* RadarTableViewCell.swift */,
 				8E5226C21B976DC1002BD8FA /* ChatTableViewController.swift */,

@@ -17,6 +17,13 @@ class ProfileTableViewController: UITableViewController, UIImagePickerController
     
     @IBOutlet weak var profileImageView: UIImageView!
     
+    @IBOutlet weak var addedMeContentView: UIView!
+    
+    @IBOutlet weak var addedMeLabel: UILabel!
+    
+    @IBOutlet weak var newFriendLabel: UILabel!
+    
+    
     var username = ""
     var creatorname = ""
     
@@ -37,8 +44,33 @@ class ProfileTableViewController: UITableViewController, UIImagePickerController
         })
     }
     
+    func readNotifications() {
+        let url = "https://sonarapp.firebaseio.com/user_activity/" + currentUser + "/read/"
+        let targetRef = Firebase(url: url)
+        
+        targetRef.observeEventType(.Value, withBlock: {
+            snapshot in
+            let read = snapshot.value as? Bool
+            if read == false {
+                println("Unread")
+                self.addedMeContentView.backgroundColor = UIColor(red:0.92, green:0.92, blue:0.92, alpha:1.0)
+                self.newFriendLabel.text = "New Friend Request"
+            } else {
+                println("Read")
+                self.addedMeContentView.backgroundColor = UIColor.clearColor()
+                self.newFriendLabel.text = ""
+            }
+            
+        })
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        self.readNotifications()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.navigationBar.topItem?.title = "Profile"
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -46,16 +78,14 @@ class ProfileTableViewController: UITableViewController, UIImagePickerController
         self.loadUsername()
         
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
         self.profileImageView.frame = CGRectMake(0, 0, 100, 100)
         self.profileImageView.layer.borderWidth=1.0
         self.profileImageView.layer.masksToBounds = false
         self.profileImageView.layer.borderColor = UIColor.whiteColor().CGColor
-        self.profileImageView.layer.cornerRadius = 13
         self.profileImageView.layer.cornerRadius = self.profileImageView.frame.size.height/2
         self.profileImageView.clipsToBounds = true
         self.download()
-        
+
         self.tableView.separatorColor = UIColor.groupTableViewBackgroundColor()
     }
 
@@ -104,6 +134,8 @@ class ProfileTableViewController: UITableViewController, UIImagePickerController
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == 1 {

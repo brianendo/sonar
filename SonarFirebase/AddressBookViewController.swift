@@ -178,13 +178,14 @@ class AddressBookViewController: UIViewController, UITableViewDataSource, UITabl
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.title = "Address Book"
+        
         // Do any additional setup after loading the view.
         self.tableView.dataSource = self
         self.tableView.delegate = self
         self.loadUsername()
         
         self.determineStatus()
-//        self.prepareSMSmessage("Brian", cell_number: "5103784161")
     }
 
     override func didReceiveMemoryWarning() {
@@ -265,6 +266,11 @@ class AddressBookViewController: UIViewController, UITableViewDataSource, UITabl
                         let otherUserUrl = "https://sonarapp.firebaseio.com/user_activity/" + id + "/addedme/"
                         let otherUserActivityRef = Firebase(url: otherUserUrl)
                         otherUserActivityRef.childByAppendingPath(currentUser).setValue(true)
+                        
+                        
+                        let readUrl = "https://sonarapp.firebaseio.com/user_activity/" + id + "/read/"
+                        let readRef = Firebase(url: readUrl)
+                        readRef.setValue(false)
                         
                         let pushURL = "https://sonarapp.firebaseio.com/users/" + id + "/pushId"
                         let pushRef = Firebase(url: pushURL)

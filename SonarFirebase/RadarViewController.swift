@@ -181,6 +181,34 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
         })
     }
     
+    func readNotifications() {
+        let url = "https://sonarapp.firebaseio.com/user_activity/" + currentUser + "/read/"
+        let targetRef = Firebase(url: url)
+        
+        let leftImage = UIImage(named: "Profile")
+        let leftBarButton = UIBarButtonItem(image: leftImage, style: UIBarButtonItemStyle.Plain, target: self, action: "pushRadarToProfile")
+        
+        self.navigationItem.leftBarButtonItem = leftBarButton
+        
+        targetRef.observeEventType(.Value, withBlock: {
+            snapshot in
+            let read = snapshot.value as? Bool
+            if read == false {
+                var leftImage = UIImage(named: "ProfileNotification")
+                leftImage = leftImage?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal)
+                let leftBarButton = UIBarButtonItem(image: leftImage, style: UIBarButtonItemStyle.Plain, target: self, action: "pushRadarToProfile")
+                
+                self.navigationItem.leftBarButtonItem = leftBarButton
+            } else {
+                let leftImage = UIImage(named: "Profile")
+                let leftBarButton = UIBarButtonItem(image: leftImage, style: UIBarButtonItemStyle.Plain, target: self, action: "pushRadarToProfile")
+                
+                self.navigationItem.leftBarButtonItem = leftBarButton
+            }
+            
+        })
+    }
+    
     
     func loadRadarData() {
         
@@ -353,19 +381,25 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     override func viewDidAppear(animated: Bool) {
         var nav = self.navigationController?.navigationBar
-
         let rightImage = UIImage(named: "WhitePulseSize")
         
         let rightBarButton = UIBarButtonItem(image: rightImage, style: UIBarButtonItemStyle.Plain, target: self, action: "pushRadarToPulse")
         
-        let leftImage = UIImage(named: "Profile")
-        let leftBarButton = UIBarButtonItem(image: leftImage, style: UIBarButtonItemStyle.Plain, target: self, action: "pushRadarToProfile")
-        
-        self.navigationItem.leftBarButtonItem = leftBarButton
+//        let leftImage = UIImage(named: "Profile")
+//        let leftBarButton = UIBarButtonItem(image: leftImage, style: UIBarButtonItemStyle.Plain, target: self, action: "pushRadarToProfile")
+//        
+//        self.navigationItem.leftBarButtonItem = leftBarButton
         
         self.navigationItem.rightBarButtonItem = rightBarButton
 
         
+        let topImage = UIImage(named: "WhiteBat")
+        let imageView = UIImageView(image: topImage)
+        imageView.frame = CGRectMake(0, 0, 59, 25)
+        imageView.contentMode = .ScaleAspectFit
+        
+        
+        nav!.topItem?.titleView = imageView
         
         self.tableView.reloadData()
     }
@@ -428,6 +462,8 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
                 
                 self.getRadarData()
                 self.getChangedRadarData()
+                
+                self.readNotifications()
                 
                 self.timer = NSTimer(timeInterval: 1.0, target: self, selector: Selector("fireCellsUpdate"), userInfo: nil, repeats: true)
                 NSRunLoop.currentRunLoop().addTimer(self.timer, forMode: NSRunLoopCommonModes)
@@ -614,7 +650,7 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
             if myMessageCount < realMessageCount {
                 cell.backgroundColor = UIColor(red:0.92, green:0.92, blue:0.92, alpha:1.0)
             } else {
-                cell.backgroundColor = UIColor(red:0.98, green:0.98, blue:0.98, alpha:1.0)
+                cell.backgroundColor = UIColor.whiteColor()
             }
             
         })
@@ -648,7 +684,7 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
         if editingStyle == .Delete {
             println("Delete")
             let post = posts[indexPath.row]
-            // 2
+
             let url = "https://sonarapp.firebaseio.com/users/" + currentUser + "/postsReceived/" + post.key
             let targetRef = Firebase(url: url)
             targetRef.removeValue()

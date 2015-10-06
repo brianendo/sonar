@@ -38,6 +38,8 @@ class AddUsernameViewController: UIViewController, UITableViewDataSource, UITabl
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.title = "Add by Username"
+        
         // Do any additional setup after loading the view.
         self.tableView.dataSource = self
         self.tableView.delegate = self
@@ -51,8 +53,6 @@ class AddUsernameViewController: UIViewController, UITableViewDataSource, UITabl
         self.searchController.dimsBackgroundDuringPresentation = false
         
         self.searchController.hidesNavigationBarDuringPresentation = false
-        
-//        self.searchController.searchBar.frame = CGRectMake(self.searchController.searchBar.frame.origin.x, self.searchController.searchBar.frame.origin.y, self.searchController.searchBar.frame.size.width, 44.0)
         
         self.searchController.searchBar.sizeToFit()
         
@@ -119,6 +119,10 @@ class AddUsernameViewController: UIViewController, UITableViewDataSource, UITabl
             let otherUserUrl = "https://sonarapp.firebaseio.com/user_activity/" + (searchedUser) + "/addedme/"
             let otherUserActivityRef = Firebase(url: otherUserUrl)
             otherUserActivityRef.childByAppendingPath(currentUser).setValue(true)
+            
+            let readUrl = "https://sonarapp.firebaseio.com/user_activity/" + (searchedUser) + "/read/"
+            let readRef = Firebase(url: readUrl)
+            readRef.setValue(false)
             
             let pushURL = "https://sonarapp.firebaseio.com/users/" + (searchedUser) + "/pushId"
             let pushRef = Firebase(url: pushURL)

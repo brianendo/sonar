@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import Parse
+import AWSS3
 
 class AddedMeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
@@ -50,16 +51,25 @@ class AddedMeViewController: UIViewController, UITableViewDataSource, UITableVie
         
     }
     
+    func changeReadToTrue() {
+        let readUrl = "https://sonarapp.firebaseio.com/user_activity/" + currentUser + "/read/"
+        let readRef = Firebase(url: readUrl)
+        readRef.setValue(true)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         
+        self.title = "Added Me"
+        
         self.tableView.dataSource = self
         self.tableView.delegate = self
         self.loadData()
         self.loadName()
+        self.changeReadToTrue()
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -98,6 +108,47 @@ class AddedMeViewController: UIViewController, UITableViewDataSource, UITableVie
         cell.toggleButton.addTarget(self, action: "toggleButton:", forControlEvents: .TouchUpInside)
         cell.toggleButton.setTitle("Added", forState: .Selected)
         cell.toggleButton.setTitle("Add", forState: .Normal)
+        
+        cell.profileImageView.image = UIImage(named: "Placeholder.png")
+        if let cachedImageResult = imageCache[user] {
+            println("pull from cache")
+            cell.profileImageView.image = UIImage(data: cachedImageResult!)
+        } else {
+            // 3
+            cell.profileImageView.image = UIImage(named: "Placeholder.png")
+            
+            // 4
+            let downloadingFilePath1 = (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent("temp-download")
+            let downloadingFileURL1 = NSURL(fileURLWithPath: downloadingFilePath1 )
+            let transferManager = AWSS3TransferManager.defaultS3TransferManager()
+            
+            
+            let readRequest1 : AWSS3TransferManagerDownloadRequest = AWSS3TransferManagerDownloadRequest()
+            readRequest1.bucket = S3BucketName
+            readRequest1.key =  user
+            readRequest1.downloadingFileURL = downloadingFileURL1
+            
+            let task = transferManager.download(readRequest1)
+            task.continueWithBlock { (task) -> AnyObject! in
+                if task.error != nil {
+                    print(task.error)
+                } else {
+                    let image = UIImage(contentsOfFile: downloadingFilePath1)
+                    let imageData = UIImageJPEGRepresentation(image, 1.0)
+                    imageCache[user] = imageData
+                    dispatch_async(dispatch_get_main_queue()
+                        , { () -> Void in
+                            
+                            cell.profileImageView.image = UIImage(contentsOfFile: downloadingFilePath1)
+                            cell.setNeedsLayout()
+                            
+                    })
+                    println("Fetched image")
+                }
+                return nil
+            }
+            
+        }
 
         
         return cell
@@ -107,7 +158,9 @@ class AddedMeViewController: UIViewController, UITableViewDataSource, UITableVie
         let user: (String) = userIdArray[sender.tag]
         
         if sender.selected == false  {
+            
             sender.selected = true
+            
             let userUrl = "https://sonarapp.firebaseio.com/user_activity/" + currentUser + "/added/"
             let userActivityRef = Firebase(url: userUrl)
             userActivityRef.childByAppendingPath(user).setValue(true)

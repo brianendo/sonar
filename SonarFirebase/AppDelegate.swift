@@ -39,6 +39,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().barTintColor = UIColor(red:0.28, green:0.27, blue:0.43, alpha:1.0)
         UINavigationBar.appearance().tintColor = UIColor.whiteColor()
         
+        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor(), NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 20)!]
+        
         UIApplication.sharedApplication().statusBarStyle = .LightContent
         
         // Parse Authentication

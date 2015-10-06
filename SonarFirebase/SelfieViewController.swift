@@ -31,9 +31,6 @@ class SelfieViewController: UIViewController {
         self.imageView.layer.cornerRadius = self.cameraView.frame.size.height/2
         self.imageView.clipsToBounds = true
         
-        let status = AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo)
-        println(status)
-        
         
         captureSession = AVCaptureSession()
         captureSession!.sessionPreset = AVCaptureSessionPresetPhoto
@@ -76,7 +73,12 @@ class SelfieViewController: UIViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        previewLayer!.frame = cameraView.bounds
+        if previewLayer?.frame != nil {
+            previewLayer!.frame = cameraView.bounds
+        } else {
+            self.imageView.image = UIImage(named: "BatPic")
+        }
+        
     }
     
     override func viewDidLoad() {
@@ -98,9 +100,17 @@ class SelfieViewController: UIViewController {
                 if (sampleBuffer != nil) {
                     var imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(sampleBuffer)
                     
-//                    let frame = CGRectMake(self.previewLayer!.bounds.origin.x ,self.previewLayer!.bounds.origin.y , 150, 150)
-//                    var pSize = CGSize(width: 150, height: 150)
-//                    let bRect = AVMakeRectWithAspectRatioInsideRect(pSize, frame)
+
+                    // Crop Image to the bounds of preview layer
+                    var takenImage: UIImage = UIImage(data: imageData)!
+                    var outputRect: CGRect = self.previewLayer!.metadataOutputRectOfInterestForRect(self.previewLayer!.bounds)
+                    var takenCGImage: CGImageRef = takenImage.CGImage
+                    var width = CGFloat(CGImageGetWidth(takenCGImage))
+                    var height = CGFloat(CGImageGetHeight(takenCGImage))
+                    var cropRect: CGRect = CGRectMake(outputRect.origin.x * width, outputRect.origin.y * height, outputRect.size.width * width, outputRect.size.height * height)
+                    var cropCGImage: CGImageRef = CGImageCreateWithImageInRect(takenCGImage, cropRect)
+                    takenImage = UIImage(CGImage: cropCGImage, scale: 1, orientation: takenImage.imageOrientation)!
+                    
                     
                     
                     var dataProvider = CGDataProviderCreateWithCFData(imageData)
@@ -110,7 +120,7 @@ class SelfieViewController: UIViewController {
 //                    self.imageView.image = self.cropImage(image!, rect: frame)
                     let sizeOfImage = image?.size
                     println(sizeOfImage)
-                    self.imageView.image = image
+                    self.imageView.image = takenImage
                     self.imageView.transform = CGAffineTransformMakeScale(-1, 1)
                     self.captureSession?.stopRunning()
                 }

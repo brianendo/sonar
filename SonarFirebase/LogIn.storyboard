@@ -1299,6 +1299,7 @@
                                         </variation>
                                         <connections>
                                             <action selector="nextButtonPressed:" destination="f6b-gU-ca9" eventType="touchUpInside" id="kdq-6c-mpY"/>
+                                            <segue destination="kX9-Nx-HxB" kind="show" id="lQJ-cA-cJa"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qGx-4C-Qfn">
@@ -1515,7 +1516,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yuL-t3-ybX">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <animations/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="yuL-t3-ybX" secondAttribute="height" multiplier="1:1" id="8GX-zv-cgT"/>
                                     <constraint firstAttribute="width" constant="150" id="cpO-KW-tKw"/>
@@ -1555,7 +1556,7 @@
                             </imageView>
                         </subviews>
                         <animations/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.97647058823529409" green="0.97647058823529409" blue="0.97647058823529409" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="centerX" secondItem="yuL-t3-ybX" secondAttribute="centerX" id="4uU-l8-NR1"/>
                             <constraint firstItem="YXA-EJ-eR6" firstAttribute="top" secondItem="h3U-u1-tUQ" secondAttribute="bottom" constant="29" id="O4x-gq-EpM">
@@ -1614,10 +1615,13 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oao-Og-DrN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1785" y="-676.5"/>
+            <point key="canvasLocation" x="5047.5" y="199.5"/>
         </scene>
     </scenes>
     <resources>
         <image name="Bat" width="300" height="127"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="lQJ-cA-cJa"/>
+    </inferredMetricsTieBreakers>
 </document>

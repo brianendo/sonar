@@ -19,19 +19,16 @@ class CreatePulseViewController: UIViewController, UITextViewDelegate {
     
     @IBOutlet weak var bottomView: UIView!
     
-    @IBOutlet weak var doneButton: UIBarButtonItem!
-    
     @IBOutlet weak var nextButton: UIButton!
     
     
-    var placeholder = "Ask your friends anything"
+    var placeholder = "Your first pulse? Be yourself...unless you're a douche, then maybe change it up a bit."
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
         
-        self.doneButton.enabled = false
         self.nextButton.enabled = false
         
         // Do any additional setup after loading the view.
@@ -55,6 +52,10 @@ class CreatePulseViewController: UIViewController, UITextViewDelegate {
         self.bottomView.layer.masksToBounds = true
         self.bottomView.layer.borderColor = UIColor(red:0.89, green:0.89, blue:0.89, alpha:1.0).CGColor
         self.bottomView.layer.borderWidth = 0.7
+        
+        self.nextButton.layer.masksToBounds = true
+        self.nextButton.layer.borderColor = UIColor(red:0.89, green:0.89, blue:0.89, alpha:1.0).CGColor
+        self.nextButton.layer.borderWidth = 0.7
         
     }
 
@@ -91,7 +92,6 @@ class CreatePulseViewController: UIViewController, UITextViewDelegate {
             self.charRemainingLabel.text = "100"
             pulseTextView.selectedTextRange = textView.textRangeFromPosition(textView.beginningOfDocument, toPosition: textView.beginningOfDocument)
             
-            self.doneButton.enabled = false
             self.nextButton.enabled = false
             return false
         }
@@ -127,10 +127,8 @@ class CreatePulseViewController: UIViewController, UITextViewDelegate {
     func textViewDidChange(textView: UITextView) {
         let trimmedString = pulseTextView.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
         if count(trimmedString) == 0 {
-            self.doneButton.enabled = false
             self.nextButton.enabled = false
         } else {
-            self.doneButton.enabled = true
             self.nextButton.enabled = true
         }
     }
