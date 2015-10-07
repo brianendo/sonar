@@ -96,7 +96,7 @@ class ProfileTableViewController: UITableViewController, UIImagePickerController
             self.profileImageView.image = image
         } else {
             // 3
-            self.profileImageView.image = UIImage(named: "Placeholder.png")
+            self.profileImageView.image = UIImage(named: "BatPic")
             
             // 4
             let downloadingFilePath1 = (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent("temp-download")

@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import Parse
+import AWSS3
 
 
 class RadarViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
@@ -19,10 +20,25 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
     var posts = [Post]()
     var postID = [String]()
     
+    var friendsArray = [String]()
+    var idArray = [String]()
+    
     var cellURL: NSURL?
     
     var timer: NSTimer!
     
+    var creatorname = ""
+    
+    func loadName() {
+        let url = "https://sonarapp.firebaseio.com/users/" + currentUser
+        let userRef = Firebase(url: url)
+        
+        userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+            if let name = snapshot.value["name"] as? String {
+                self.creatorname = name
+            }
+        })
+    }
     
     func fireCellsUpdate() {
         let notification = NSNotification(name: "CustomCellUpdate", object: nil)
@@ -364,17 +380,72 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
         
         targetRef.observeEventType(.ChildRemoved, withBlock: {
             snapshot in
+            let key = snapshot.key as? String
             if let found = find(self.posts.map({ $0.key }), snapshot.key) {
                 let obj = self.posts[found]
                 println(obj)
                 println(found)
                 self.posts.removeAtIndex(found)
             }
+            var createdAt = snapshot.value["createdAt"] as? Int
+            let endAt = snapshot.value["endAt"] as? Int
+            
+            if createdAt == nil {
+                createdAt = 0
+            }
+            
+            let length = Int((endAt! - createdAt!)/1000)
             
             println("childRemoved")
             
+            let pointAddedUrl = "https://sonarapp.firebaseio.com/time/" + currentUser + "/posts/" + key! 
+            let pointAddedRef = Firebase(url: pointAddedUrl)
+            pointAddedRef.setValue(length)
+            
             self.posts.sort({ $0.createdAt.compare($1.createdAt) == .OrderedDescending })
             self.tableView.reloadData()
+        })
+    }
+    
+    
+    func secondsToHoursMinutesSeconds (seconds : Int) -> (Int, Int, Int) {
+        return (seconds / 3600, (seconds % 3600) / 60, (seconds % 3600) % 60)
+    }
+    
+    
+    func returnSecondsToHoursMinutesSeconds (seconds:Int) -> (String) {
+        let (h, m, s) = secondsToHoursMinutesSeconds (seconds)
+        if h == 0 {
+            return "\(m) min \(s) sec"
+        } else {
+            return "\(h) h, \(m) min, \(s) sec"
+        }
+    }
+    
+    func loadFriendData() {
+        self.friendsArray.removeAll(keepCapacity: true)
+        
+        let url = "https://sonarapp.firebaseio.com/users/" + currentUser + "/friends/"
+        let targetRef = Firebase(url: url)
+        
+        
+        targetRef.queryOrderedByChild("name").observeEventType(.ChildAdded, withBlock: {
+            snapshot in
+            print(snapshot.key)
+            let id = snapshot.key as? String
+            let nameUrl = "https://sonarapp.firebaseio.com/users/" + snapshot.key
+            let nameRef = Firebase(url: nameUrl)
+            nameRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+                // do some stuff once
+                if let name = snapshot.value["name"] as? String {
+                    self.friendsArray.append(name)
+                    print(name)
+                    self.idArray.append(id!)
+                    self.tableView.reloadData()
+                }
+                
+                
+            })
         })
     }
     
@@ -465,6 +536,9 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
                 
                 self.readNotifications()
                 
+                self.loadFriendData()
+                self.loadName()
+                
                 self.timer = NSTimer(timeInterval: 1.0, target: self, selector: Selector("fireCellsUpdate"), userInfo: nil, repeats: true)
                 NSRunLoop.currentRunLoop().addTimer(self.timer, forMode: NSRunLoopCommonModes)
                 
@@ -485,6 +559,7 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     override func viewWillDisappear(animated: Bool) {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
     func deleteDeadCell() {
@@ -601,9 +676,6 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
         if segue.identifier == "showChat" {
             let chatVC: ChatTableViewController = segue.destinationViewController as! ChatTableViewController
             let indexPath = self.tableView.indexPathForSelectedRow()
-//            tableView.cellForRowAtIndexPath(indexPath!)?.backgroundColor = UIColor(red:0.98, green:0.98, blue:0.98, alpha:1.0)
-//            posts[indexPath!.row].joined = true
-//            self.tableView.reloadData()
             let post = self.posts[indexPath!.row]
             chatVC.postVC = post
             chatVC.postID = post.key
@@ -623,11 +695,31 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
         // Dispose of any resources that can be recreated.
     }
     
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if section == 1 {
+            return "Friends List"
+        } else {
+            return nil
+        }
+    }
+    
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 3
+    }
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return posts.count
+        if section == 0 {
+            return posts.count
+        } else if section == 1{
+            return (friendsArray.count + 1)
+        } else {
+            return 1
+        }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        if indexPath.section == 0 {
+        
         let cell: RadarTableViewCell = tableView.dequeueReusableCellWithIdentifier("radarCell", forIndexPath: indexPath) as! RadarTableViewCell
         
         let creator: (String) = posts[indexPath.row].creator
@@ -671,30 +763,207 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
         cell.nameLabel.text = radarCreator as? String
 
         return cell
+        } else if indexPath.section == 1 {
+            let cell: FriendScoreTableViewCell = tableView.dequeueReusableCellWithIdentifier("friendCell", forIndexPath: indexPath) as! FriendScoreTableViewCell
+            
+            if indexPath.row == 0 {
+                
+                cell.nameLabel.text = creatorname
+                
+                cell.backgroundColor = UIColor(red:0.97, green:0.97, blue:0.97, alpha:1.0)
+                
+                let scoreUrl = "https://sonarapp.firebaseio.com/time/" + currentUser + "/posts/"
+                let scoreRef = Firebase(url: scoreUrl)
+                
+                scoreRef.queryOrderedByValue().queryLimitedToLast(1).observeEventType(.ChildAdded, withBlock: {
+                    snapshot in
+                    let id = snapshot.key as? String
+                    let score = snapshot.value as? Int
+                    let scoreString = String(score!)
+                    let scoreText = self.returnSecondsToHoursMinutesSeconds(score!)
+                    
+                    
+                    if score == nil {
+                        cell.scoreLabel.text = "ZzzzZzzzZzz"
+                    } else {
+                        cell.scoreLabel.text = scoreText
+                    }
+                    
+                })
+                
+                cell.profileImageView.image = UIImage(named: "Placeholder.png")
+                if let cachedImageResult = imageCache[currentUser] {
+                    println("pull from cache")
+                    cell.profileImageView.image = UIImage(data: cachedImageResult!)
+                } else {
+                    // 3
+                    cell.profileImageView.image = UIImage(named: "BatPic")
+                    
+                    // 4
+                    let downloadingFilePath1 = (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent("temp-download")
+                    let downloadingFileURL1 = NSURL(fileURLWithPath: downloadingFilePath1 )
+                    let transferManager = AWSS3TransferManager.defaultS3TransferManager()
+                    
+                    
+                    let readRequest1 : AWSS3TransferManagerDownloadRequest = AWSS3TransferManagerDownloadRequest()
+                    readRequest1.bucket = S3BucketName
+                    readRequest1.key =  currentUser
+                    readRequest1.downloadingFileURL = downloadingFileURL1
+                    
+                    let task = transferManager.download(readRequest1)
+                    task.continueWithBlock { (task) -> AnyObject! in
+                        if task.error != nil {
+                            println("No Profile Pic")
+                        } else {
+                            let image = UIImage(contentsOfFile: downloadingFilePath1)
+                            let imageData = UIImageJPEGRepresentation(image, 1.0)
+                            imageCache[currentUser] = imageData
+                            dispatch_async(dispatch_get_main_queue()
+                                , { () -> Void in
+                                    
+                                    cell.profileImageView.image = UIImage(contentsOfFile: downloadingFilePath1)
+                                    cell.setNeedsLayout()
+                                    
+                            })
+                            println("Fetched image")
+                        }
+                        return nil
+                    }
+                    
+                }
+            } else {
+            var row = (indexPath.row-1)
+            let friendName = friendsArray[indexPath.row-1]
+            let id = idArray[indexPath.row-1]
+            
+            
+            cell.nameLabel.text = friendName
+            
+            let scoreUrl = "https://sonarapp.firebaseio.com/time/" + id + "/posts/"
+            let scoreRef = Firebase(url: scoreUrl)
+            
+            scoreRef.queryOrderedByValue().queryLimitedToLast(1).observeEventType(.ChildAdded, withBlock: {
+                snapshot in
+                let id = snapshot.key as? String
+                let score = snapshot.value as? Int
+                let scoreString = String(score!)
+                let scoreText = self.returnSecondsToHoursMinutesSeconds(score!)
+                
+                cell.scoreLabel.text = scoreText
+            })
+            
+            cell.profileImageView.image = UIImage(named: "Placeholder.png")
+            if let cachedImageResult = imageCache[id] {
+                println("pull from cache")
+                cell.profileImageView.image = UIImage(data: cachedImageResult!)
+            } else {
+                // 3
+                cell.profileImageView.image = UIImage(named: "BatPic")
+                
+                // 4
+                let downloadingFilePath1 = (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent("temp-download")
+                let downloadingFileURL1 = NSURL(fileURLWithPath: downloadingFilePath1 )
+                let transferManager = AWSS3TransferManager.defaultS3TransferManager()
+                
+                
+                let readRequest1 : AWSS3TransferManagerDownloadRequest = AWSS3TransferManagerDownloadRequest()
+                readRequest1.bucket = S3BucketName
+                readRequest1.key =  id
+                readRequest1.downloadingFileURL = downloadingFileURL1
+                
+                let task = transferManager.download(readRequest1)
+                task.continueWithBlock { (task) -> AnyObject! in
+                    if task.error != nil {
+                        println("No Profile Pic")
+                    } else {
+                        let image = UIImage(contentsOfFile: downloadingFilePath1)
+                        let imageData = UIImageJPEGRepresentation(image, 1.0)
+                        imageCache[id] = imageData
+                        dispatch_async(dispatch_get_main_queue()
+                            , { () -> Void in
+                                
+                                cell.profileImageView.image = UIImage(contentsOfFile: downloadingFilePath1)
+                                cell.setNeedsLayout()
+                                
+                        })
+                        println("Fetched image")
+                    }
+                    return nil
+                }
+                
+            }
+            }
+            
+            return cell
+        } else {
+            let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("addFriendCell") as! UITableViewCell
+            
+            return cell
+        }
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if indexPath.section == 1 {
+            return 80
+        } else if indexPath.section == 0{
+            return UITableViewAutomaticDimension
+        } else {
+            return 55
+        }
     }
     
 
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        performSegueWithIdentifier("showChat", sender: self)
-        tableView.deselectRowAtIndexPath(indexPath, animated: false)
+        if indexPath.section == 0 {
+            performSegueWithIdentifier("showChat", sender: self)
+            tableView.deselectRowAtIndexPath(indexPath, animated: false)
+        } else if indexPath.section == 2 {
+            let alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
+            let libButton = UIAlertAction(title: "Add by Username", style: UIAlertActionStyle.Default) { (alert) -> Void in
+                
+                self.performSegueWithIdentifier("showUsername", sender: self)
+            }
+            let cameraButton = UIAlertAction(title: "Add from Address Book", style: UIAlertActionStyle.Default) { (alert) -> Void in
+                    
+                
+                self.performSegueWithIdentifier("showAddressBook", sender: self)
+                
+            }
+            alert.addAction(cameraButton)
+            let cancelButton = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel) { (alert) -> Void in
+                print("Cancel Pressed")
+            }
+            
+            alert.addAction(libButton)
+            alert.addAction(cancelButton)
+            self.presentViewController(alert, animated: true, completion: nil)
+            tableView.deselectRowAtIndexPath(indexPath, animated: false)
+        }
+        
     }
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            println("Delete")
-            let post = posts[indexPath.row]
-
-            let url = "https://sonarapp.firebaseio.com/users/" + currentUser + "/postsReceived/" + post.key
-            let targetRef = Firebase(url: url)
-            targetRef.removeValue()
+        if indexPath.section == 0 {
+            if editingStyle == .Delete {
+                println("Delete")
+                let post = posts[indexPath.row]
+                
+                let url = "https://sonarapp.firebaseio.com/users/" + currentUser + "/postsReceived/" + post.key
+                let targetRef = Firebase(url: url)
+                targetRef.removeValue()
+                
+                let targetUrl = "https://sonarapp.firebaseio.com/posts/" + post.key + "/targets/" + currentUser
+                let removeTargetRef = Firebase(url: targetUrl)
+                removeTargetRef.removeValue()
+                
+                self.tableView.reloadData()
+            }
+        } else {
             
-            let targetUrl = "https://sonarapp.firebaseio.com/posts/" + post.key + "/targets/" + currentUser
-            let removeTargetRef = Firebase(url: targetUrl)
-            removeTargetRef.removeValue()
-            
-            self.tableView.reloadData()
         }
+        
+        
     }
     
     

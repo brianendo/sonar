@@ -26,7 +26,7 @@ class TargetListViewController: UIViewController, UITableViewDelegate, UITableVi
         let targetRef = Firebase(url: url)
         
         
-        targetRef.observeEventType(.ChildAdded, withBlock: {
+        targetRef.queryOrderedByChild("name").observeEventType(.ChildAdded, withBlock: {
             snapshot in
             print(snapshot.key)
             let id = snapshot.key as? String
@@ -86,7 +86,7 @@ class TargetListViewController: UIViewController, UITableViewDelegate, UITableVi
             cell.profileImageView.image = UIImage(data: cachedImageResult!)
         } else {
             // 3
-            cell.profileImageView.image = UIImage(named: "Placeholder.png")
+            cell.profileImageView.image = UIImage(named: "BatPic")
             
             // 4
             let downloadingFilePath1 = (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent("temp-download")

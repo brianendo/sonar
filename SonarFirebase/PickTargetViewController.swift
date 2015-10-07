@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import Parse
+import AWSS3
 
 class PickTargetViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
@@ -64,6 +65,8 @@ class PickTargetViewController: UIViewController, UITableViewDataSource, UITable
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        self.title = "Pick Friends"
+        
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.reloadData()
@@ -100,10 +103,54 @@ class PickTargetViewController: UIViewController, UITableViewDataSource, UITable
         
         if indexPath.section == 0 {
             cell.nameLabel.text = "All Friends"
+            cell.profileImageView.image = UIImage(named: "PeopleCirclePurple")
             return cell
         } else {
             let target: (AnyObject) = friendsArray[indexPath.row]
+            let id: (String) = targetIdArray[indexPath.row]
+            
             cell.nameLabel.text = target as? String
+            
+            cell.profileImageView.image = UIImage(named: "Placeholder.png")
+            if let cachedImageResult = imageCache[id] {
+                println("pull from cache")
+                cell.profileImageView.image = UIImage(data: cachedImageResult!)
+            } else {
+                // 3
+                cell.profileImageView.image = UIImage(named: "BatPic")
+                
+                // 4
+                let downloadingFilePath1 = (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent("temp-download")
+                let downloadingFileURL1 = NSURL(fileURLWithPath: downloadingFilePath1 )
+                let transferManager = AWSS3TransferManager.defaultS3TransferManager()
+                
+                
+                let readRequest1 : AWSS3TransferManagerDownloadRequest = AWSS3TransferManagerDownloadRequest()
+                readRequest1.bucket = S3BucketName
+                readRequest1.key =  id
+                readRequest1.downloadingFileURL = downloadingFileURL1
+                
+                let task = transferManager.download(readRequest1)
+                task.continueWithBlock { (task) -> AnyObject! in
+                    if task.error != nil {
+                        println("No Profile Pic")
+                    } else {
+                        let image = UIImage(contentsOfFile: downloadingFilePath1)
+                        let imageData = UIImageJPEGRepresentation(image, 1.0)
+                        imageCache[id] = imageData
+                        dispatch_async(dispatch_get_main_queue()
+                            , { () -> Void in
+                                
+                                cell.profileImageView.image = UIImage(contentsOfFile: downloadingFilePath1)
+                                cell.setNeedsLayout()
+                                
+                        })
+                        println("Fetched image")
+                    }
+                    return nil
+                }
+                
+            }
             
             return cell
         }
@@ -197,7 +244,7 @@ class PickTargetViewController: UIViewController, UITableViewDataSource, UITable
             currentTargetRef.childByAppendingPath(target).setValue(true)
             
             let postReceivedURL = "https://sonarapp.firebaseio.com/users/" + target + "/postsReceived/" + postID
-            let postReceived = ["updatedAt": [".sv":"timestamp"], "endAt": quickDate]
+            let postReceived = ["createdAt": [".sv":"timestamp"], "updatedAt": [".sv":"timestamp"], "endAt": quickDate]
             let postReceivedRef = Firebase(url: postReceivedURL)
             postReceivedRef.setValue(postReceived)
             
@@ -232,7 +279,7 @@ class PickTargetViewController: UIViewController, UITableViewDataSource, UITable
         }
         
         let userUrl = "https://sonarapp.firebaseio.com/users/" + currentUser + "/postsReceived/" + postID 
-        let userReceived = ["updatedAt": [".sv":"timestamp"], "endAt": quickDate]
+        let userReceived = ["createdAt": [".sv":"timestamp"], "updatedAt": [".sv":"timestamp"], "endAt": quickDate]
         let userReceivedRef = Firebase(url: userUrl)
         userReceivedRef.setValue(userReceived)
         

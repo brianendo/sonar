@@ -36,7 +36,6 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
     @IBOutlet weak var timeLeftLabel: UILabel!
     
     
-    
     @IBOutlet weak var sendMessageTextView: UITextView!
     
     @IBOutlet weak var bottomLayoutConstraint: NSLayoutConstraint!
@@ -195,7 +194,6 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
             }
         })
         
-        
     }
     
     
@@ -353,6 +351,7 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         self.tableView.estimatedRowHeight = 70
         
         self.tableViewScrollToBottom(true)
+        
         
 //        let notificationCenter = NSNotificationCenter.defaultCenter()
 //        notificationCenter.removeObserver(self)
@@ -616,7 +615,7 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
             cell.profileImageView.image = UIImage(data: cachedImageResult!)
         } else {
             // 3
-            cell.profileImageView.image = UIImage(named: "Placeholder.png")
+            cell.profileImageView.image = UIImage(named: "BatPic")
             
             // 4
             let downloadingFilePath1 = (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent("temp-download")

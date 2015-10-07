@@ -21,7 +21,7 @@ class TargetListTableViewCell: UITableViewCell {
         self.profileImageView.frame = CGRectMake(0, 0, 50, 50)
         self.profileImageView.layer.borderWidth = 0.5
         self.profileImageView.layer.masksToBounds = false
-        self.profileImageView.layer.borderColor = UIColor.grayColor().CGColor
+        self.profileImageView.layer.borderColor = UIColor.lightGrayColor().CGColor
         self.profileImageView.layer.cornerRadius = self.profileImageView.frame.size.height/2
         self.profileImageView.clipsToBounds = true
     }

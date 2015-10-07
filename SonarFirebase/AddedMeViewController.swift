@@ -38,6 +38,12 @@ class AddedMeViewController: UIViewController, UITableViewDataSource, UITableVie
         
         addedMeRef.observeEventType(.ChildAdded, withBlock: { snapshot in
             let userId = snapshot.key
+            let status = snapshot.value as? String
+            
+            if status == "addedBack" {
+                
+            } else {
+            
             let userUrl = "https://sonarapp.firebaseio.com/users/" + userId
             let userRef = Firebase(url: userUrl)
             
@@ -47,6 +53,7 @@ class AddedMeViewController: UIViewController, UITableViewDataSource, UITableVie
                 self.nameArray.insert(name!, atIndex: 0)
                 self.tableView.reloadData()
             })
+        }
         })
         
     }
@@ -115,7 +122,7 @@ class AddedMeViewController: UIViewController, UITableViewDataSource, UITableVie
             cell.profileImageView.image = UIImage(data: cachedImageResult!)
         } else {
             // 3
-            cell.profileImageView.image = UIImage(named: "Placeholder.png")
+            cell.profileImageView.image = UIImage(named: "BatPic")
             
             // 4
             let downloadingFilePath1 = (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent("temp-download")
@@ -156,6 +163,7 @@ class AddedMeViewController: UIViewController, UITableViewDataSource, UITableVie
     
     func toggleButton(sender: UIButton!) {
         let user: (String) = userIdArray[sender.tag]
+        let friendName: (String) = nameArray[sender.tag]
         
         if sender.selected == false  {
             
@@ -165,13 +173,25 @@ class AddedMeViewController: UIViewController, UITableViewDataSource, UITableVie
             let userActivityRef = Firebase(url: userUrl)
             userActivityRef.childByAppendingPath(user).setValue(true)
             
-            let addFriendUrl = "https://sonarapp.firebaseio.com/users/" + currentUser + "/friends/"
-            let addFriendRef = Firebase(url: addFriendUrl)
-            addFriendRef.childByAppendingPath(user).setValue(true)
+            let setAddedMeUrl = "https://sonarapp.firebaseio.com/user_activity/" + currentUser + "/addedme/"
+            let setAddedMeRef = Firebase(url: setAddedMeUrl)
+            setAddedMeRef.childByAppendingPath(user).setValue("addedBack")
             
-            let friendUrl = "https://sonarapp.firebaseio.com/users/" + user + "/friends/"
+            let addFriendUrl = "https://sonarapp.firebaseio.com/users/" + currentUser + "/friends/" + user
+            let addFriendRef = Firebase(url: addFriendUrl)
+            addFriendRef.childByAppendingPath("name").setValue(friendName)
+            
+//            let addFriendUrl = "https://sonarapp.firebaseio.com/users/" + currentUser + "/friends/"
+//            let addFriendRef = Firebase(url: addFriendUrl)
+//            addFriendRef.childByAppendingPath(user).setValue(true)
+            
+            let friendUrl = "https://sonarapp.firebaseio.com/users/" + user + "/friends/" + currentUser
             let friendRef = Firebase(url: friendUrl)
-            friendRef.childByAppendingPath(currentUser).setValue(true)
+            friendRef.childByAppendingPath("name").setValue(self.creatorname)
+            
+//            let friendUrl = "https://sonarapp.firebaseio.com/users/" + user + "/friends/"
+//            let friendRef = Firebase(url: friendUrl)
+//            friendRef.childByAppendingPath(currentUser).setValue(true)
             
             let pushURL = "https://sonarapp.firebaseio.com/users/" + user + "/pushId"
             let pushRef = Firebase(url: pushURL)

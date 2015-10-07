@@ -95,11 +95,7 @@ class VerificationViewController: UIViewController {
                 let userRef = Firebase(url: userUrl)
                 userRef.setValue(self.phoneNumber)
                 println("Made It")
-                
-                let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                let mainVC = storyboard.instantiateInitialViewController() as! UIViewController
-                self.presentViewController(mainVC, animated: true, completion: nil)
-
+                self.performSegueWithIdentifier("segueToSelfie", sender: self)
             } else {
                 var alert = UIAlertController(title: "Wrong verification code", message: "Please retry", preferredStyle: UIAlertControllerStyle.Alert)
                 alert.addAction(UIAlertAction(title: "Back", style: UIAlertActionStyle.Default, handler: nil))
