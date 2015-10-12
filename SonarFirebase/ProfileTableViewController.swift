@@ -152,12 +152,14 @@ class ProfileTableViewController: UITableViewController, UIImagePickerController
             tableView.deselectRowAtIndexPath(indexPath, animated: true)
         } else if indexPath.section == 2{
             tableView.deselectRowAtIndexPath(indexPath, animated: true)
-            if indexPath.row == 2 {
+            if indexPath.row == 1 {
                 ref.unauth()
                 
                 let login = UIStoryboard(name: "LogIn", bundle: nil)
                 let loginVC = login.instantiateInitialViewController() as! UIViewController
                 self.presentViewController(loginVC, animated: true, completion: nil)
+            } else if indexPath.row == 0 {
+                
             }
         }
     }

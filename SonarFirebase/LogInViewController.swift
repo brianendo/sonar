@@ -50,10 +50,6 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         // Do any additional setup after loading the view.
         self.navigationController?.navigationBarHidden = false
         
-//        // Add a tap gesture recognizer to the table view
-//        let tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "viewTapped")
-//        self.logInView.addGestureRecognizer(tapGesture)
-        
         self.emailTextField.becomeFirstResponder()
         self.logInButton.enabled = false
         
@@ -95,15 +91,11 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     }
     
     
-//    func viewTapped() {
-//        
-//        // Force the textfield to end editing
-//        self.passwordTextField.endEditing(true)
-//        self.emailTextField.endEditing(true)
-//    }
-    
     @IBAction func logInButtonPressed(sender: UIButton) {
-        ref.authUser(emailTextField.text, password: passwordTextField.text,
+        let email = emailTextField.text
+        let emailLowercase = email.lowercaseString
+        
+        ref.authUser(emailLowercase, password: passwordTextField.text,
             withCompletionBlock: { error, authData in
                 if error != nil {
                     // There was an error logging in to this account
@@ -128,7 +120,9 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         let confirmAction = UIAlertAction(title: "Confirm", style: .Default) { (_) in
             if let field = alertController.textFields![0] as? UITextField {
                 // store your data
-                ref.resetPasswordForUser(field.text) { (err) -> Void in
+                let email = field.text
+                let emailLowercase = email.lowercaseString
+                ref.resetPasswordForUser(emailLowercase) { (err) -> Void in
                     if err != nil{
                         println("Didn't work")
                     } else {

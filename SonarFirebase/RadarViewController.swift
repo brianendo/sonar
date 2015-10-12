@@ -110,7 +110,7 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
                                         if let name = snapshot.value["name"] as? String {
                                             let updatedDate = NSDate(timeIntervalSince1970: (updatedAt!/1000))
                                             let createdDate = NSDate(timeIntervalSince1970: (createdAt/1000))
-                                            let endedDate = NSDate(timeIntervalSince1970: (endAt!/1000))
+                                            let endedDate = NSDate(timeIntervalSince1970: (endAt!))
                                             
                                             let post = Post(content: content, creator: creator, key: key, createdAt: updatedDate, name: name, joined: true, messageCount: 0, endAt: endedDate)
                                             
@@ -162,7 +162,7 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
                                     
                                     let updatedDate = NSDate(timeIntervalSince1970: (updatedAt!/1000))
                                     let createdDate = NSDate(timeIntervalSince1970: (createdAt/1000))
-                                    let endedDate = NSDate(timeIntervalSince1970: (endAt!/1000))
+                                    let endedDate = NSDate(timeIntervalSince1970: (endAt!))
                                     
                                     let post = Post(content: content, creator: creator, key: key, createdAt: updatedDate, name: name, joined: true, messageCount: 0, endAt: endedDate)
                                     
@@ -225,152 +225,7 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
         })
     }
     
-    
-    func loadRadarData() {
-        
-        let url = "https://sonarapp.firebaseio.com/users/" + currentUser + "/postsReceived/"
-        let targetRef = Firebase(url: url)
-        
-        targetRef.observeEventType(.ChildAdded, withBlock: {
-            snapshot in
-            println("child")
-            if let found = find(self.posts.map({ $0.key }), snapshot.key) {
-                let obj = self.posts[found]
-                println(obj)
-                println(found)
-                self.posts.removeAtIndex(found)
-            }
-            
-            let postsUrl = "https://sonarapp.firebaseio.com/posts/" + snapshot.key
-            let postsRef = Firebase(url: postsUrl)
-            let joined = snapshot.value["joined"] as? Bool
-            
-            
-            var messageCount = snapshot.value["messageCount"] as? Int
-            if messageCount == nil {
-                messageCount = 0
-            }
-            postsRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
-                if let key = snapshot.key
-                {if let content = snapshot.value["content"] as? String {
-                    if let creator = snapshot.value["creator"] as? String {
-                        if let createdAt = snapshot.value["createdAt"] as? NSTimeInterval {
-                            if let updatedAt = snapshot.value["updatedAt"] as? NSTimeInterval {
-                                if let endAt = snapshot.value["endAt"] as? NSTimeInterval {
-                            let userurl = "https://sonarapp.firebaseio.com/users/" + (creator)
-                            let userRef = Firebase(url: userurl)
-                            userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
-                                if let name = snapshot.value["name"] as? String {
-                                        let updatedDate = NSDate(timeIntervalSince1970: (updatedAt/1000))
-                                        let createdDate = NSDate(timeIntervalSince1970: (createdAt/1000))
-                                        let endedDate = NSDate(timeIntervalSince1970: (endAt/1000))
-                                        var date: NSDate?
-                                        if joined == true {
-                                            date = updatedDate
-                                            println("updated at")
-                                        } else {
-                                            date = createdDate
-                                            println("created at")
-                                        }
-                                        
-                                        println(joined)
-                                        let post = Post(content: content, creator: creator, key: key, createdAt: date!, name: name, joined: joined, messageCount: messageCount!, endAt: endedDate)
-                                        
-                                        self.posts.append(post)
-                                        
-                                        
-                                        // Sort posts in descending order
-                                        self.posts.sort({ $0.createdAt.compare($1.createdAt) == .OrderedDescending })
-                                        self.tableView.reloadData()
-                                }
-                            })
-                            }
-                            }
-                        }
-                    }
-                }
-                
-                }
-            })
-        })
-    }
-    
-    func changedRadarData() {
-        
-        let url = "https://sonarapp.firebaseio.com/users/" + currentUser + "/postsReceived/"
-        let targetRef = Firebase(url: url)
-        
-        
-        targetRef.observeEventType(.ChildChanged, withBlock: {
-            snapshot in
-            if let found = find(self.posts.map({ $0.key }), snapshot.key) {
-            let obj = self.posts[found]
-                println(obj)
-                println(found)
-                self.posts.removeAtIndex(found)
-            }
-            
-            
-            // Update post to ensure that Feed is in correct order
-            let postUpdatedUrl = "https://sonarapp.firebaseio.com/posts/" + snapshot.key
-            let postUpdatedRef = Firebase(url: postUpdatedUrl)
-            let updatedAt = ["updatedAt": [".sv":"timestamp"] ]
-            postUpdatedRef.updateChildValues(updatedAt)
-            
-            println("childChanged")
-            
-            let postsUrl = "https://sonarapp.firebaseio.com/posts/" + snapshot.key
-            let postsRef = Firebase(url: postsUrl)
-            let joined = snapshot.value["joined"] as? Bool
-            
-            var messageCount = snapshot.value["messageCount"] as? Int
-            if messageCount == nil {
-                messageCount = 0
-            }
-            println(messageCount)
-            postsRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
-                if let key = snapshot.key
-                {if let content = snapshot.value["content"] as? String {
-                    if let creator = snapshot.value["creator"] as? String {
-                        if let createdAt = snapshot.value["createdAt"] as? NSTimeInterval {
-                            if let updatedAt = snapshot.value["updatedAt"] as? NSTimeInterval {
-                                if let endAt = snapshot.value["endAt"] as? NSTimeInterval {
-                                let userurl = "https://sonarapp.firebaseio.com/users/" + (creator)
-                                let userRef = Firebase(url: userurl)
-                                userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
-                                    if let name = snapshot.value["name"] as? String {
-                                            let updatedDate = NSDate(timeIntervalSince1970: (updatedAt/1000))
-                                            let createdDate = NSDate(timeIntervalSince1970: (createdAt/1000))
-                                            let endedDate = NSDate(timeIntervalSince1970: (endAt/1000))
-                                            var date: NSDate?
-                                            if joined == true {
-                                                date = updatedDate
-                                                println(updatedDate)
-                                            } else {
-                                                date = createdDate
-                                            }
-                                            
-                                            let post = Post(content: content, creator: creator, key: key, createdAt: date!, name: name, joined: joined!, messageCount: messageCount!, endAt: endedDate)
-                                        
-                                        
-                                            self.posts.append(post)
-                                            
-                                            // Sort posts in descending order
-                                            self.posts.sort({ $0.createdAt.compare($1.createdAt) == .OrderedDescending })
-                                            
-                                            self.tableView.reloadData()
-                                        }
-                                })
-                                }
-                            }
-                        }
-                    }
-                    }
-                    
-                }
-            })
-        })
-    }
+
     
     func dataRemove() {
         
@@ -394,8 +249,10 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
                 createdAt = 0
             }
             
-            let length = Int((endAt! - createdAt!)/1000)
-            
+            println(createdAt!/1000)
+            println(endAt)
+            let length = Int((endAt! - (createdAt!/1000)))
+            println(length)
             println("childRemoved")
             
             let pointAddedUrl = "https://sonarapp.firebaseio.com/time/" + currentUser + "/posts/" + key! 
@@ -472,6 +329,8 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
         
         nav!.topItem?.titleView = imageView
         
+        self.loadName()
+        
         self.tableView.reloadData()
     }
     
@@ -484,7 +343,6 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     override func viewWillAppear(animated: Bool) {
-        
         let url = "https://sonarapp.firebaseio.com/users/" + currentUser + "/postsReceived/"
         let targetRef = Firebase(url: url)
         
@@ -559,7 +417,7 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     override func viewWillDisappear(animated: Bool) {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+//        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
     func deleteDeadCell() {
@@ -579,7 +437,7 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
                         snapshot in
                         let endTime = snapshot.value as? NSTimeInterval
                         
-                        let endedDate = NSDate(timeIntervalSince1970: (endTime!/1000))
+                        let endedDate = NSDate(timeIntervalSince1970: (endTime!))
                         
                         var timeLeft = endedDate.timeIntervalSinceDate(NSDate())
                         println(timeLeft)
@@ -753,8 +611,12 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
         
         let endTime = posts[indexPath.row].endAt
         var timeLeft = endTime.timeIntervalSinceDate(NSDate())
-        cell.timeInterval = round(timeLeft)
+//        cell.timeInterval = round(timeLeft)
         
+        
+        var timeInterval = endTime.timeIntervalSince1970
+        cell.timeInterval = Int(timeInterval)
+            
         // Need View Controller to segue in TableViewCell
         cell.viewController = self
         

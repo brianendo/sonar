@@ -121,12 +121,14 @@ class SignUpViewController: UIViewController {
     
     @IBAction func signUpButtonPressed(sender: UIButton) {
         if count(self.passwordTextField.text) < 6 {
-            var alert = UIAlertController(title: "Password not secure", message: "Make sure it is at least 8 characters", preferredStyle: UIAlertControllerStyle.Alert)
+            var alert = UIAlertController(title: "Password not secure", message: "Make sure it is at least 6 characters", preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "Back", style: UIAlertActionStyle.Default, handler: nil))
             self.presentViewController(alert, animated: true, completion: nil)
         } else {
+        let email = emailTextField.text
+        let emailLowercase = email.lowercaseString
         
-        ref.createUser(emailTextField.text, password: passwordTextField.text,
+        ref.createUser(emailLowercase, password: passwordTextField.text,
             withValueCompletionBlock: { error, result in
                 if error != nil {
                     // There was an error creating the account
@@ -146,7 +148,7 @@ class SignUpViewController: UIViewController {
                                 
                                 let newUser = [
                                     "name": self.nameTextField.text!,
-                                    "email": self.emailTextField.text!
+                                    "email": emailLowercase
                                 ]
                                 
                                 ref.childByAppendingPath("users").childByAppendingPath(authData.uid).setValue(newUser)
@@ -156,7 +158,7 @@ class SignUpViewController: UIViewController {
                                 var user = PFObject(className:"FirebaseUser")
                                 
                                 user.setObject(self.nameTextField.text!, forKey: "name")
-                                user.setObject(self.emailTextField.text!, forKey: "email")
+                                user.setObject(emailLowercase, forKey: "email")
                                 user.setObject(uid!, forKey: "firebaseId")
 
                                 user.saveInBackgroundWithBlock {
@@ -171,9 +173,6 @@ class SignUpViewController: UIViewController {
                                 }
                                 self.performSegueWithIdentifier("showUsername", sender: self)
                                 
-//                                let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//                                let mainVC = storyboard.instantiateInitialViewController() as! UIViewController
-//                                self.presentViewController(mainVC, animated: true, completion: nil)
                             }
                     })
 

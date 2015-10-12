@@ -9,11 +9,11 @@
 import Foundation
 
 class AddressBookPerson: NSObject {
-    var name: String
-    var number: String
+    var name: String?
+    var number: String?
     
     init(name: String?, number: String?) {
-        self.name = name!
-        self.number = number!
+        self.name = name
+        self.number = number
     }
 }

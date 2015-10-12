@@ -43,6 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         UIApplication.sharedApplication().statusBarStyle = .LightContent
         
+        
         // Parse Authentication
         Parse.setApplicationId("1ZnEzkEJJwfM15A9nwRBycra1ytofbfprHAGDLNa",
             clientKey: "9zMn4TYWHaJaUSGtRy2X9fxmgTDbT8trZsnQ08pl")

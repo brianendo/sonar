@@ -25,36 +25,91 @@ class RadarTableViewCell: UITableViewCell, UITextViewDelegate {
     
     @IBOutlet weak var cellContentView: UIView!
     
+    func secondsToHoursMinutesSeconds (seconds : Int) -> (Int, Int, Int) {
+        return (seconds / 3600, (seconds % 3600) / 60, (seconds % 3600) % 60)
+    }
+
     
-    var timeInterval: NSTimeInterval = 0 {
+    func returnSecondsToHoursMinutesSeconds (seconds:Int) -> (String) {
+        let (h, m, s) = secondsToHoursMinutesSeconds (seconds)
+        if h == 0 {
+            return "\(m)m \(s)s"
+        } else {
+            return "\(h)h \(m)m \(s)s"
+        }
+    }
+    
+    
+    var timeInterval: Int = 0 {
         didSet {
-            if timeInterval > 60 {
-                let time = Int(timeInterval/60)
-                self.timeLeftLabel.text = "\(time) m"
+            var value = (timeInterval - Int(NSDate().timeIntervalSince1970))
+            if value > 600 {
+                let time = Int(value/60)
+                let timeString = returnSecondsToHoursMinutesSeconds(value)
+                self.timeLeftLabel.text = timeString
                 self.postImageView.image = UIImage(named: "GreenPulse")
-            } else if (timeInterval <= 60 && timeInterval > 50) {
-                let time = Int(timeInterval)
-                self.timeLeftLabel.text = "\(time) s"
+            } else if (value <= 600 && value > 300) {
+                let time = Int(value)
+                let timeString = returnSecondsToHoursMinutesSeconds(value)
+                self.timeLeftLabel.text = timeString
                 self.postImageView.image = UIImage(named: "YellowPulse")
-            } else if timeInterval <= 50 {
-                let time = Int(timeInterval)
-                self.timeLeftLabel.text = "\(time) s"
+            } else if (value <= 300 && value > 60) {
+                let time = Int(value)
+                let timeString = returnSecondsToHoursMinutesSeconds(value)
+                self.timeLeftLabel.text = timeString
                 self.postImageView.image = UIImage(named: "RedPulse")
-            }else if timeInterval <= 0 {
+            }else if value <= 60 {
+                let time = Int(value)
+                self.timeLeftLabel.text = "\(time)s"
+                self.postImageView.image = UIImage(named: "RedPulse")
+            } else if value <= 0 {
                 self.timeLeftLabel.text = "Dead"
             }
         }
     }
     
+//    var timeInterval: NSTimeInterval = 0 {
+//        didSet {
+//            if timeInterval > 60 {
+//                let time = Int(timeInterval/60)
+//                self.timeLeftLabel.text = "\(time) m"
+//                self.postImageView.image = UIImage(named: "GreenPulse")
+//            } else if (timeInterval <= 60 && timeInterval > 50) {
+//                let time = Int(timeInterval)
+//                self.timeLeftLabel.text = "\(time) s"
+//                self.postImageView.image = UIImage(named: "YellowPulse")
+//            } else if timeInterval <= 50 {
+//                let time = Int(timeInterval)
+//                self.timeLeftLabel.text = "\(time) s"
+//                self.postImageView.image = UIImage(named: "RedPulse")
+//            }else if timeInterval <= 0 {
+//                self.timeLeftLabel.text = "Dead"
+//            }
+//        }
+//    }
+    
+//    func updateUI() {
+//        if self.timeInterval > 0 {
+//            --self.timeInterval
+//        } else if self.timeInterval <= 0 {
+//            self.timeLeftLabel.text = "Dead"
+//            let notification = NSNotification(name: "DeleteDeadCell", object: nil)
+//            NSNotificationCenter.defaultCenter().postNotification(notification)
+//        }
+//    }
+    
     func updateUI() {
-        if self.timeInterval > 0 {
-            --self.timeInterval
-        } else if self.timeInterval <= 0 {
+        if (self.timeInterval - Int(NSDate().timeIntervalSince1970)) > 0 {
+            self.timeInterval = (self.timeInterval - 0)
+        } else if (self.timeInterval - Int(NSDate().timeIntervalSince1970)) <= 0 {
             self.timeLeftLabel.text = "Dead"
             let notification = NSNotification(name: "DeleteDeadCell", object: nil)
             NSNotificationCenter.defaultCenter().postNotification(notification)
         }
     }
+
+    
+
     
     override func awakeFromNib() {
         super.awakeFromNib()

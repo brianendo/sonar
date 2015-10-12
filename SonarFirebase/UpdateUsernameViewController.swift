@@ -1,26 +1,27 @@
 //
-//  UsernameViewController.swift
-//  Sonar
+//  UpdateUsernameViewController.swift
+//  
 //
-//  Created by Brian Endo on 9/30/15.
-//  Copyright (c) 2015 Brian Endo. All rights reserved.
+//  Created by Brian Endo on 10/7/15.
+//
 //
 
 import UIKit
 import Parse
 import Firebase
 
-class UsernameViewController: UIViewController {
+class UpdateUsernameViewController: UIViewController {
 
-    
     @IBOutlet weak var usernameTextField: UITextField!
     
-    @IBOutlet weak var usernameStatusLabel: UILabel!
+    @IBOutlet weak var bottomLayoutConstraint: NSLayoutConstraint!
     
-    @IBOutlet weak var nextButton: UIButton!
+    @IBOutlet weak var saveButton: UIButton!
+    
+    @IBOutlet weak var statusLabel: UILabel!
     
     
-    @IBOutlet weak var bottomSpacingToLayout: NSLayoutConstraint!
+    var username = ""
     
     func registerForKeyboardNotifications ()-> Void   {
         
@@ -33,9 +34,8 @@ class UsernameViewController: UIViewController {
         var info = notification.userInfo!
         let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
         
-        self.bottomSpacingToLayout.constant = keyboardFrame.size.height
+        self.bottomLayoutConstraint.constant = keyboardFrame.size.height
     }
-    
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
@@ -46,22 +46,24 @@ class UsernameViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        
-        self.nextButton.enabled = false
+        self.usernameTextField.text = username
         self.usernameTextField.becomeFirstResponder()
+        
+        self.saveButton.enabled = false
         
         self.usernameTextField.addTarget(self, action: "textFieldDidChange:", forControlEvents: UIControlEvents.EditingChanged)
     }
-    
+
     func textFieldDidChange(textField: UITextField) {
-        if count(self.usernameTextField.text) > 2  {
+        if self.usernameTextField.text == username || count(self.usernameTextField.text) < 2  {
             
+            self.saveButton.enabled = false
+            
+        } else {
             let username = self.usernameTextField.text
             
-            let usernameLowercase = username.lowercaseString
-            
             var user = PFQuery(className:"FirebaseUser")
-            user.whereKey("username", equalTo: usernameLowercase)
+            user.whereKey("username", equalTo: username)
             
             user.findObjectsInBackgroundWithBlock {
                 (objects: [AnyObject]?, error: NSError?) -> Void in
@@ -69,36 +71,31 @@ class UsernameViewController: UIViewController {
                 if error == nil {
                     // The find succeeded.
                     if objects!.count == 0 {
-                        self.nextButton.enabled = true
-                        self.usernameStatusLabel.text = "Username Available!"
+                        self.saveButton.enabled = true
+                        self.statusLabel.text = "Username Available!"
                     } else {
-                        self.usernameStatusLabel.text = "Username taken"
-                        self.nextButton.enabled = false
+                        self.statusLabel.text = "Username taken"
+                        self.saveButton.enabled = false
                     }
                 } else {
                     // Log details of the failure
                     println("Error: \(error!) \(error!.userInfo!)")
                 }
             }
-        } else {
-            self.nextButton.enabled = false
-            self.usernameStatusLabel.text = ""
+            
         }
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-    
-    @IBAction func nextButtonPressed(sender: UIButton) {
-        let username = self.usernameTextField.text
-        let usernameLowercase = username.lowercaseString
+    @IBAction func saveButtonPressed(sender: UIButton) {
         
         let userUrl = "https://sonarapp.firebaseio.com/users/" + currentUser + "/username/"
         let userRef = Firebase(url: userUrl)
-        userRef.setValue(usernameLowercase)
+        userRef.setValue(self.usernameTextField.text)
         
         
         var user = PFQuery(className:"FirebaseUser")
@@ -111,7 +108,7 @@ class UsernameViewController: UIViewController {
                 // The find succeeded.
                 if let objects = objects as? [PFObject] {
                     for object in objects {
-                        object.setObject(usernameLowercase, forKey: "username")
+                        object.setObject(self.usernameTextField.text!, forKey: "username")
                         object.saveInBackground()
                     }
                 }
@@ -120,7 +117,14 @@ class UsernameViewController: UIViewController {
                 println("Error: \(error!) \(error!.userInfo!)")
             }
         }
+        let alert = UIAlertController(title: nil, message: "Username Changed!", preferredStyle: UIAlertControllerStyle.ActionSheet)
+        let cancelButton = UIAlertAction(title: "Okay", style: UIAlertActionStyle.Cancel) { (alert) -> Void in
+            print("Okay Pressed")
+            self.navigationController?.popViewControllerAnimated(true)
+        }
         
+        alert.addAction(cancelButton)
+        self.presentViewController(alert, animated: true, completion: nil)
     }
     
 

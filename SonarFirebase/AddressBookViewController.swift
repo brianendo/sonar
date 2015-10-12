@@ -94,12 +94,14 @@ class AddressBookViewController: UIViewController, UITableViewDataSource, UITabl
         }
         let people = ABAddressBookCopyArrayOfAllPeople(adbk).takeRetainedValue() as NSArray as [ABRecord]
         
-        
         let peopleSorted = ABAddressBookCopyArrayOfAllPeopleInSourceWithSortOrdering(adbk, nil, ABPersonSortOrdering(kABPersonSortByFirstName)).takeRetainedValue() as NSArray as [ABRecordRef]
+        
         for person in peopleSorted {
+
             let name = ABRecordCopyCompositeName(person).takeRetainedValue() as String
             let numbers = ABRecordCopyValue(person, kABPersonPhoneProperty).takeUnretainedValue()
             let numberOfNumbers = ABMultiValueGetCount(numbers)
+
             for (var numberIndex: CFIndex = 0; numberIndex < numberOfNumbers; numberIndex++) {
                 let label = ABMultiValueCopyLabelAtIndex(numbers, numberIndex).takeRetainedValue() as String
                 if (String(stringInterpolationSegment: label) == String(kABPersonPhoneMobileLabel)) {
@@ -107,22 +109,29 @@ class AddressBookViewController: UIViewController, UITableViewDataSource, UITabl
                     println(name)
                     println(number)
                     
+                    
+                    let stringArray = number.componentsSeparatedByCharactersInSet(
+                        NSCharacterSet.decimalDigitCharacterSet().invertedSet)
+                    let newNumber = NSArray(array: stringArray).componentsJoinedByString("")
+                    
+                    println(newNumber)
+                    
                     var user = PFQuery(className:"FirebaseUser")
-                    user.whereKey("phoneNumber", equalTo: number)
+                    user.whereKey("phoneNumber", equalTo: newNumber)
                     
                     user.findObjectsInBackgroundWithBlock {
                         (objects: [AnyObject]?, error: NSError?) -> Void in
                         
                         if error == nil {
                             // The find succeeded.
-                            if objects!.count == 0 {
+                            if objects?.count == 0 {
                                 println("Add user to Invite to Sonar List")
-                                let person = AddressBookPerson(name: name, number: number)
+                                let person = AddressBookPerson(name: name, number: newNumber)
                                 self.inviteArray.append(person)
                                 self.tableView.reloadData()
                             } else {
                                 println("User has an account")
-                                let person = AddressBookPerson(name: name, number: number)
+                                let person = AddressBookPerson(name: name, number: newNumber)
                                 self.userArray.append(person)
                                 self.tableView.reloadData()
                             }
@@ -140,11 +149,9 @@ class AddressBookViewController: UIViewController, UITableViewDataSource, UITabl
     {
         
         if (MFMessageComposeViewController.canSendText()) {
-        
+            
             var messageVC = MFMessageComposeViewController()
-        
-        
-        
+            
             messageVC.body = "Join Sonar! My username is: \(username)"
             println(messageVC.body)
         
@@ -160,6 +167,11 @@ class AddressBookViewController: UIViewController, UITableViewDataSource, UITabl
     
     
     func messageComposeViewController(controller: MFMessageComposeViewController!, didFinishWithResult result: MessageComposeResult) {
+        
+        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor(), NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 20)!]
+        
+        UIApplication.sharedApplication().statusBarStyle = .LightContent
+        
         switch (result.value) {
         case MessageComposeResultCancelled.value:
             println("Message was cancelled")
@@ -248,7 +260,7 @@ class AddressBookViewController: UIViewController, UITableViewDataSource, UITabl
             sender.selected = true
             
             var user = PFQuery(className:"FirebaseUser")
-            user.whereKey("phoneNumber", equalTo: phoneNumber)
+            user.whereKey("phoneNumber", equalTo: phoneNumber!)
             
             user.findObjectsInBackgroundWithBlock {
                 (objects: [AnyObject]?, error: NSError?) -> Void in
@@ -307,7 +319,7 @@ class AddressBookViewController: UIViewController, UITableViewDataSource, UITabl
         } else {
             sender.selected = false
             var user = PFQuery(className:"FirebaseUser")
-            user.whereKey("phoneNumber", equalTo: phoneNumber)
+            user.whereKey("phoneNumber", equalTo: phoneNumber!)
             
             user.findObjectsInBackgroundWithBlock {
                 (objects: [AnyObject]?, error: NSError?) -> Void in
@@ -339,7 +351,7 @@ class AddressBookViewController: UIViewController, UITableViewDataSource, UITabl
         
         let phoneNumber = self.inviteArray[sender.tag].number
         
-        self.prepareSMSmessage(self.username, cell_number: phoneNumber)
+        self.prepareSMSmessage(self.username, cell_number: phoneNumber!)
     }
     
     

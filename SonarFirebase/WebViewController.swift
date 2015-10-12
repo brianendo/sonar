@@ -25,6 +25,10 @@ class WebViewController: UIViewController {
         
         // Do any additional setup after loading the view.
 
+        self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
+        
+        UIApplication.sharedApplication().statusBarStyle = .LightContent
+        
         // Set up webView, conver NSURL to request
         let request = NSURLRequest(URL: urlToLoad!)
         webView.loadRequest(request)

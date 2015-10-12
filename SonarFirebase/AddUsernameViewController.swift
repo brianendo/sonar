@@ -63,6 +63,8 @@ class AddUsernameViewController: UIViewController, UITableViewDataSource, UITabl
         self.searchController.searchBar.delegate = self
         
         self.definesPresentationContext = false
+        
+        self.searchController.searchBar.becomeFirstResponder()
     }
 
     override func didReceiveMemoryWarning() {
@@ -166,8 +168,10 @@ class AddUsernameViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func filterContentForSearch (searchText: String) {
+        let searchTextLowercase = searchText.lowercaseString
+        
         var user = PFQuery(className:"FirebaseUser")
-        user.whereKey("username", equalTo: searchText)
+        user.whereKey("username", equalTo: searchTextLowercase)
         
         user.findObjectsInBackgroundWithBlock {
             (objects: [AnyObject]?, error: NSError?) -> Void in
@@ -181,7 +185,7 @@ class AddUsernameViewController: UIViewController, UITableViewDataSource, UITabl
                             println(object.objectForKey("name"))
                             let name = object.objectForKey("name") as! String
                             let firebaseId = object.objectForKey("firebaseId") as! String
-                            let searchedUsername = searchText
+                            let searchedUsername = searchTextLowercase
                             self.username = Username(username: searchedUsername, firebaseId: firebaseId)
                             self.tableView.reloadData()
                         }

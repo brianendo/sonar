@@ -27,6 +27,7 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
     
     var timer: NSTimer!
     
+    var targetCount = ""
     
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var headerTextView: UITextView!
@@ -110,25 +111,65 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         
     }
     
-    var timeInterval: NSTimeInterval = 0 {
+    func secondsToHoursMinutesSeconds (seconds : Int) -> (Int, Int, Int) {
+        return (seconds / 3600, (seconds % 3600) / 60, (seconds % 3600) % 60)
+    }
+    
+    
+    func returnSecondsToHoursMinutesSeconds (seconds:Int) -> (String) {
+        let (h, m, s) = secondsToHoursMinutesSeconds (seconds)
+        if h == 0 {
+            return "\(m)m \(s)s"
+        } else {
+            return "\(h)h \(m)m \(s)s"
+        }
+    }
+    
+//    var timeInterval: Int = 0 {
+//        didSet {
+//            if timeInterval > 60 {
+//                let time = Int(timeInterval/60)
+//                let timeString = returnSecondsToHoursMinutesSeconds(timeInterval)
+//                self.timeLeftLabel.text = timeString
+//            } else if timeInterval <= 60 {
+//                let time = Int(timeInterval)
+//                self.timeLeftLabel.text = "\(time)s"
+//            } else if timeInterval <= 1 {
+//                self.navigationController?.popViewControllerAnimated(true)
+//                self.timeLeftLabel.text = "Dead"
+//            }
+//        }
+//    }
+    
+//    func updateLabel() {
+//        if self.timeInterval > 1 {
+//            --self.timeInterval
+//        } else if self.timeInterval <= 1 {
+//            self.timeLeftLabel.text = "Dead"
+//            self.navigationController?.popViewControllerAnimated(true)
+//        }
+//    }
+    
+    var timeInterval: Int = 0 {
         didSet {
-            if timeInterval > 60 {
-                let time = Int(timeInterval/60)
-                self.timeLeftLabel.text = "\(time) m"
-            } else if timeInterval <= 60 {
-                let time = Int(timeInterval)
-                self.timeLeftLabel.text = "\(time) s"
-            } else if timeInterval <= 1 {
-                self.navigationController?.popViewControllerAnimated(true)
+            var value = (timeInterval - Int(NSDate().timeIntervalSince1970))
+            if value > 60 {
+                let time = Int(value/60)
+                let timeString = returnSecondsToHoursMinutesSeconds(value)
+                self.timeLeftLabel.text = timeString
+            } else if (value <= 60 && value > 0) {
+                let time = Int(value)
+                self.timeLeftLabel.text = "\(time)s"
+            }else if value <= 0 {
                 self.timeLeftLabel.text = "Dead"
             }
         }
     }
     
     func updateLabel() {
-        if self.timeInterval > 1 {
-            --self.timeInterval
-        } else if self.timeInterval <= 1 {
+        if (self.timeInterval - Int(NSDate().timeIntervalSince1970)) > 0 {
+            self.timeInterval = (self.timeInterval - 0)
+        } else if (self.timeInterval - Int(NSDate().timeIntervalSince1970)) <= 0 {
             self.timeLeftLabel.text = "Dead"
             self.navigationController?.popViewControllerAnimated(true)
         }
@@ -162,10 +203,12 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
                                 if endAt == nil {
                                     endAt = 0
                                 }
-                                let endedDate = NSDate(timeIntervalSince1970: (endAt!/1000))
+                                let endedDate = NSDate(timeIntervalSince1970: (endAt!))
                                 var timeLeft = endedDate.timeIntervalSinceDate(NSDate())
                                 
-                                self.timeInterval = round(timeLeft)
+                                var timeInterval = endedDate.timeIntervalSince1970
+                                
+                                self.timeInterval = Int(timeInterval)
                                 self.nameLabel.text = name
                                 self.headerTextView.text = content
                                 self.tableView.reloadData()
@@ -309,6 +352,8 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
+        self.title = "Chat"
+        
         self.sendMessageTextView.delegate = self
         
         self.sendMessageTextView.text = placeholder
@@ -332,7 +377,6 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         self.loadName()
         self.loadTargetArray()
         
-        
         self.loadPostData()
         
         self.removeFromTargetArray()
@@ -352,6 +396,8 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         
         self.tableViewScrollToBottom(true)
         
+//        self.targetCount = String(self.targetIdArray.count)
+//        self.navigationItem.leftBarButtonItem?.title = self.targetCount
         
 //        let notificationCenter = NSNotificationCenter.defaultCenter()
 //        notificationCenter.removeObserver(self)
@@ -389,8 +435,18 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
             let webVC: WebViewController = nav.topViewController as! WebViewController
             
             webVC.urlToLoad = cellURL
+        } else if segue.identifier == "showChatInfo" {
+            let chatInfoVC = segue.destinationViewController as! ChatInfoViewController
+            chatInfoVC.idArray = targetIdArray
+            chatInfoVC.creatorname = self.messageCreatorName
+            chatInfoVC.postID = self.postID!
         }
     }
+    
+    @IBAction func chatInfoBarButtonPressed(sender: UIBarButtonItem) {
+        self.performSegueWithIdentifier("showChatInfo", sender: self)
+    }
+    
     
     func loadHeaderView() {
         self.headerTextView.text = self.postContent
@@ -420,6 +476,8 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         let messages = messagesRef.childByAutoId()
         messages.setValue(message1)
         
+        println(targetIdArray)
+        println(targetIdArray.count)
         
         for target in targetIdArray {
             let pushURL = "https://sonarapp.firebaseio.com/users/" + target + "/pushId"
@@ -452,42 +510,188 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
                     }
                 }
             })
-
-            // Add messageCount
+            
             let messageCount = "https://sonarapp.firebaseio.com/messageCount/" + target + "/postsReceived/" + self.postID! + "/realMessageCount/"
             var messageCountRef = Firebase(url: messageCount)
             
-            messageCountRef.runTransactionBlock({
-                (currentData:FMutableData!) in
-                var value = currentData.value as? Int
-                if value == nil {
-                    value = 0
-                }
-                currentData.value = value! + 1
-                println("added counter to the post")
-                
-                let messageCount = currentData.value as? Int
+            messageCountRef.observeSingleEventOfType(.Value, withBlock: {
+                snapshot in
+                let count = snapshot.value as? Int
+                let messageCount = count! + 1
                 
                 let postReceivedUrl = "https://sonarapp.firebaseio.com/users/" + target + "/postsReceived/" + self.postID!
                 let postReceivedRef = Firebase(url: postReceivedUrl)
                 
+                let newMessageCount = "https://sonarapp.firebaseio.com/messageCount/" + target + "/postsReceived/" + self.postID! + "/realMessageCount/"
+                var newMessageCountRef = Firebase(url: newMessageCount)
+                newMessageCountRef.setValue(messageCount)
                 
-                let dateNow = NSDate().timeIntervalSince1970 * 1000
-                let dateLater = (NSDate().timeIntervalSince1970 + (60*15)) * 1000
-                let quickDate = Int((NSDate().timeIntervalSince1970 + (60)) * 1000)
+                let timeLeft = (self.timeInterval - Int(NSDate().timeIntervalSince1970))
+                println(timeLeft)
                 
+                let timeInterval = self.timeInterval
                 
-                
-                if messageCount == 1 {
-                    let updates = ["updatedAt": [".sv":"timestamp"], "endAt": quickDate]
-                    postReceivedRef.updateChildValues(updates as [NSObject : AnyObject])
+                if messageCount <= 1 {
+                    if timeLeft <= 3300 {
+                        let firstCounter = (60*5)
+                        let newEndDate = Int((self.timeInterval + firstCounter))
+                        println("Reached")
+                        let updates = ["updatedAt": [".sv":"timestamp"], "endAt": newEndDate]
+                        postReceivedRef.updateChildValues(updates as [NSObject : AnyObject])
+                    } else {
+                        let overTimeLeft = timeLeft - 3300
+                        let firstCounter = (60*5) - overTimeLeft
+                        let newEndDate = Int((self.timeInterval + firstCounter))
+                        println("Over Reached")
+                        let updates = ["updatedAt": [".sv":"timestamp"], "endAt": newEndDate]
+                        postReceivedRef.updateChildValues(updates as [NSObject : AnyObject])
+                    }
                 } else {
-                    let updates = ["updatedAt": [".sv":"timestamp"], "endAt": quickDate]
-                    postReceivedRef.updateChildValues(updates as [NSObject : AnyObject])
+                    if timeLeft <= 3420 {
+                        let firstCounter = (60*3)
+                        let newEndDate = Int((self.timeInterval + firstCounter))
+                        let updates = ["updatedAt": [".sv":"timestamp"], "endAt": newEndDate]
+                        postReceivedRef.updateChildValues(updates as [NSObject : AnyObject])
+                    } else {
+                        let overTimeLeft = timeLeft - 3420
+                        let firstCounter = (60*3) - overTimeLeft
+                        let newEndDate = Int((self.timeInterval + firstCounter))
+                        let updates = ["updatedAt": [".sv":"timestamp"], "endAt": newEndDate]
+                        postReceivedRef.updateChildValues(updates as [NSObject : AnyObject])
+                    }
                 }
                 
-                return FTransactionResult.successWithValue(currentData)
+                
+//                if messageCount <= 4 {
+//                    if timeLeft <= 2700 {
+//                        let firstCounter = (60*15)
+//                        let newEndDate = Int((self.timeInterval + firstCounter) * 1000)
+//                        println("Reached")
+//                        let updates = ["updatedAt": [".sv":"timestamp"], "endAt": newEndDate]
+//                        postReceivedRef.updateChildValues(updates as [NSObject : AnyObject])
+//                    } else {
+//                        let overTimeLeft = timeLeft - 2700
+//                        let firstCounter = (60*15) - overTimeLeft
+//                        let newEndDate = Int((self.timeInterval + firstCounter) * 1000)
+//                        println("Over Reached")
+//                        let updates = ["updatedAt": [".sv":"timestamp"], "endAt": newEndDate]
+//                        postReceivedRef.updateChildValues(updates as [NSObject : AnyObject])
+//                    }
+//                } else if (messageCount > 4 && messageCount <= 10) {
+//                    if timeLeft <= 3000 {
+//                        let firstCounter = (60*10)
+//                        let newEndDate = Int((self.timeInterval + firstCounter) * 1000)
+//                        let updates = ["updatedAt": [".sv":"timestamp"], "endAt": newEndDate]
+//                        postReceivedRef.updateChildValues(updates as [NSObject : AnyObject])
+//                    } else {
+//                        let overTimeLeft = timeLeft - 3000
+//                        let firstCounter = (60*10) - overTimeLeft
+//                        let newEndDate = Int((self.timeInterval + firstCounter) * 1000)
+//                        let updates = ["updatedAt": [".sv":"timestamp"], "endAt": newEndDate]
+//                        postReceivedRef.updateChildValues(updates as [NSObject : AnyObject])
+//                    }
+//                } else {
+//                    if timeLeft <= 3300 {
+//                        let firstCounter = (60*5)
+//                        let newEndDate = Int((self.timeInterval + firstCounter) * 1000)
+//                        let updates = ["updatedAt": [".sv":"timestamp"], "endAt": newEndDate]
+//                        postReceivedRef.updateChildValues(updates as [NSObject : AnyObject])
+//                    } else {
+//                        let overTimeLeft = timeLeft - 3300
+//                        let firstCounter = (60*5) - overTimeLeft
+//                        let newEndDate = Int((self.timeInterval + firstCounter) * 1000)
+//                        let updates = ["updatedAt": [".sv":"timestamp"], "endAt": newEndDate]
+//                        postReceivedRef.updateChildValues(updates as [NSObject : AnyObject])
+//                    }
+//                }
             })
+            
+
+//            // Add messageCount
+//            let messageCount = "https://sonarapp.firebaseio.com/messageCount/" + target + "/postsReceived/" + self.postID! + "/realMessageCount/"
+//            var messageCountRef = Firebase(url: messageCount)
+//            
+//            messageCountRef.runTransactionBlock({
+//                (currentData:FMutableData!) in
+//                var value = currentData.value as? Int
+//                if value == nil {
+//                    value = 0
+//                }
+//                currentData.value = value! + 1
+//                println("added counter to the post")
+//                
+//                let messageCount = currentData.value as? Int
+//                
+//                println(messageCount)
+//                println(target)
+//                
+//                let postReceivedUrl = "https://sonarapp.firebaseio.com/users/" + target + "/postsReceived/" + self.postID!
+//                let postReceivedRef = Firebase(url: postReceivedUrl)
+//                
+//                
+//                let dateNow = NSDate().timeIntervalSince1970 * 1000
+//                let dateLater = (NSDate().timeIntervalSince1970 + (60*15)) * 1000
+//                let quickDate = Int((NSDate().timeIntervalSince1970 + (60*30)) * 1000)
+//                
+//                let timeLeft = (self.timeInterval - Int(NSDate().timeIntervalSince1970))
+//                println(timeLeft)
+//                
+//                if messageCount <= 4 {
+//                    if timeLeft <= 2700 {
+//                        let firstCounter = (60*15)
+//                        let newEndDate = Int((self.timeInterval + firstCounter) * 1000)
+//                        println("Reached")
+//                        let updates = ["updatedAt": [".sv":"timestamp"], "endAt": newEndDate]
+//                        postReceivedRef.updateChildValues(updates as [NSObject : AnyObject])
+//                    } else {
+//                        let overTimeLeft = timeLeft - 2700
+//                        let firstCounter = (60*15) - overTimeLeft
+//                        let newEndDate = Int((self.timeInterval + firstCounter) * 1000)
+//                        println("Over Reached")
+//                        let updates = ["updatedAt": [".sv":"timestamp"], "endAt": newEndDate]
+//                        postReceivedRef.updateChildValues(updates as [NSObject : AnyObject])
+//                    }
+//                } else if (messageCount > 4 && messageCount <= 10) {
+//                    if timeLeft <= 3000 {
+//                        let firstCounter = (60*10)
+//                        let newEndDate = Int((self.timeInterval + firstCounter) * 1000)
+//                        let updates = ["updatedAt": [".sv":"timestamp"], "endAt": newEndDate]
+//                        postReceivedRef.updateChildValues(updates as [NSObject : AnyObject])
+//                    } else {
+//                        let overTimeLeft = timeLeft - 3000
+//                        let firstCounter = (60*10) - overTimeLeft
+//                        let newEndDate = Int((self.timeInterval + firstCounter) * 1000)
+//                        let updates = ["updatedAt": [".sv":"timestamp"], "endAt": newEndDate]
+//                        postReceivedRef.updateChildValues(updates as [NSObject : AnyObject])
+//                    }
+//                } else {
+//                    if timeLeft <= 3300 {
+//                        let firstCounter = (60*5)
+//                        let newEndDate = Int((self.timeInterval + firstCounter) * 1000)
+//                        let updates = ["updatedAt": [".sv":"timestamp"], "endAt": newEndDate]
+//                        postReceivedRef.updateChildValues(updates as [NSObject : AnyObject])
+//                    } else {
+//                        let overTimeLeft = timeLeft - 3300
+//                        let firstCounter = (60*5) - overTimeLeft
+//                        let newEndDate = Int((self.timeInterval + firstCounter) * 1000)
+//                        let updates = ["updatedAt": [".sv":"timestamp"], "endAt": newEndDate]
+//                        postReceivedRef.updateChildValues(updates as [NSObject : AnyObject])
+//                    }
+//                }
+//                
+//                
+////                if messageCount == 0 {
+////                    println("stop")
+////                } else if messageCount == 1{
+////                    let updates = ["updatedAt": [".sv":"timestamp"], "endAt": quickDate]
+////                    postReceivedRef.updateChildValues(updates as [NSObject : AnyObject])
+////                } else {
+////                    let updates = ["updatedAt": [".sv":"timestamp"], "endAt": quickDate]
+////                    postReceivedRef.updateChildValues(updates as [NSObject : AnyObject])
+////                }
+//                
+//                return FTransactionResult.successWithValue(currentData)
+//            })
             
         }
 

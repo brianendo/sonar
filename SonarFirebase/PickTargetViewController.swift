@@ -45,7 +45,7 @@ class PickTargetViewController: UIViewController, UITableViewDataSource, UITable
         let targetRef = Firebase(url: url)
         
         
-        targetRef.observeEventType(.ChildAdded, withBlock: {
+        targetRef.queryOrderedByChild("name").observeEventType(.ChildAdded, withBlock: {
             snapshot in
             let nameUrl = "https://sonarapp.firebaseio.com/users/" + snapshot.key
             let nameRef = Firebase(url: nameUrl)
@@ -56,8 +56,6 @@ class PickTargetViewController: UIViewController, UITableViewDataSource, UITable
                             self.targetIdArray.append(snapshot.key)
                             self.tableView.reloadData()
                 }
-                
-                
             })
         })
     }
@@ -228,7 +226,7 @@ class PickTargetViewController: UIViewController, UITableViewDataSource, UITable
     @IBAction func sendButtonPressed(sender: UIBarButtonItem) {
         
         let dateLater = (NSDate().timeIntervalSince1970 + (60*15)) * 1000
-        let quickDate = (NSDate().timeIntervalSince1970 + (65)) * 1000
+        let quickDate = (NSDate().timeIntervalSince1970 + (60*10))
         
         let postRef = ref.childByAppendingPath("posts")
         let post1 = ["content": content, "creator": currentUser, "messageCount": 0, "createdAt": [".sv":"timestamp"], "updatedAt": [".sv":"timestamp"], "endAt": quickDate ]

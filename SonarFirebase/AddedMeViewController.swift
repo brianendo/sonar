@@ -48,7 +48,7 @@ class AddedMeViewController: UIViewController, UITableViewDataSource, UITableVie
             let userRef = Firebase(url: userUrl)
             
             userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
-                let name = snapshot.value["name"] as? String
+                let name = snapshot.value["username"] as? String
                 self.userIdArray.insert(userId, atIndex: 0)
                 self.nameArray.insert(name!, atIndex: 0)
                 self.tableView.reloadData()

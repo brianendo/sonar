@@ -1629,22 +1629,22 @@
                                 <exclude reference="gv0-E5-eKm"/>
                             </mask>
                             <mask key="constraints">
+                                <exclude reference="c7a-2t-7X9"/>
+                                <exclude reference="rhv-Hq-zfG"/>
+                                <exclude reference="tRE-s8-9lX"/>
+                                <exclude reference="TgA-po-Vp9"/>
+                                <exclude reference="kZA-y5-AJa"/>
+                                <exclude reference="jR5-U9-eQP"/>
+                                <exclude reference="RJf-jG-6WC"/>
+                                <exclude reference="oxx-jC-l8A"/>
+                                <exclude reference="uHc-bY-009"/>
+                                <exclude reference="EwI-Q9-BNC"/>
+                                <exclude reference="Ykm-O5-lmk"/>
+                                <exclude reference="pZd-Ry-ou2"/>
                                 <exclude reference="O4x-gq-EpM"/>
                                 <exclude reference="uEm-93-GeL"/>
                                 <exclude reference="4uU-l8-NR1"/>
                                 <exclude reference="a08-fX-XTO"/>
-                                <exclude reference="TgA-po-Vp9"/>
-                                <exclude reference="kZA-y5-AJa"/>
-                                <exclude reference="EwI-Q9-BNC"/>
-                                <exclude reference="Ykm-O5-lmk"/>
-                                <exclude reference="pZd-Ry-ou2"/>
-                                <exclude reference="RJf-jG-6WC"/>
-                                <exclude reference="oxx-jC-l8A"/>
-                                <exclude reference="uHc-bY-009"/>
-                                <exclude reference="c7a-2t-7X9"/>
-                                <exclude reference="rhv-Hq-zfG"/>
-                                <exclude reference="tRE-s8-9lX"/>
-                                <exclude reference="jR5-U9-eQP"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
@@ -1657,22 +1657,22 @@
                                 <include reference="gv0-E5-eKm"/>
                             </mask>
                             <mask key="constraints">
+                                <include reference="c7a-2t-7X9"/>
+                                <include reference="rhv-Hq-zfG"/>
+                                <include reference="tRE-s8-9lX"/>
+                                <include reference="TgA-po-Vp9"/>
+                                <include reference="kZA-y5-AJa"/>
+                                <include reference="jR5-U9-eQP"/>
+                                <exclude reference="RJf-jG-6WC"/>
+                                <include reference="oxx-jC-l8A"/>
+                                <exclude reference="uHc-bY-009"/>
+                                <include reference="EwI-Q9-BNC"/>
+                                <exclude reference="Ykm-O5-lmk"/>
+                                <exclude reference="pZd-Ry-ou2"/>
                                 <include reference="O4x-gq-EpM"/>
                                 <include reference="uEm-93-GeL"/>
                                 <include reference="4uU-l8-NR1"/>
                                 <include reference="a08-fX-XTO"/>
-                                <include reference="TgA-po-Vp9"/>
-                                <include reference="kZA-y5-AJa"/>
-                                <include reference="EwI-Q9-BNC"/>
-                                <exclude reference="Ykm-O5-lmk"/>
-                                <exclude reference="pZd-Ry-ou2"/>
-                                <exclude reference="RJf-jG-6WC"/>
-                                <include reference="oxx-jC-l8A"/>
-                                <exclude reference="uHc-bY-009"/>
-                                <include reference="c7a-2t-7X9"/>
-                                <include reference="rhv-Hq-zfG"/>
-                                <include reference="tRE-s8-9lX"/>
-                                <include reference="jR5-U9-eQP"/>
                             </mask>
                         </variation>
                     </view>

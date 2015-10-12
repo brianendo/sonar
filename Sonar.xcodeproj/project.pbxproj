@@ -10,6 +10,14 @@
 		8478BD2AAC09725A494DF853 /* Pods_Sonar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BE26174C57C8B782218DEEF /* Pods_Sonar.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		8E06720C1BBC9ADB00DD872F /* UsernameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E06720B1BBC9ADB00DD872F /* UsernameViewController.swift */; };
 		8E31DEBD1BC5B33B00632FE5 /* FriendScoreTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E31DEBC1BC5B33B00632FE5 /* FriendScoreTableViewCell.swift */; };
+		8E31DEC11BC5E5C500632FE5 /* UpdateInfoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E31DEC01BC5E5C500632FE5 /* UpdateInfoTableViewController.swift */; };
+		8E31DEC61BC5EAE000632FE5 /* UpdateNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E31DEC51BC5EAE000632FE5 /* UpdateNameViewController.swift */; };
+		8E31DECA1BC5FDD300632FE5 /* UpdateUsernameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E31DEC91BC5FDD300632FE5 /* UpdateUsernameViewController.swift */; };
+		8E31DECE1BC60A0F00632FE5 /* EmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E31DECD1BC60A0F00632FE5 /* EmailViewController.swift */; };
+		8E31DED21BC61B8C00632FE5 /* UpdatePhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E31DED11BC61B8C00632FE5 /* UpdatePhoneViewController.swift */; };
+		8E31DED61BC6248600632FE5 /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E31DED51BC6248600632FE5 /* ChangePasswordViewController.swift */; };
+		8E31DEDA1BC70F9000632FE5 /* ChatInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E31DED91BC70F9000632FE5 /* ChatInfoViewController.swift */; };
+		8E31DEDE1BC710F300632FE5 /* ChatInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E31DEDD1BC710F300632FE5 /* ChatInfoTableViewCell.swift */; };
 		8E3927BE1BBC5636004E1674 /* AddedMeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E3927BD1BBC5636004E1674 /* AddedMeViewController.swift */; };
 		8E3927C01BBC5793004E1674 /* AddedMeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E3927BF1BBC5793004E1674 /* AddedMeTableViewCell.swift */; };
 		8E483BC41BBCC1C300FAE0B6 /* PhoneNumberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E483BC31BBCC1C300FAE0B6 /* PhoneNumberViewController.swift */; };
@@ -83,6 +91,14 @@
 		766DA61A895F6D0E1C87F361 /* Pods-Sonar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sonar.release.xcconfig"; path = "Pods/Target Support Files/Pods-Sonar/Pods-Sonar.release.xcconfig"; sourceTree = "<group>"; };
 		8E06720B1BBC9ADB00DD872F /* UsernameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsernameViewController.swift; sourceTree = "<group>"; };
 		8E31DEBC1BC5B33B00632FE5 /* FriendScoreTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendScoreTableViewCell.swift; sourceTree = "<group>"; };
+		8E31DEC01BC5E5C500632FE5 /* UpdateInfoTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateInfoTableViewController.swift; sourceTree = "<group>"; };
+		8E31DEC51BC5EAE000632FE5 /* UpdateNameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateNameViewController.swift; sourceTree = "<group>"; };
+		8E31DEC91BC5FDD300632FE5 /* UpdateUsernameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateUsernameViewController.swift; sourceTree = "<group>"; };
+		8E31DECD1BC60A0F00632FE5 /* EmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailViewController.swift; sourceTree = "<group>"; };
+		8E31DED11BC61B8C00632FE5 /* UpdatePhoneViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdatePhoneViewController.swift; sourceTree = "<group>"; };
+		8E31DED51BC6248600632FE5 /* ChangePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewController.swift; sourceTree = "<group>"; };
+		8E31DED91BC70F9000632FE5 /* ChatInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatInfoViewController.swift; sourceTree = "<group>"; };
+		8E31DEDD1BC710F300632FE5 /* ChatInfoTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatInfoTableViewCell.swift; sourceTree = "<group>"; };
 		8E3927BD1BBC5636004E1674 /* AddedMeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddedMeViewController.swift; sourceTree = "<group>"; };
 		8E3927BF1BBC5793004E1674 /* AddedMeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddedMeTableViewCell.swift; sourceTree = "<group>"; };
 		8E483BC31BBCC1C300FAE0B6 /* PhoneNumberViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhoneNumberViewController.swift; sourceTree = "<group>"; };
@@ -195,6 +211,19 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		8E31DEC21BC5EA7D00632FE5 /* UpdateInfo */ = {
+			isa = PBXGroup;
+			children = (
+				8E31DEC01BC5E5C500632FE5 /* UpdateInfoTableViewController.swift */,
+				8E31DEC51BC5EAE000632FE5 /* UpdateNameViewController.swift */,
+				8E31DEC91BC5FDD300632FE5 /* UpdateUsernameViewController.swift */,
+				8E31DECD1BC60A0F00632FE5 /* EmailViewController.swift */,
+				8E31DED11BC61B8C00632FE5 /* UpdatePhoneViewController.swift */,
+				8E31DED51BC6248600632FE5 /* ChangePasswordViewController.swift */,
+			);
+			name = UpdateInfo;
+			sourceTree = "<group>";
+		};
 		8E5227371BA101DF002BD8FA /* CreatePulse */ = {
 			isa = PBXGroup;
 			children = (
@@ -270,6 +299,7 @@
 				8EE328411B8BAB84000F4500 /* LogIn */,
 				8E5227371BA101DF002BD8FA /* CreatePulse */,
 				8E5227381BA10202002BD8FA /* Friends */,
+				8E31DEC21BC5EA7D00632FE5 /* UpdateInfo */,
 				8E9F733C1BBF095300D0850E /* Other */,
 				8EE7F64F1BBDE685007AB71D /* ProfileTableViewController.swift */,
 				8EE328191B8B939E000F4500 /* Main.storyboard */,
@@ -277,6 +307,8 @@
 				8EAC775F1B8FA07A002D2890 /* RadarViewController.swift */,
 				8EAC77611B8FA0A3002D2890 /* RadarTableViewCell.swift */,
 				8E31DEBC1BC5B33B00632FE5 /* FriendScoreTableViewCell.swift */,
+				8E31DED91BC70F9000632FE5 /* ChatInfoViewController.swift */,
+				8E31DEDD1BC710F300632FE5 /* ChatInfoTableViewCell.swift */,
 				8E5226C21B976DC1002BD8FA /* ChatTableViewController.swift */,
 				8E5226C41B976EDD002BD8FA /* ChatTableViewCell.swift */,
 				8E5227391BA10233002BD8FA /* Models */,
@@ -512,12 +544,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8E31DEC11BC5E5C500632FE5 /* UpdateInfoTableViewController.swift in Sources */,
 				8EE7F6481BBCD8C2007AB71D /* VerificationViewController.swift in Sources */,
 				8EE7F64C1BBDBA84007AB71D /* AddressBookTableViewCell.swift in Sources */,
 				8EAC77621B8FA0A3002D2890 /* RadarTableViewCell.swift in Sources */,
 				8EE328161B8B939E000F4500 /* AppDelegate.swift in Sources */,
 				8E9F73401BBF2B1B00D0850E /* SelfieViewController.swift in Sources */,
+				8E31DED21BC61B8C00632FE5 /* UpdatePhoneViewController.swift in Sources */,
 				8E5226C11B965B1E002BD8FA /* Message.swift in Sources */,
+				8E31DECA1BC5FDD300632FE5 /* UpdateUsernameViewController.swift in Sources */,
 				8E9F733B1BBF07BD00D0850E /* AddUsernameTableViewCell.swift in Sources */,
 				8EE328451B8BF047000F4500 /* AddFriendViewController.swift in Sources */,
 				8EE7F6501BBDE685007AB71D /* ProfileTableViewController.swift in Sources */,
@@ -528,11 +563,16 @@
 				8EE328361B8B9530000F4500 /* StartViewController.swift in Sources */,
 				8EE7F6521BBE0503007AB71D /* AddUsernameViewController.swift in Sources */,
 				8E31DEBD1BC5B33B00632FE5 /* FriendScoreTableViewCell.swift in Sources */,
+				8E31DEC61BC5EAE000632FE5 /* UpdateNameViewController.swift in Sources */,
+				8E31DECE1BC60A0F00632FE5 /* EmailViewController.swift in Sources */,
 				8EE328511B8EDFB8000F4500 /* PickTargetTableViewCell.swift in Sources */,
 				8EB2170C1BACB76F005DA377 /* MyTextView.swift in Sources */,
 				8E9F733E1BBF109B00D0850E /* Username.swift in Sources */,
 				8EE7F64A1BBDAA89007AB71D /* AddressBookViewController.swift in Sources */,
 				8E5226C91B9A3194002BD8FA /* ProfileViewController.swift in Sources */,
+				8E31DEDA1BC70F9000632FE5 /* ChatInfoViewController.swift in Sources */,
+				8E31DED61BC6248600632FE5 /* ChangePasswordViewController.swift in Sources */,
+				8E31DEDE1BC710F300632FE5 /* ChatInfoTableViewCell.swift in Sources */,
 				8E483BC41BBCC1C300FAE0B6 /* PhoneNumberViewController.swift in Sources */,
 				8EE328471B8BF062000F4500 /* AddFriendTableViewCell.swift in Sources */,
 				8E3927BE1BBC5636004E1674 /* AddedMeViewController.swift in Sources */,
