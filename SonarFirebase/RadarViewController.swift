@@ -34,8 +34,8 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
         let userRef = Firebase(url: url)
         
         userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
-            if let name = snapshot.value["name"] as? String {
-                self.creatorname = name
+            if let username = snapshot.value["username"] as? String {
+                self.creatorname = username
             }
         })
     }
@@ -107,12 +107,12 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
                                     let userurl = "https://sonarapp.firebaseio.com/users/" + (creator)
                                     let userRef = Firebase(url: userurl)
                                     userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
-                                        if let name = snapshot.value["name"] as? String {
+                                        if let username = snapshot.value["username"] as? String {
                                             let updatedDate = NSDate(timeIntervalSince1970: (updatedAt!/1000))
                                             let createdDate = NSDate(timeIntervalSince1970: (createdAt/1000))
                                             let endedDate = NSDate(timeIntervalSince1970: (endAt!))
                                             
-                                            let post = Post(content: content, creator: creator, key: key, createdAt: updatedDate, name: name, joined: true, messageCount: 0, endAt: endedDate)
+                                            let post = Post(content: content, creator: creator, key: key, createdAt: updatedDate, name: username, joined: true, messageCount: 0, endAt: endedDate)
                                             
                                             self.posts.append(post)
                                             
@@ -158,13 +158,13 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
                             let userurl = "https://sonarapp.firebaseio.com/users/" + (creator)
                             let userRef = Firebase(url: userurl)
                             userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
-                                if let name = snapshot.value["name"] as? String {
+                                if let username = snapshot.value["username"] as? String {
                                     
                                     let updatedDate = NSDate(timeIntervalSince1970: (updatedAt!/1000))
                                     let createdDate = NSDate(timeIntervalSince1970: (createdAt/1000))
                                     let endedDate = NSDate(timeIntervalSince1970: (endAt!))
                                     
-                                    let post = Post(content: content, creator: creator, key: key, createdAt: updatedDate, name: name, joined: true, messageCount: 0, endAt: endedDate)
+                                    let post = Post(content: content, creator: creator, key: key, createdAt: updatedDate, name: username, joined: true, messageCount: 0, endAt: endedDate)
                                     
                                     if let found = find(self.posts.map({ $0.key }), eliminate) {
                                         let obj = self.posts[found]
@@ -272,10 +272,12 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     func returnSecondsToHoursMinutesSeconds (seconds:Int) -> (String) {
         let (h, m, s) = secondsToHoursMinutesSeconds (seconds)
-        if h == 0 {
-            return "\(m) min \(s) sec"
+        if h == 0 && m == 0{
+            return "\(s)s"
+        } else if h == 0 {
+            return "\(m)m \(s)s"
         } else {
-            return "\(h) h, \(m) min, \(s) sec"
+            return "\(h)h \(m)m \(s)s"
         }
     }
     
@@ -286,17 +288,17 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
         let targetRef = Firebase(url: url)
         
         
-        targetRef.queryOrderedByChild("name").observeEventType(.ChildAdded, withBlock: {
+        targetRef.queryOrderedByChild("username").observeEventType(.ChildAdded, withBlock: {
             snapshot in
             print(snapshot.key)
             let id = snapshot.key as? String
-            let nameUrl = "https://sonarapp.firebaseio.com/users/" + snapshot.key
-            let nameRef = Firebase(url: nameUrl)
-            nameRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+            let usernameUrl = "https://sonarapp.firebaseio.com/users/" + snapshot.key
+            let usernameRef = Firebase(url: usernameUrl)
+            usernameRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
                 // do some stuff once
-                if let name = snapshot.value["name"] as? String {
-                    self.friendsArray.append(name)
-                    print(name)
+                if let username = snapshot.value["username"] as? String {
+                    self.friendsArray.append(username)
+                    print(username)
                     self.idArray.append(id!)
                     self.tableView.reloadData()
                 }
@@ -767,7 +769,7 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.section == 1 {
             return 80
-        } else if indexPath.section == 0{
+        } else if indexPath.section == 0 {
             return UITableViewAutomaticDimension
         } else {
             return 55
@@ -782,22 +784,23 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
             tableView.deselectRowAtIndexPath(indexPath, animated: false)
         } else if indexPath.section == 2 {
             let alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
-            let libButton = UIAlertAction(title: "Add by Username", style: UIAlertActionStyle.Default) { (alert) -> Void in
+            let usernameButton = UIAlertAction(title: "Add by Username", style: UIAlertActionStyle.Default) { (alert) -> Void in
                 
                 self.performSegueWithIdentifier("showUsername", sender: self)
             }
-            let cameraButton = UIAlertAction(title: "Add from Address Book", style: UIAlertActionStyle.Default) { (alert) -> Void in
+            let addressBookButton = UIAlertAction(title: "Add from Address Book", style: UIAlertActionStyle.Default) { (alert) -> Void in
                     
                 
                 self.performSegueWithIdentifier("showAddressBook", sender: self)
                 
             }
-            alert.addAction(cameraButton)
+
             let cancelButton = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel) { (alert) -> Void in
                 print("Cancel Pressed")
             }
             
-            alert.addAction(libButton)
+            alert.addAction(usernameButton)
+            alert.addAction(addressBookButton)
             alert.addAction(cancelButton)
             self.presentViewController(alert, animated: true, completion: nil)
             tableView.deselectRowAtIndexPath(indexPath, animated: false)

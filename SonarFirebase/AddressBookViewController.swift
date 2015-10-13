@@ -299,7 +299,7 @@ class AddressBookViewController: UIViewController, UITableViewDataSource, UITabl
                                 let push = PFPush()
                                 push.setQuery(pushQuery) // Set our Installation query
                                 let data = [
-                                    "alert": "\(self.creatorname) added you",
+                                    "alert": "\(self.username) added you",
                                     "badge": "Increment",
                                 ]
                                 push.setData(data)

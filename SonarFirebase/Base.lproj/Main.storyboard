@@ -661,7 +661,7 @@
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="258" id="ID0-05-IUz"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="16"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="15"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="default">
@@ -679,12 +679,16 @@
                                             <animations/>
                                             <constraints>
                                                 <constraint firstItem="hPb-W4-IDi" firstAttribute="leading" secondItem="UwZ-ys-5Vv" secondAttribute="trailing" constant="8" id="0wt-ur-aV0"/>
-                                                <constraint firstItem="Mjg-TW-W1j" firstAttribute="top" secondItem="hPb-W4-IDi" secondAttribute="bottom" constant="8" id="1Gb-xs-4D4"/>
+                                                <constraint firstItem="Mjg-TW-W1j" firstAttribute="top" secondItem="hPb-W4-IDi" secondAttribute="bottom" constant="8" id="1Gb-xs-4D4">
+                                                    <variation key="heightClass=regular-widthClass=compact" constant="2"/>
+                                                </constraint>
                                                 <constraint firstItem="UwZ-ys-5Vv" firstAttribute="leading" secondItem="gch-TL-QsY" secondAttribute="leadingMargin" constant="5" id="GIU-Zu-ScD"/>
                                                 <constraint firstItem="Mjg-TW-W1j" firstAttribute="leading" secondItem="UwZ-ys-5Vv" secondAttribute="trailing" constant="8" id="Jd6-Pm-lku"/>
                                                 <constraint firstItem="hPb-W4-IDi" firstAttribute="top" secondItem="gch-TL-QsY" secondAttribute="topMargin" constant="6" id="pdD-lb-FMN"/>
                                                 <constraint firstItem="UwZ-ys-5Vv" firstAttribute="top" secondItem="gch-TL-QsY" secondAttribute="topMargin" constant="6" id="tVJ-CI-p76"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="Mjg-TW-W1j" secondAttribute="bottom" constant="7.5" id="tu6-8T-Z8o"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="Mjg-TW-W1j" secondAttribute="bottom" constant="7.5" id="tu6-8T-Z8o">
+                                                    <variation key="heightClass=regular-widthClass=compact" constant="12"/>
+                                                </constraint>
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="subviews">
@@ -1446,7 +1450,7 @@
                                                             <variation key="heightClass=regular-widthClass=compact" constant="150"/>
                                                         </constraint>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="default">
@@ -1454,7 +1458,8 @@
                                                             <exclude reference="LkV-Px-ZWH"/>
                                                         </mask>
                                                     </variation>
-                                                    <variation key="heightClass=regular-widthClass=compact">
+                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="74" y="24" width="233" height="20"/>
                                                         <mask key="constraints">
                                                             <exclude reference="LkV-Px-ZWH"/>
                                                         </mask>
@@ -1525,7 +1530,7 @@
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Leave Chat" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Djq-xq-4si">
                                                     <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
                                                     <animations/>
-                                                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="21"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="20"/>
                                                     <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
@@ -3458,12 +3463,6 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <searchBar key="tableHeaderView" contentMode="redraw" id="Ufd-Vw-ace">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                    <animations/>
-                                    <textInputTraits key="textInputTraits"/>
-                                </searchBar>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="personCell" id="d2O-vE-GKX" customClass="AddressBookTableViewCell" customModule="Sonar" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -4562,7 +4561,7 @@
         <segue reference="Pej-of-MK4"/>
         <segue reference="OAO-k4-d4P"/>
         <segue reference="DZz-tA-OPu"/>
-        <segue reference="WSE-GU-VoG"/>
+        <segue reference="2LM-PL-md5"/>
         <segue reference="9mb-ah-zJJ"/>
         <segue reference="DZ7-ci-ZDg"/>
     </inferredMetricsTieBreakers>

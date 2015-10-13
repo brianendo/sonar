@@ -118,7 +118,9 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
     
     func returnSecondsToHoursMinutesSeconds (seconds:Int) -> (String) {
         let (h, m, s) = secondsToHoursMinutesSeconds (seconds)
-        if h == 0 {
+        if h == 0 && m == 0{
+            return "\(s)s"
+        } else if h == 0 {
             return "\(m)m \(s)s"
         } else {
             return "\(h)h \(m)m \(s)s"
@@ -198,7 +200,7 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
                         let url = "https://sonarapp.firebaseio.com/users/" + creator
                         let userRef = Firebase(url: url)
                         userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
-                            if let name = snapshot.value["name"] as? String {
+                            if let username = snapshot.value["username"] as? String {
                                 println(endAt)
                                 if endAt == nil {
                                     endAt = 0
@@ -209,7 +211,7 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
                                 var timeInterval = endedDate.timeIntervalSince1970
                                 
                                 self.timeInterval = Int(timeInterval)
-                                self.nameLabel.text = name
+                                self.nameLabel.text = username
                                 self.headerTextView.text = content
                                 self.tableView.reloadData()
                             }
@@ -307,9 +309,9 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         let userRef = Firebase(url: url)
         
         userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
-            if let name = snapshot.value["name"] as? String {
+            if let username = snapshot.value["username"] as? String {
                 
-                    self.messageCreatorName = name
+                    self.messageCreatorName = username
                     self.tableView.reloadData()
             }
         })
@@ -482,34 +484,35 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         for target in targetIdArray {
             let pushURL = "https://sonarapp.firebaseio.com/users/" + target + "/pushId"
             let pushRef = Firebase(url: pushURL)
-            pushRef.observeSingleEventOfType(.Value, withBlock: {
-                snapshot in
-                if snapshot.value is NSNull {
-                    println("Did not enable push notifications")
-                } else {
-                    println("Made it")
-                    
-                    if target == currentUser {
-                        
-                    } else {
-                    
-                    // Create our Installation query
-                    let pushQuery = PFInstallation.query()
-                    pushQuery?.whereKey("installationId", equalTo: snapshot.value)
-                    
-                    // Send push notification to query
-                    let push = PFPush()
-                    push.setQuery(pushQuery) // Set our Installation query
-                    let data = [
-                        "alert": "\(self.messageCreatorName): \(newMessageText)",
-                        "badge": "Increment",
-                        "post": self.postID!
-                    ]
-                    push.setData(data)
-                    push.sendPushInBackground()
-                    }
-                }
-            })
+            
+//            pushRef.observeSingleEventOfType(.Value, withBlock: {
+//                snapshot in
+//                if snapshot.value is NSNull {
+//                    println("Did not enable push notifications")
+//                } else {
+//                    println("Made it")
+//                    
+//                    if target == currentUser {
+//                        
+//                    } else {
+//                    
+//                    // Create our Installation query
+//                    let pushQuery = PFInstallation.query()
+//                    pushQuery?.whereKey("installationId", equalTo: snapshot.value)
+//                    
+//                    // Send push notification to query
+//                    let push = PFPush()
+//                    push.setQuery(pushQuery) // Set our Installation query
+//                    let data = [
+//                        "alert": "\(self.messageCreatorName): \(newMessageText)",
+//                        "badge": "Increment",
+//                        "post": self.postID!
+//                    ]
+//                    push.setData(data)
+//                    push.sendPushInBackground()
+//                    }
+//                }
+//            })
             
             let messageCount = "https://sonarapp.firebaseio.com/messageCount/" + target + "/postsReceived/" + self.postID! + "/realMessageCount/"
             var messageCountRef = Firebase(url: messageCount)
@@ -535,29 +538,156 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
                     if timeLeft <= 3300 {
                         let firstCounter = (60*5)
                         let newEndDate = Int((self.timeInterval + firstCounter))
-                        println("Reached")
                         let updates = ["updatedAt": [".sv":"timestamp"], "endAt": newEndDate]
                         postReceivedRef.updateChildValues(updates as [NSObject : AnyObject])
+                        
+                        let timeremaining = timeLeft + firstCounter
+                        let timeremainingString = self.returnSecondsToHoursMinutesSeconds(timeremaining)
+                        
+                        pushRef.observeSingleEventOfType(.Value, withBlock: {
+                            snapshot in
+                            if snapshot.value is NSNull {
+                                println("Did not enable push notifications")
+                            } else {
+                                println("Made it")
+                                
+                                if target == currentUser {
+                                    
+                                } else {
+                                    
+                                    // Create our Installation query
+                                    let pushQuery = PFInstallation.query()
+                                    pushQuery?.whereKey("installationId", equalTo: snapshot.value)
+                                    
+                                    // Send push notification to query
+                                    let push = PFPush()
+                                    push.setQuery(pushQuery) // Set our Installation query
+                                    let data = [
+                                        "alert": "\(self.messageCreatorName) (\(timeremainingString)): \(newMessageText)",
+                                        "badge": "Increment",
+                                        "post": self.postID!
+                                    ]
+                                    push.setData(data)
+                                    push.sendPushInBackground()
+                                }
+                            }
+                        })
                     } else {
                         let overTimeLeft = timeLeft - 3300
                         let firstCounter = (60*5) - overTimeLeft
                         let newEndDate = Int((self.timeInterval + firstCounter))
-                        println("Over Reached")
                         let updates = ["updatedAt": [".sv":"timestamp"], "endAt": newEndDate]
                         postReceivedRef.updateChildValues(updates as [NSObject : AnyObject])
+                        
+                        let timeremaining = timeLeft + firstCounter
+                        let timeremainingString = self.returnSecondsToHoursMinutesSeconds(timeremaining)
+                        
+                        pushRef.observeSingleEventOfType(.Value, withBlock: {
+                            snapshot in
+                            if snapshot.value is NSNull {
+                                println("Did not enable push notifications")
+                            } else {
+                                println("Made it")
+                                
+                                if target == currentUser {
+                                    
+                                } else {
+                                    
+                                    // Create our Installation query
+                                    let pushQuery = PFInstallation.query()
+                                    pushQuery?.whereKey("installationId", equalTo: snapshot.value)
+                                    
+                                    // Send push notification to query
+                                    let push = PFPush()
+                                    push.setQuery(pushQuery) // Set our Installation query
+                                    let data = [
+                                        "alert": "\(self.messageCreatorName) (1h): \(newMessageText)",
+                                        "badge": "Increment",
+                                        "post": self.postID!
+                                    ]
+                                    push.setData(data)
+                                    push.sendPushInBackground()
+                                }
+                            }
+                        })
                     }
                 } else {
                     if timeLeft <= 3420 {
                         let firstCounter = (60*3)
                         let newEndDate = Int((self.timeInterval + firstCounter))
+                        
                         let updates = ["updatedAt": [".sv":"timestamp"], "endAt": newEndDate]
                         postReceivedRef.updateChildValues(updates as [NSObject : AnyObject])
+                        
+                        let timeremaining = timeLeft + firstCounter
+                        let timeremainingString = self.returnSecondsToHoursMinutesSeconds(timeremaining)
+                        
+                        pushRef.observeSingleEventOfType(.Value, withBlock: {
+                            snapshot in
+                            if snapshot.value is NSNull {
+                                println("Did not enable push notifications")
+                            } else {
+                                println("Made it")
+                                
+                                if target == currentUser {
+                                    
+                                } else {
+                                    
+                                    // Create our Installation query
+                                    let pushQuery = PFInstallation.query()
+                                    pushQuery?.whereKey("installationId", equalTo: snapshot.value)
+                                    
+                                    // Send push notification to query
+                                    let push = PFPush()
+                                    push.setQuery(pushQuery) // Set our Installation query
+                                    let data = [
+                                        "alert": "\(self.messageCreatorName) (\(timeremainingString)): \(newMessageText)",
+                                        "badge": "Increment",
+                                        "post": self.postID!
+                                    ]
+                                    push.setData(data)
+                                    push.sendPushInBackground()
+                                }
+                            }
+                        })
                     } else {
                         let overTimeLeft = timeLeft - 3420
                         let firstCounter = (60*3) - overTimeLeft
                         let newEndDate = Int((self.timeInterval + firstCounter))
                         let updates = ["updatedAt": [".sv":"timestamp"], "endAt": newEndDate]
                         postReceivedRef.updateChildValues(updates as [NSObject : AnyObject])
+                        
+                        let timeremaining = timeLeft + firstCounter
+                        let timeremainingString = self.returnSecondsToHoursMinutesSeconds(timeremaining)
+                        
+                        pushRef.observeSingleEventOfType(.Value, withBlock: {
+                            snapshot in
+                            if snapshot.value is NSNull {
+                                println("Did not enable push notifications")
+                            } else {
+                                println("Made it")
+                                
+                                if target == currentUser {
+                                    
+                                } else {
+                                    
+                                    // Create our Installation query
+                                    let pushQuery = PFInstallation.query()
+                                    pushQuery?.whereKey("installationId", equalTo: snapshot.value)
+                                    
+                                    // Send push notification to query
+                                    let push = PFPush()
+                                    push.setQuery(pushQuery) // Set our Installation query
+                                    let data = [
+                                        "alert": "\(self.messageCreatorName) (1h): \(newMessageText)",
+                                        "badge": "Increment",
+                                        "post": self.postID!
+                                    ]
+                                    push.setData(data)
+                                    push.sendPushInBackground()
+                                }
+                            }
+                        })
                     }
                 }
                 
@@ -797,8 +927,8 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         let userRef = Firebase(url: userurl)
         
         userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
-            if let name = snapshot.value["name"] as? String {
-                    cell.creatorLabel.text = name
+            if let username = snapshot.value["username"] as? String {
+                    cell.creatorLabel.text = username
             }
         })
         

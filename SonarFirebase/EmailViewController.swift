@@ -98,9 +98,11 @@ class EmailViewController: UIViewController {
 
     @IBAction func saveButtonPressed(sender: UIButton) {
         
+        let emailLowercase = self.emailTextField.text.lowercaseString
+        
         let ref = Firebase(url: "https://sonarapp.firebaseio.com")
         ref.changeEmailForUser(self.email, password: self.passwordTextField.text,
-            toNewEmail: self.emailTextField.text, withCompletionBlock: { error in
+            toNewEmail: emailLowercase, withCompletionBlock: { error in
                 if error != nil {
                     // There was an error processing the request
                     var alert = UIAlertController(title: "Please try again", message: "Wrong password", preferredStyle: UIAlertControllerStyle.Alert)
@@ -110,7 +112,7 @@ class EmailViewController: UIViewController {
                     // Email changed successfully
                     let userUrl = "https://sonarapp.firebaseio.com/users/" + currentUser + "/email/"
                     let userRef = Firebase(url: userUrl)
-                    userRef.setValue(self.emailTextField.text)
+                    userRef.setValue(emailLowercase)
                     
                     
                     var user = PFQuery(className:"FirebaseUser")
@@ -123,7 +125,7 @@ class EmailViewController: UIViewController {
                             // The find succeeded.
                             if let objects = objects as? [PFObject] {
                                 for object in objects {
-                                    object.setObject(self.emailTextField.text!, forKey: "email")
+                                    object.setObject(emailLowercase, forKey: "email")
                                     object.saveInBackground()
                                 }
                             }

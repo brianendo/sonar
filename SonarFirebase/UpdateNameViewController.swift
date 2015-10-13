@@ -61,7 +61,7 @@ class UpdateNameViewController: UIViewController, UITextFieldDelegate {
 
         // Do any additional setup after loading the view.
         
-        self.loadFriends()
+//        self.loadFriends()
         
         self.nameTextField.text = name
         self.nameTextField.becomeFirstResponder()
@@ -93,11 +93,11 @@ class UpdateNameViewController: UIViewController, UITextFieldDelegate {
         let userRef = Firebase(url: userUrl)
         userRef.setValue(self.nameTextField.text)
         
-        for friend in friendArray{
-            let friendUrl = "https://sonarapp.firebaseio.com/users/" + friend + "/friends/" + currentUser + "/name/"
-            let friendRef = Firebase(url: friendUrl)
-            friendRef.setValue(self.nameTextField.text)
-        }
+//        for friend in friendArray{
+//            let friendUrl = "https://sonarapp.firebaseio.com/users/" + friend + "/friends/" + currentUser + "/name/"
+//            let friendRef = Firebase(url: friendUrl)
+//            friendRef.setValue(self.nameTextField.text)
+//        }
         
         var user = PFQuery(className:"FirebaseUser")
         user.whereKey("firebaseId", equalTo: currentUser)

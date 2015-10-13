@@ -20,8 +20,11 @@ class UpdateUsernameViewController: UIViewController {
     
     @IBOutlet weak var statusLabel: UILabel!
     
+    var friendArray = [String]()
     
     var username = ""
+    
+    var characterSet:NSCharacterSet = NSCharacterSet(charactersInString: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLKMNOPQRSTUVWXYZ0123456789_")
     
     func registerForKeyboardNotifications ()-> Void   {
         
@@ -45,6 +48,8 @@ class UpdateUsernameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.loadFriends()
+        
         // Do any additional setup after loading the view.
         self.usernameTextField.text = username
         self.usernameTextField.becomeFirstResponder()
@@ -62,8 +67,10 @@ class UpdateUsernameViewController: UIViewController {
         } else {
             let username = self.usernameTextField.text
             
+            let usernameLowercase = username.lowercaseString
+            
             var user = PFQuery(className:"FirebaseUser")
-            user.whereKey("username", equalTo: username)
+            user.whereKey("username", equalTo: usernameLowercase)
             
             user.findObjectsInBackgroundWithBlock {
                 (objects: [AnyObject]?, error: NSError?) -> Void in
@@ -71,8 +78,14 @@ class UpdateUsernameViewController: UIViewController {
                 if error == nil {
                     // The find succeeded.
                     if objects!.count == 0 {
-                        self.saveButton.enabled = true
-                        self.statusLabel.text = "Username Available!"
+                        if ((usernameLowercase.rangeOfCharacterFromSet(self.characterSet.invertedSet, options: nil, range: nil)) != nil) {
+                            println("Could not handle special characters")
+                            self.saveButton.enabled = false
+                            self.statusLabel.text = "Username cannot contain special characters"
+                        } else {
+                            self.saveButton.enabled = true
+                            self.statusLabel.text = "Username Available!"
+                        }
                     } else {
                         self.statusLabel.text = "Username taken"
                         self.saveButton.enabled = false
@@ -91,12 +104,33 @@ class UpdateUsernameViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    func loadFriends() {
+        let friendsUrl = "https://sonarapp.firebaseio.com/users/" + currentUser + "/friends/"
+        let friendsRef = Firebase(url: friendsUrl)
+        
+        friendsRef.observeEventType(.ChildAdded, withBlock: {
+            snapshot in
+            let id = snapshot.key as? String
+            println(id)
+            self.friendArray.append(id!)
+            println(self.friendArray)
+            
+        })
+    }
+    
     @IBAction func saveButtonPressed(sender: UIButton) {
+        
+        let usernameLowercase = self.usernameTextField.text.lowercaseString
         
         let userUrl = "https://sonarapp.firebaseio.com/users/" + currentUser + "/username/"
         let userRef = Firebase(url: userUrl)
-        userRef.setValue(self.usernameTextField.text)
+        userRef.setValue(usernameLowercase)
         
+        for friend in friendArray{
+            let friendUrl = "https://sonarapp.firebaseio.com/users/" + friend + "/friends/" + currentUser + "/username/"
+            let friendRef = Firebase(url: friendUrl)
+            friendRef.setValue(usernameLowercase)
+        }
         
         var user = PFQuery(className:"FirebaseUser")
         user.whereKey("firebaseId", equalTo: currentUser)
@@ -108,7 +142,7 @@ class UpdateUsernameViewController: UIViewController {
                 // The find succeeded.
                 if let objects = objects as? [PFObject] {
                     for object in objects {
-                        object.setObject(self.usernameTextField.text!, forKey: "username")
+                        object.setObject(usernameLowercase, forKey: "username")
                         object.saveInBackground()
                     }
                 }

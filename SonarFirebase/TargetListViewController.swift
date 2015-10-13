@@ -26,17 +26,17 @@ class TargetListViewController: UIViewController, UITableViewDelegate, UITableVi
         let targetRef = Firebase(url: url)
         
         
-        targetRef.queryOrderedByChild("name").observeEventType(.ChildAdded, withBlock: {
+        targetRef.queryOrderedByChild("username").observeEventType(.ChildAdded, withBlock: {
             snapshot in
             print(snapshot.key)
             let id = snapshot.key as? String
-            let nameUrl = "https://sonarapp.firebaseio.com/users/" + snapshot.key
-            let nameRef = Firebase(url: nameUrl)
-            nameRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+            let usernameUrl = "https://sonarapp.firebaseio.com/users/" + snapshot.key
+            let usernameRef = Firebase(url: usernameUrl)
+            usernameRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
                 // do some stuff once
-                if let name = snapshot.value["name"] as? String {
-                        self.friendsArray.append(name)
-                        print(name)
+                if let username = snapshot.value["username"] as? String {
+                        self.friendsArray.append(username)
+                        print(username)
                         self.idArray.append(id!)
                         self.tableView.reloadData()
                 }
@@ -130,11 +130,11 @@ class TargetListViewController: UIViewController, UITableViewDelegate, UITableVi
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let cell = self.tableView.cellForRowAtIndexPath(indexPath) as! TargetListTableViewCell
-        let name = friendsArray[indexPath.row]
+        let username = friendsArray[indexPath.row]
         let id = idArray[indexPath.row]
         
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
-        let libButton = UIAlertAction(title: "Unfriend \(name)", style: UIAlertActionStyle.Default) { (alert) -> Void in
+        let libButton = UIAlertAction(title: "Unfriend \(username)", style: UIAlertActionStyle.Default) { (alert) -> Void in
             let userUrl = "https://sonarapp.firebaseio.com/user_activity/" + currentUser + "/added/" + id
             let userActivityRef = Firebase(url: userUrl)
             userActivityRef.removeValue()
@@ -143,9 +143,22 @@ class TargetListViewController: UIViewController, UITableViewDelegate, UITableVi
             let addFriendRef = Firebase(url: addFriendUrl)
             addFriendRef.removeValue()
             
+            let addedFriendUrl = "https://sonarapp.firebaseio.com/user_activity/" + currentUser + "/addedme/" + id
+            let addedFriendRef = Firebase(url: addedFriendUrl)
+            addedFriendRef.removeValue()
+            
+            let friendAddedUrl = "https://sonarapp.firebaseio.com/user_activity/" + id + "/added/" + currentUser
+            let friendAddedRef = Firebase(url: friendAddedUrl)
+            friendAddedRef.removeValue()
+            
+            let friendAddedMeUrl = "https://sonarapp.firebaseio.com/user_activity/" + id + "/addedme/" + currentUser
+            let friendAddedMeRef = Firebase(url: friendAddedMeUrl)
+            friendAddedMeRef.removeValue()
+            
             let friendUrl = "https://sonarapp.firebaseio.com/users/" + id + "/friends/" + currentUser
             let friendRef = Firebase(url: friendUrl)
             friendRef.removeValue()
+            
             tableView.deselectRowAtIndexPath(indexPath, animated: false)
             self.friendsArray.removeAtIndex(indexPath.row)
             self.idArray.removeAtIndex(indexPath.row)

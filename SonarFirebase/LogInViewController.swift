@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import Parse
 
 class LogInViewController: UIViewController, UITextFieldDelegate {
 
@@ -95,22 +96,82 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         let email = emailTextField.text
         let emailLowercase = email.lowercaseString
         
-        ref.authUser(emailLowercase, password: passwordTextField.text,
-            withCompletionBlock: { error, authData in
-                if error != nil {
-                    // There was an error logging in to this account
-                    var alert = UIAlertController(title: "Please try again", message: "Username and password do not match", preferredStyle: UIAlertControllerStyle.Alert)
-                    alert.addAction(UIAlertAction(title: "Try again", style: UIAlertActionStyle.Default, handler: nil))
-                    self.presentViewController(alert, animated: true, completion: nil)
+        if email.lowercaseString.rangeOfString("@") == nil {
+            var user = PFQuery(className:"FirebaseUser")
+            user.whereKey("username", equalTo: emailLowercase)
+            
+            user.findObjectsInBackgroundWithBlock {
+                (objects: [AnyObject]?, error: NSError?) -> Void in
+                
+                if error == nil {
+                    // The find succeeded.
+                    if objects!.count == 0 {
+                        var alert = UIAlertController(title: "Please try again", message: "Username does not exist", preferredStyle: UIAlertControllerStyle.Alert)
+                        alert.addAction(UIAlertAction(title: "Try again", style: UIAlertActionStyle.Default, handler: nil))
+                        self.presentViewController(alert, animated: true, completion: nil)
+                    } else {
+                        if let objects = objects as? [PFObject] {
+                            for object in objects {
+                                let email = object.objectForKey("email") as! String
+                                ref.authUser(email, password: self.passwordTextField.text,
+                                    withCompletionBlock: { error, authData in
+                                        if error != nil {
+                                            // There was an error logging in to this account
+                                            var alert = UIAlertController(title: "Please try again", message: "Username/Email and password do not match", preferredStyle: UIAlertControllerStyle.Alert)
+                                            alert.addAction(UIAlertAction(title: "Try again", style: UIAlertActionStyle.Default, handler: nil))
+                                            self.presentViewController(alert, animated: true, completion: nil)
+                                        } else {
+                                            // We are now logged in
+                                            print(authData.uid)
+                                            
+                                            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                                            let mainVC = storyboard.instantiateInitialViewController() as! UIViewController
+                                            self.presentViewController(mainVC, animated: true, completion: nil)
+                                        }
+                                })
+                            }
+                        }
+                    }
                 } else {
-                    // We are now logged in
-                    print(authData.uid)
-                    
-                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                    let mainVC = storyboard.instantiateInitialViewController() as! UIViewController
-                    self.presentViewController(mainVC, animated: true, completion: nil)
+                    // Log details of the failure
+                    println("Error: \(error!) \(error!.userInfo!)")
                 }
-        })
+            }
+        } else {
+            ref.authUser(emailLowercase, password: passwordTextField.text,
+                withCompletionBlock: { error, authData in
+                    if error != nil {
+                        // There was an error logging in to this account
+                        var alert = UIAlertController(title: "Please try again", message: "Username/Email and password do not match", preferredStyle: UIAlertControllerStyle.Alert)
+                        alert.addAction(UIAlertAction(title: "Try again", style: UIAlertActionStyle.Default, handler: nil))
+                        self.presentViewController(alert, animated: true, completion: nil)
+                    } else {
+                        // We are now logged in
+                        print(authData.uid)
+                        
+                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                        let mainVC = storyboard.instantiateInitialViewController() as! UIViewController
+                        self.presentViewController(mainVC, animated: true, completion: nil)
+                    }
+            })
+        }
+        
+//        ref.authUser(emailLowercase, password: passwordTextField.text,
+//            withCompletionBlock: { error, authData in
+//                if error != nil {
+//                    // There was an error logging in to this account
+//                    var alert = UIAlertController(title: "Please try again", message: "Username/Email and password do not match", preferredStyle: UIAlertControllerStyle.Alert)
+//                    alert.addAction(UIAlertAction(title: "Try again", style: UIAlertActionStyle.Default, handler: nil))
+//                    self.presentViewController(alert, animated: true, completion: nil)
+//                } else {
+//                    // We are now logged in
+//                    print(authData.uid)
+//                    
+//                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//                    let mainVC = storyboard.instantiateInitialViewController() as! UIViewController
+//                    self.presentViewController(mainVC, animated: true, completion: nil)
+//                }
+//        })
     }
     
     @IBAction func forgotPasswordButtonPressed(sender: UIButton) {

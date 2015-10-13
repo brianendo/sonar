@@ -22,6 +22,8 @@ class UsernameViewController: UIViewController {
     
     @IBOutlet weak var bottomSpacingToLayout: NSLayoutConstraint!
     
+    var characterSet:NSCharacterSet = NSCharacterSet(charactersInString: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLKMNOPQRSTUVWXYZ0123456789_")
+    
     func registerForKeyboardNotifications ()-> Void   {
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardDidShowNotification, object: nil)
@@ -69,8 +71,15 @@ class UsernameViewController: UIViewController {
                 if error == nil {
                     // The find succeeded.
                     if objects!.count == 0 {
-                        self.nextButton.enabled = true
-                        self.usernameStatusLabel.text = "Username Available!"
+                        
+                        if ((usernameLowercase.rangeOfCharacterFromSet(self.characterSet.invertedSet, options: nil, range: nil)) != nil) {
+                            println("Could not handle special characters")
+                            self.nextButton.enabled = false
+                            self.usernameStatusLabel.text = "Username cannot contain special characters"
+                        } else {
+                            self.nextButton.enabled = true
+                            self.usernameStatusLabel.text = "Username Available!"
+                        }
                     } else {
                         self.usernameStatusLabel.text = "Username taken"
                         self.nextButton.enabled = false

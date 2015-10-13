@@ -32,8 +32,8 @@ class PickTargetViewController: UIViewController, UITableViewDataSource, UITable
         let userRef = Firebase(url: url)
         
         userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
-            if let name = snapshot.value["name"] as? String {
-                    self.creatorname = name
+            if let username = snapshot.value["username"] as? String {
+                    self.creatorname = username
             }
         })
     }
@@ -45,14 +45,14 @@ class PickTargetViewController: UIViewController, UITableViewDataSource, UITable
         let targetRef = Firebase(url: url)
         
         
-        targetRef.queryOrderedByChild("name").observeEventType(.ChildAdded, withBlock: {
+        targetRef.queryOrderedByChild("username").observeEventType(.ChildAdded, withBlock: {
             snapshot in
             let nameUrl = "https://sonarapp.firebaseio.com/users/" + snapshot.key
             let nameRef = Firebase(url: nameUrl)
             nameRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
                 // do some stuff once
-                if let name = snapshot.value["name"] as? String {
-                            self.friendsArray.append(name)
+                if let username = snapshot.value["username"] as? String {
+                            self.friendsArray.append(username)
                             self.targetIdArray.append(snapshot.key)
                             self.tableView.reloadData()
                 }

@@ -43,17 +43,17 @@ class RadarTableViewCell: UITableViewCell, UITextViewDelegate {
     var timeInterval: Int = 0 {
         didSet {
             var value = (timeInterval - Int(NSDate().timeIntervalSince1970))
-            if value > 600 {
+            if value > 420 {
                 let time = Int(value/60)
                 let timeString = returnSecondsToHoursMinutesSeconds(value)
                 self.timeLeftLabel.text = timeString
                 self.postImageView.image = UIImage(named: "GreenPulse")
-            } else if (value <= 600 && value > 300) {
+            } else if (value <= 420 && value > 180) {
                 let time = Int(value)
                 let timeString = returnSecondsToHoursMinutesSeconds(value)
                 self.timeLeftLabel.text = timeString
                 self.postImageView.image = UIImage(named: "YellowPulse")
-            } else if (value <= 300 && value > 60) {
+            } else if (value <= 180 && value > 60) {
                 let time = Int(value)
                 let timeString = returnSecondsToHoursMinutesSeconds(value)
                 self.timeLeftLabel.text = timeString

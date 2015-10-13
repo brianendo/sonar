@@ -239,8 +239,6 @@
 			children = (
 				8E3927BD1BBC5636004E1674 /* AddedMeViewController.swift */,
 				8E3927BF1BBC5793004E1674 /* AddedMeTableViewCell.swift */,
-				8EE328441B8BF047000F4500 /* AddFriendViewController.swift */,
-				8EE328461B8BF062000F4500 /* AddFriendTableViewCell.swift */,
 				8EE3284A1B8E52B1000F4500 /* TargetListViewController.swift */,
 				8EE3284C1B8E52CD000F4500 /* TargetListTableViewCell.swift */,
 				8EE7F6511BBE0503007AB71D /* AddUsernameViewController.swift */,
@@ -268,6 +266,8 @@
 			children = (
 				8E5226C81B9A3194002BD8FA /* ProfileViewController.swift */,
 				8E5227331B9F972F002BD8FA /* PicturesViewController.swift */,
+				8EE328441B8BF047000F4500 /* AddFriendViewController.swift */,
+				8EE328461B8BF062000F4500 /* AddFriendTableViewCell.swift */,
 			);
 			name = Other;
 			sourceTree = "<group>";

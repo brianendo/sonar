@@ -26,8 +26,8 @@ class AddedMeViewController: UIViewController, UITableViewDataSource, UITableVie
         let userRef = Firebase(url: url)
         
         userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
-            if let name = snapshot.value["name"] as? String {
-                    self.creatorname = name
+            if let username = snapshot.value["username"] as? String {
+                    self.creatorname = username
             }
         })
     }
@@ -48,9 +48,9 @@ class AddedMeViewController: UIViewController, UITableViewDataSource, UITableVie
             let userRef = Firebase(url: userUrl)
             
             userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
-                let name = snapshot.value["username"] as? String
+                let username = snapshot.value["username"] as? String
                 self.userIdArray.insert(userId, atIndex: 0)
-                self.nameArray.insert(name!, atIndex: 0)
+                self.nameArray.insert(username!, atIndex: 0)
                 self.tableView.reloadData()
             })
         }
@@ -91,9 +91,9 @@ class AddedMeViewController: UIViewController, UITableViewDataSource, UITableVie
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell: AddedMeTableViewCell = tableView.dequeueReusableCellWithIdentifier("addedMeCell", forIndexPath: indexPath) as! AddedMeTableViewCell
         
-        let name = self.nameArray[indexPath.row]
+        let username = self.nameArray[indexPath.row]
         
-        cell.friendLabel.text = name
+        cell.friendLabel.text = username
         
         cell.selectionStyle = UITableViewCellSelectionStyle.None
         
@@ -179,7 +179,7 @@ class AddedMeViewController: UIViewController, UITableViewDataSource, UITableVie
             
             let addFriendUrl = "https://sonarapp.firebaseio.com/users/" + currentUser + "/friends/" + user
             let addFriendRef = Firebase(url: addFriendUrl)
-            addFriendRef.childByAppendingPath("name").setValue(friendName)
+            addFriendRef.childByAppendingPath("username").setValue(friendName)
             
 //            let addFriendUrl = "https://sonarapp.firebaseio.com/users/" + currentUser + "/friends/"
 //            let addFriendRef = Firebase(url: addFriendUrl)
@@ -187,7 +187,7 @@ class AddedMeViewController: UIViewController, UITableViewDataSource, UITableVie
             
             let friendUrl = "https://sonarapp.firebaseio.com/users/" + user + "/friends/" + currentUser
             let friendRef = Firebase(url: friendUrl)
-            friendRef.childByAppendingPath("name").setValue(self.creatorname)
+            friendRef.childByAppendingPath("username").setValue(self.creatorname)
             
 //            let friendUrl = "https://sonarapp.firebaseio.com/users/" + user + "/friends/"
 //            let friendRef = Firebase(url: friendUrl)

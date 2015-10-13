@@ -25,8 +25,8 @@ class AddUsernameViewController: UIViewController, UITableViewDataSource, UITabl
         let userRef = Firebase(url: url)
         
         userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
-            if let name = snapshot.value["name"] as? String {
-                self.creatorname = name
+            if let username = snapshot.value["username"] as? String {
+                self.creatorname = username
             }
         })
     }
@@ -78,6 +78,8 @@ class AddUsernameViewController: UIViewController, UITableViewDataSource, UITabl
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell: AddUsernameTableViewCell = tableView.dequeueReusableCellWithIdentifier("usernameCell", forIndexPath: indexPath) as! AddUsernameTableViewCell
+        
+        cell.selectionStyle = UITableViewCellSelectionStyle.None
         
         if username == nil {
             cell.toggleButton.hidden = true

@@ -57,7 +57,7 @@ extension UIImage {
     }
 }
 
-class SelfieViewController: UIViewController {
+class SelfieViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     @IBOutlet weak var cameraView: UIView!
     @IBOutlet weak var imageView: UIImageView!
@@ -67,6 +67,13 @@ class SelfieViewController: UIViewController {
     @IBOutlet weak var takeAnotherButton: UIButton!
     @IBOutlet weak var takePhotoButton: UIButton!
     @IBOutlet weak var doneButton: UIButton!
+    
+    @IBOutlet weak var chooseFromLibraryButton: UIButton!
+    
+    @IBOutlet weak var libraryImageView: UIImageView!
+    
+    
+    var imageCache = NSCache()
     
     var profileImageData: NSData?
     
@@ -89,6 +96,12 @@ class SelfieViewController: UIViewController {
         self.imageView.layer.borderColor = UIColor.lightGrayColor().CGColor
         self.imageView.clipsToBounds = true
         
+        
+        self.libraryImageView.frame = CGRectMake(0, 0, 150, 150)
+        self.libraryImageView.layer.cornerRadius = self.cameraView.frame.size.height/2
+        self.libraryImageView.layer.borderWidth = 0.5
+        self.libraryImageView.layer.borderColor = UIColor.lightGrayColor().CGColor
+        self.libraryImageView.clipsToBounds = true
         
         captureSession = AVCaptureSession()
         captureSession!.sessionPreset = AVCaptureSessionPresetPhoto
@@ -132,8 +145,11 @@ class SelfieViewController: UIViewController {
         super.viewDidAppear(animated)
         
         if previewLayer?.frame != nil {
+            self.chooseFromLibraryButton.hidden = true
             previewLayer!.frame = cameraView.bounds
+            self.messageLabel.text = "This will be your profile photo so make it good!"
         } else {
+            self.chooseFromLibraryButton.hidden = false
             self.imageView.image = UIImage(named: "BatPic")
             self.messageLabel.text = "Looks like your camera isn't working. It's fine we have a Bat Pic you can use in the meantime."
             self.takeAnotherButton.enabled = false
@@ -181,8 +197,8 @@ class SelfieViewController: UIViewController {
                     let rotatedData = UIImageJPEGRepresentation(rotatedPhoto, 0.01)
                     self.profileImageData = rotatedData
                     
-                    let sizeOfImage = image?.size
-                    println(sizeOfImage)
+                    
+                    
                     self.imageView.image = rotatedPhoto
 //                    self.imageView.transform = CGAffineTransformMakeScale(-1, 1)
                     self.captureSession?.stopRunning()
@@ -228,11 +244,114 @@ class SelfieViewController: UIViewController {
             }
             return nil
         }
+        
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let mainVC = storyboard.instantiateInitialViewController() as! UIViewController
         self.presentViewController(mainVC, animated: true, completion: nil)
         }
     }
+    
+    @IBAction func chooseFromLibraryButtonPressed(sender: UIButton) {
+        let photoLibraryController = UIImagePickerController()
+        photoLibraryController.delegate = self
+        photoLibraryController.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
+        
+        let mediaTypes:[String] = [kUTTypeImage as String]
+        photoLibraryController.mediaTypes = mediaTypes
+        photoLibraryController.allowsEditing = true
+        
+        self.presentViewController(photoLibraryController, animated: true, completion: nil)
+
+    }
+    
+    
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
+        let image = info[UIImagePickerControllerOriginalImage] as! UIImage
+        let editedImage = info[UIImagePickerControllerEditedImage] as! UIImage
+        
+        let squareImage = RBSquareImage(editedImage)
+        
+        // Save image in S3 with the userID
+        let transferManager = AWSS3TransferManager.defaultS3TransferManager()
+        let testFileURL1 = NSURL(fileURLWithPath: (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent("temp"))
+        let uploadRequest1 : AWSS3TransferManagerUploadRequest = AWSS3TransferManagerUploadRequest()
+        
+        let data = UIImageJPEGRepresentation(squareImage, 0.01)
+        data!.writeToURL(testFileURL1!, atomically: true)
+        uploadRequest1.bucket = S3BucketName
+        uploadRequest1.key =  currentUser
+        uploadRequest1.body = testFileURL1
+        
+        
+        let task = transferManager.upload(uploadRequest1)
+        task.continueWithBlock { (task) -> AnyObject! in
+            if task.error != nil {
+                print("Error: \(task.error)")
+            } else {
+                self.download()
+                print("Upload successful")
+            }
+            return nil
+        }
+        
+        self.dismissViewControllerAnimated(true, completion: nil)
+        
+        
+    }
+    
+    func RBSquareImage(image: UIImage) -> UIImage {
+        var originalWidth  = image.size.width
+        var originalHeight = image.size.height
+        
+        var edge: CGFloat
+        if originalWidth > originalHeight {
+            edge = originalHeight
+        } else {
+            edge = originalWidth
+        }
+        
+        var posX = (originalWidth  - edge) / 2.0
+        var posY = (originalHeight - edge) / 2.0
+        
+        var cropSquare = CGRectMake(posX, posY, edge, edge)
+        
+        var imageRef = CGImageCreateWithImageInRect(image.CGImage, cropSquare);
+        return UIImage(CGImage: imageRef, scale: UIScreen.mainScreen().scale, orientation: image.imageOrientation)!
+    }
+    
+    func download() {
+        
+        let downloadingFilePath1 = (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent("temp-download")
+        let downloadingFileURL1 = NSURL(fileURLWithPath: downloadingFilePath1 )
+        let transferManager = AWSS3TransferManager.defaultS3TransferManager()
+        
+        
+        let readRequest1 : AWSS3TransferManagerDownloadRequest = AWSS3TransferManagerDownloadRequest()
+        readRequest1.bucket = S3BucketName
+        readRequest1.key =  currentUser
+        readRequest1.downloadingFileURL = downloadingFileURL1
+        
+        let task = transferManager.download(readRequest1)
+        task.continueWithBlock { (task) -> AnyObject! in
+            if task.error != nil {
+                print(task.error)
+            } else {
+                dispatch_async(dispatch_get_main_queue()
+                    , { () -> Void in
+                        let image = UIImage(contentsOfFile: downloadingFilePath1)
+                        
+                        self.imageCache.setObject(image!, forKey: currentUser)
+                        self.imageView.hidden = true
+                        self.libraryImageView.image = UIImage(contentsOfFile: downloadingFilePath1)
+                        
+                })
+                print("Fetched image")
+            }
+            return nil
+        }
+    }
+
+    
     
 
 }

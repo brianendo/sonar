@@ -24,17 +24,17 @@ class ChatInfoViewController: UIViewController, UITableViewDelegate, UITableView
     
     func loadNames() {
         for id in idArray {
-            let url = "https://sonarapp.firebaseio.com/users/" + (id as! String) + "/name/"
+            let url = "https://sonarapp.firebaseio.com/users/" + (id as! String) + "/username/"
             let urlRef = Firebase(url: url)
             
             urlRef.observeEventType(.Value, withBlock: {
                 snapshot in
-                let name = snapshot.value as? String
-                println(name)
+                let username = snapshot.value as? String
+                println(username)
                 
-                let username = Username(username: name, firebaseId: (id as! String))
+                let user = Username(username: username, firebaseId: (id as! String))
                 
-                self.usernameArray.append(username)
+                self.usernameArray.append(user)
                 
                 self.usernameArray.sort({ $0.username < $1.username })
                 self.tableView.reloadData()
