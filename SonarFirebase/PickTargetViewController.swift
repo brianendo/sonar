@@ -268,6 +268,7 @@ class PickTargetViewController: UIViewController, UITableViewDataSource, UITable
                     let data = [
                         "alert": "\(self.creatorname) (Pulse): \(self.content)",
                         "badge": "Increment",
+                        "sound": "default",
                         "post": postID
                     ]
                     push.setData(data)

@@ -565,7 +565,8 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
                                     let data = [
                                         "alert": "\(self.messageCreatorName) (\(timeremainingString)): \(newMessageText)",
                                         "badge": "Increment",
-                                        "post": self.postID!
+                                        "post": self.postID!,
+                                        "sound": "default"
                                     ]
                                     push.setData(data)
                                     push.sendPushInBackground()
@@ -603,7 +604,8 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
                                     let data = [
                                         "alert": "\(self.messageCreatorName) (1h): \(newMessageText)",
                                         "badge": "Increment",
-                                        "post": self.postID!
+                                        "post": self.postID!,
+                                        "sound": "default"
                                     ]
                                     push.setData(data)
                                     push.sendPushInBackground()
@@ -643,7 +645,8 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
                                     let data = [
                                         "alert": "\(self.messageCreatorName) (\(timeremainingString)): \(newMessageText)",
                                         "badge": "Increment",
-                                        "post": self.postID!
+                                        "post": self.postID!,
+                                        "sound": "default"
                                     ]
                                     push.setData(data)
                                     push.sendPushInBackground()
@@ -681,7 +684,8 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
                                     let data = [
                                         "alert": "\(self.messageCreatorName) (1h): \(newMessageText)",
                                         "badge": "Increment",
-                                        "post": self.postID!
+                                        "post": self.postID!,
+                                        "sound": "default"
                                     ]
                                     push.setData(data)
                                     push.sendPushInBackground()
