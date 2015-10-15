@@ -121,7 +121,13 @@ class SelfieViewController: UIViewController, UIImagePickerControllerDelegate, U
         }
         
         var error: NSError?
-        var input = AVCaptureDeviceInput(device: captureDevice, error: &error)
+        var input: AVCaptureDeviceInput!
+        do {
+            input = try AVCaptureDeviceInput(device: captureDevice)
+        } catch let error1 as NSError {
+            error = error1
+            input = nil
+        }
         
         if error == nil && captureSession!.canAddInput(input) {
             stillImageOutput = AVCaptureStillImageOutput()
@@ -134,7 +140,7 @@ class SelfieViewController: UIViewController, UIImagePickerControllerDelegate, U
                 previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
                 previewLayer!.videoGravity = AVLayerVideoGravityResizeAspectFill
                 previewLayer!.connection?.videoOrientation = AVCaptureVideoOrientation.Portrait
-                cameraView.layer.addSublayer(previewLayer)
+                cameraView.layer.addSublayer(previewLayer!)
                 
                 captureSession!.startRunning()
             }
@@ -181,16 +187,16 @@ class SelfieViewController: UIViewController, UIImagePickerControllerDelegate, U
                     // Crop Image to the bounds of preview layer
                     var takenImage: UIImage = UIImage(data: imageData)!
                     var outputRect: CGRect = self.previewLayer!.metadataOutputRectOfInterestForRect(self.previewLayer!.bounds)
-                    var takenCGImage: CGImageRef = takenImage.CGImage
+                    var takenCGImage: CGImageRef = takenImage.CGImage!
                     var width = CGFloat(CGImageGetWidth(takenCGImage))
                     var height = CGFloat(CGImageGetHeight(takenCGImage))
                     var cropRect: CGRect = CGRectMake(outputRect.origin.x * width, outputRect.origin.y * height, outputRect.size.width * width, outputRect.size.height * height)
-                    var cropCGImage: CGImageRef = CGImageCreateWithImageInRect(takenCGImage, cropRect)
-                    takenImage = UIImage(CGImage: cropCGImage, scale: 1, orientation: takenImage.imageOrientation)!
+                    var cropCGImage: CGImageRef = CGImageCreateWithImageInRect(takenCGImage, cropRect)!
+                    takenImage = UIImage(CGImage: cropCGImage, scale: 1, orientation: takenImage.imageOrientation)
                     
                     var dataProvider = CGDataProviderCreateWithCFData(imageData)
-                    var cgImageRef = CGImageCreateWithJPEGDataProvider(dataProvider, nil, true, kCGRenderingIntentDefault)
-                    var image = UIImage(CGImage: cgImageRef, scale: 1.0, orientation: UIImageOrientation.Right)
+                    var cgImageRef = CGImageCreateWithJPEGDataProvider(dataProvider, nil, true, CGColorRenderingIntent.RenderingIntentDefault)
+                    var image = UIImage(CGImage: cgImageRef!, scale: 1.0, orientation: UIImageOrientation.Right)
                     
 
                     var rotatedPhoto = takenImage.imageRotatedByDegrees(-90, flip: true)
@@ -218,10 +224,10 @@ class SelfieViewController: UIViewController, UIImagePickerControllerDelegate, U
     @IBAction func doneButtonPressed(sender: UIButton) {
         
         if self.profileImageData == nil {
-            println("No photo")
+            print("No photo")
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let mainVC = storyboard.instantiateInitialViewController() as! UIViewController
-            self.presentViewController(mainVC, animated: true, completion: nil)
+            let mainVC = storyboard.instantiateInitialViewController()
+            self.presentViewController(mainVC!, animated: true, completion: nil)
         } else {
         // Save image in S3 with the userID
         let transferManager = AWSS3TransferManager.defaultS3TransferManager()
@@ -229,7 +235,7 @@ class SelfieViewController: UIViewController, UIImagePickerControllerDelegate, U
         let uploadRequest1 : AWSS3TransferManagerUploadRequest = AWSS3TransferManagerUploadRequest()
         
         let data = self.profileImageData
-        data!.writeToURL(testFileURL1!, atomically: true)
+        data!.writeToURL(testFileURL1, atomically: true)
         uploadRequest1.bucket = S3BucketName
         uploadRequest1.key =  currentUser
         uploadRequest1.body = testFileURL1
@@ -238,16 +244,16 @@ class SelfieViewController: UIViewController, UIImagePickerControllerDelegate, U
         let task = transferManager.upload(uploadRequest1)
         task.continueWithBlock { (task) -> AnyObject! in
             if task.error != nil {
-                print("Error: \(task.error)")
+                print("Error: \(task.error)", terminator: "")
             } else {
-                print("Upload successful")
+                print("Upload successful", terminator: "")
             }
             return nil
         }
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let mainVC = storyboard.instantiateInitialViewController() as! UIViewController
-        self.presentViewController(mainVC, animated: true, completion: nil)
+        let mainVC = storyboard.instantiateInitialViewController()
+        self.presentViewController(mainVC!, animated: true, completion: nil)
         }
     }
     
@@ -265,7 +271,7 @@ class SelfieViewController: UIViewController, UIImagePickerControllerDelegate, U
     }
     
     
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         let image = info[UIImagePickerControllerOriginalImage] as! UIImage
         let editedImage = info[UIImagePickerControllerEditedImage] as! UIImage
         
@@ -277,7 +283,7 @@ class SelfieViewController: UIViewController, UIImagePickerControllerDelegate, U
         let uploadRequest1 : AWSS3TransferManagerUploadRequest = AWSS3TransferManagerUploadRequest()
         
         let data = UIImageJPEGRepresentation(squareImage, 0.01)
-        data!.writeToURL(testFileURL1!, atomically: true)
+        data!.writeToURL(testFileURL1, atomically: true)
         uploadRequest1.bucket = S3BucketName
         uploadRequest1.key =  currentUser
         uploadRequest1.body = testFileURL1
@@ -286,10 +292,10 @@ class SelfieViewController: UIViewController, UIImagePickerControllerDelegate, U
         let task = transferManager.upload(uploadRequest1)
         task.continueWithBlock { (task) -> AnyObject! in
             if task.error != nil {
-                print("Error: \(task.error)")
+                print("Error: \(task.error)", terminator: "")
             } else {
                 self.download()
-                print("Upload successful")
+                print("Upload successful", terminator: "")
             }
             return nil
         }
@@ -316,7 +322,7 @@ class SelfieViewController: UIViewController, UIImagePickerControllerDelegate, U
         var cropSquare = CGRectMake(posX, posY, edge, edge)
         
         var imageRef = CGImageCreateWithImageInRect(image.CGImage, cropSquare);
-        return UIImage(CGImage: imageRef, scale: UIScreen.mainScreen().scale, orientation: image.imageOrientation)!
+        return UIImage(CGImage: imageRef!, scale: UIScreen.mainScreen().scale, orientation: image.imageOrientation)
     }
     
     func download() {
@@ -334,7 +340,7 @@ class SelfieViewController: UIViewController, UIImagePickerControllerDelegate, U
         let task = transferManager.download(readRequest1)
         task.continueWithBlock { (task) -> AnyObject! in
             if task.error != nil {
-                print(task.error)
+                print(task.error, terminator: "")
             } else {
                 dispatch_async(dispatch_get_main_queue()
                     , { () -> Void in
@@ -345,7 +351,7 @@ class SelfieViewController: UIViewController, UIImagePickerControllerDelegate, U
                         self.libraryImageView.image = UIImage(contentsOfFile: downloadingFilePath1)
                         
                 })
-                print("Fetched image")
+                print("Fetched image", terminator: "")
             }
             return nil
         }

@@ -43,9 +43,9 @@ class UpdateNameViewController: UIViewController, UITextFieldDelegate {
         friendsRef.observeEventType(.ChildAdded, withBlock: {
             snapshot in
             let id = snapshot.key as? String
-            println(id)
+            print(id)
             self.friendArray.append(id!)
-            println(self.friendArray)
+            print(self.friendArray)
             
         })
     }
@@ -77,7 +77,7 @@ class UpdateNameViewController: UIViewController, UITextFieldDelegate {
     }
     
     func textFieldDidChange(textField: UITextField) {
-        if self.nameTextField.text == name || count(self.nameTextField.text) == 0  {
+        if (self.nameTextField.text == name || self.nameTextField.text!.characters.count == 0)  {
             
             self.saveButton.enabled = false
             
@@ -103,25 +103,23 @@ class UpdateNameViewController: UIViewController, UITextFieldDelegate {
         user.whereKey("firebaseId", equalTo: currentUser)
         
         user.findObjectsInBackgroundWithBlock {
-            (objects: [AnyObject]?, error: NSError?) -> Void in
+            (objects: [PFObject]?, error: NSError?) -> Void in
             
             if error == nil {
                 // The find succeeded.
-                if let objects = objects as? [PFObject] {
-                    for object in objects {
+                    for object in objects! {
                         object.setObject(self.nameTextField.text!, forKey: "name")
                         object.saveInBackground()
                     }
-                }
             } else {
                 // Log details of the failure
-                println("Error: \(error!) \(error!.userInfo!)")
+                print("Error: \(error!) \(error!.userInfo)")
             }
         }
         
         let alert = UIAlertController(title: nil, message: "Name Changed!", preferredStyle: UIAlertControllerStyle.ActionSheet)
         let cancelButton = UIAlertAction(title: "Okay", style: UIAlertActionStyle.Cancel) { (alert) -> Void in
-            print("Okay Pressed")
+            print("Okay Pressed", terminator: "")
             self.navigationController?.popViewControllerAnimated(true)
         }
         

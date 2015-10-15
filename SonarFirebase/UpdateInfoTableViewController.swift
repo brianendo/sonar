@@ -24,15 +24,15 @@ class UpdateInfoTableViewController: UITableViewController {
         user.whereKey("firebaseId", equalTo: currentUser)
         
         user.findObjectsInBackgroundWithBlock {
-            (objects: [AnyObject]?, error: NSError?) -> Void in
+            (objects: [PFObject]?, error: NSError?) -> Void in
             
             if error == nil {
                 // The find succeeded.
                 if objects!.count > 0 {
-                    if let objects = objects as? [PFObject] {
-                        for object in objects {
-                            println(object.objectForKey("firebaseId"))
-                            println(object.objectForKey("name"))
+                    
+                        for object in objects! {
+                            print(object.objectForKey("firebaseId"))
+                            print(object.objectForKey("name"))
                             let name = object.objectForKey("name") as! String
                             let username = object.objectForKey("username") as! String
                             let email = object.objectForKey("email") as! String
@@ -45,13 +45,13 @@ class UpdateInfoTableViewController: UITableViewController {
                             
                             self.tableView.reloadData()
                         }
-                    }
+                    
                 } else {
-                    println("No user")
+                    print("No user")
                 }
             } else {
                 // Log details of the failure
-                println("Error: \(error!) \(error!.userInfo!)")
+                print("Error: \(error!) \(error!.userInfo)")
             }
         }
     }

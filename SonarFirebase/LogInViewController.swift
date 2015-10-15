@@ -94,14 +94,14 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func logInButtonPressed(sender: UIButton) {
         let email = emailTextField.text
-        let emailLowercase = email.lowercaseString
+        let emailLowercase = email!.lowercaseString
         
-        if email.lowercaseString.rangeOfString("@") == nil {
+        if email!.lowercaseString.rangeOfString("@") == nil {
             var user = PFQuery(className:"FirebaseUser")
             user.whereKey("username", equalTo: emailLowercase)
             
             user.findObjectsInBackgroundWithBlock {
-                (objects: [AnyObject]?, error: NSError?) -> Void in
+                (objects: [PFObject]?, error: NSError?) -> Void in
                 
                 if error == nil {
                     // The find succeeded.
@@ -110,8 +110,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
                         alert.addAction(UIAlertAction(title: "Try again", style: UIAlertActionStyle.Default, handler: nil))
                         self.presentViewController(alert, animated: true, completion: nil)
                     } else {
-                        if let objects = objects as? [PFObject] {
-                            for object in objects {
+                            for object in objects! {
                                 let email = object.objectForKey("email") as! String
                                 ref.authUser(email, password: self.passwordTextField.text,
                                     withCompletionBlock: { error, authData in
@@ -122,19 +121,18 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
                                             self.presentViewController(alert, animated: true, completion: nil)
                                         } else {
                                             // We are now logged in
-                                            print(authData.uid)
+                                            print(authData.uid, terminator: "")
                                             
                                             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                                            let mainVC = storyboard.instantiateInitialViewController() as! UIViewController
-                                            self.presentViewController(mainVC, animated: true, completion: nil)
+                                            let mainVC = storyboard.instantiateInitialViewController()
+                                            self.presentViewController(mainVC!, animated: true, completion: nil)
                                         }
                                 })
                             }
                         }
-                    }
                 } else {
                     // Log details of the failure
-                    println("Error: \(error!) \(error!.userInfo!)")
+                    print("Error: \(error!) \(error!.userInfo)")
                 }
             }
         } else {
@@ -147,11 +145,11 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
                         self.presentViewController(alert, animated: true, completion: nil)
                     } else {
                         // We are now logged in
-                        print(authData.uid)
+                        print(authData.uid, terminator: "")
                         
                         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                        let mainVC = storyboard.instantiateInitialViewController() as! UIViewController
-                        self.presentViewController(mainVC, animated: true, completion: nil)
+                        let mainVC = storyboard.instantiateInitialViewController()
+                        self.presentViewController(mainVC!, animated: true, completion: nil)
                     }
             })
         }
@@ -182,12 +180,12 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
             if let field = alertController.textFields![0] as? UITextField {
                 // store your data
                 let email = field.text
-                let emailLowercase = email.lowercaseString
+                let emailLowercase = email!.lowercaseString
                 ref.resetPasswordForUser(emailLowercase) { (err) -> Void in
                     if err != nil{
-                        println("Didn't work")
+                        print("Didn't work")
                     } else {
-                        println("Worked")
+                        print("Worked")
                     }
                 }
             } else {

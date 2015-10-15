@@ -49,7 +49,7 @@ class AddressBookViewController: UIViewController, UITableViewDataSource, UITabl
         var err : Unmanaged<CFError>? = nil
         let adbk : ABAddressBook? = ABAddressBookCreateWithOptions(nil, &err).takeRetainedValue()
         if adbk == nil {
-            println(err)
+            print(err)
             self.adbk = nil
             return false
         }
@@ -89,7 +89,7 @@ class AddressBookViewController: UIViewController, UITableViewDataSource, UITabl
     
     func getContactNames() {
         if !self.determineStatus() {
-            println("not authorized")
+            print("not authorized")
             return
         }
         let people = ABAddressBookCopyArrayOfAllPeople(adbk).takeRetainedValue() as NSArray as [ABRecord]
@@ -106,38 +106,38 @@ class AddressBookViewController: UIViewController, UITableViewDataSource, UITabl
                 let label = ABMultiValueCopyLabelAtIndex(numbers, numberIndex).takeRetainedValue() as String
                 if (String(stringInterpolationSegment: label) == String(kABPersonPhoneMobileLabel)) {
                     let number = ABMultiValueCopyValueAtIndex(numbers, numberIndex).takeRetainedValue() as! String
-                    println(name)
-                    println(number)
+                    print(name)
+                    print(number)
                     
                     
                     let stringArray = number.componentsSeparatedByCharactersInSet(
                         NSCharacterSet.decimalDigitCharacterSet().invertedSet)
                     let newNumber = NSArray(array: stringArray).componentsJoinedByString("")
                     
-                    println(newNumber)
+                    print(newNumber)
                     
                     var user = PFQuery(className:"FirebaseUser")
                     user.whereKey("phoneNumber", equalTo: newNumber)
                     
                     user.findObjectsInBackgroundWithBlock {
-                        (objects: [AnyObject]?, error: NSError?) -> Void in
+                        (objects: [PFObject]?, error: NSError?) -> Void in
                         
                         if error == nil {
                             // The find succeeded.
                             if objects?.count == 0 {
-                                println("Add user to Invite to Sonar List")
+                                print("Add user to Invite to Sonar List")
                                 let person = AddressBookPerson(name: name, number: newNumber)
                                 self.inviteArray.append(person)
                                 self.tableView.reloadData()
                             } else {
-                                println("User has an account")
+                                print("User has an account")
                                 let person = AddressBookPerson(name: name, number: newNumber)
                                 self.userArray.append(person)
                                 self.tableView.reloadData()
                             }
                         } else {
                             // Log details of the failure
-                            println("Error: \(error!) \(error!.userInfo!)")
+                            print("Error: \(error!) \(error!.userInfo)")
                         }
                     }
                 }
@@ -153,7 +153,7 @@ class AddressBookViewController: UIViewController, UITableViewDataSource, UITabl
             var messageVC = MFMessageComposeViewController()
             
             messageVC.body = "Join Sonar! My username is: \(username)"
-            println(messageVC.body)
+            print(messageVC.body)
         
             messageVC.recipients = [cell_number]
             messageVC.messageComposeDelegate = self
@@ -166,21 +166,21 @@ class AddressBookViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     
-    func messageComposeViewController(controller: MFMessageComposeViewController!, didFinishWithResult result: MessageComposeResult) {
+    func messageComposeViewController(controller: MFMessageComposeViewController, didFinishWithResult result: MessageComposeResult) {
         
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor(), NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 20)!]
         
         UIApplication.sharedApplication().statusBarStyle = .LightContent
         
-        switch (result.value) {
-        case MessageComposeResultCancelled.value:
-            println("Message was cancelled")
+        switch (result.rawValue) {
+        case MessageComposeResultCancelled.rawValue:
+            print("Message was cancelled")
             self.dismissViewControllerAnimated(true, completion: nil)
-        case MessageComposeResultFailed.value:
-            println("Message failed")
+        case MessageComposeResultFailed.rawValue:
+            print("Message failed")
             self.dismissViewControllerAnimated(true, completion: nil)
-        case MessageComposeResultSent.value:
-            println("Message was sent")
+        case MessageComposeResultSent.rawValue:
+            print("Message was sent")
             self.dismissViewControllerAnimated(true, completion: nil)
         default:
             break;
@@ -263,12 +263,11 @@ class AddressBookViewController: UIViewController, UITableViewDataSource, UITabl
             user.whereKey("phoneNumber", equalTo: phoneNumber!)
             
             user.findObjectsInBackgroundWithBlock {
-                (objects: [AnyObject]?, error: NSError?) -> Void in
+                (objects: [PFObject]?, error: NSError?) -> Void in
                 
                 if error == nil {
                     // The find succeeded.
-                    if let objects = objects as? [PFObject] {
-                        let object = objects[0]
+                    for object in objects! {
                         let id = object.objectForKey("firebaseId") as! String
                         
                         let userUrl = "https://sonarapp.firebaseio.com/user_activity/" + currentUser + "/added/"
@@ -289,7 +288,7 @@ class AddressBookViewController: UIViewController, UITableViewDataSource, UITabl
                         pushRef.observeEventType(.Value, withBlock: {
                             snapshot in
                             if snapshot.value is NSNull {
-                                println("Did not enable push notifications")
+                                print("Did not enable push notifications")
                             } else {
                                 // Create our Installation query
                                 let pushQuery = PFInstallation.query()
@@ -306,11 +305,10 @@ class AddressBookViewController: UIViewController, UITableViewDataSource, UITabl
                                 push.sendPushInBackground()
                             }
                         })
-                        
-                    }
+                       }
                 } else {
                     // Log details of the failure
-                    println("Error: \(error!) \(error!.userInfo!)")
+                    print("Error: \(error!) \(error!.userInfo)")
                 }
             }
             
@@ -322,12 +320,11 @@ class AddressBookViewController: UIViewController, UITableViewDataSource, UITabl
             user.whereKey("phoneNumber", equalTo: phoneNumber!)
             
             user.findObjectsInBackgroundWithBlock {
-                (objects: [AnyObject]?, error: NSError?) -> Void in
+                (objects: [PFObject]?, error: NSError?) -> Void in
                 
                 if error == nil {
                     // The find succeeded.
-                    if let objects = objects as? [PFObject] {
-                        let object = objects[0]
+                    for object in objects! { 
                         let id = object.objectForKey("firebaseId") as! String
                         
                         let userUrl = "https://sonarapp.firebaseio.com/user_activity/" + currentUser + "/added/" + id
@@ -340,7 +337,7 @@ class AddressBookViewController: UIViewController, UITableViewDataSource, UITabl
                     }
                 } else {
                     // Log details of the failure
-                    println("Error: \(error!) \(error!.userInfo!)")
+                    print("Error: \(error!) \(error!.userInfo)")
                 }
             }
         }

@@ -111,7 +111,7 @@ class PickTargetViewController: UIViewController, UITableViewDataSource, UITable
             
             cell.profileImageView.image = UIImage(named: "Placeholder.png")
             if let cachedImageResult = imageCache[id] {
-                println("pull from cache")
+                print("pull from cache")
                 cell.profileImageView.image = UIImage(data: cachedImageResult!)
             } else {
                 // 3
@@ -131,10 +131,10 @@ class PickTargetViewController: UIViewController, UITableViewDataSource, UITable
                 let task = transferManager.download(readRequest1)
                 task.continueWithBlock { (task) -> AnyObject! in
                     if task.error != nil {
-                        println("No Profile Pic")
+                        print("No Profile Pic")
                     } else {
                         let image = UIImage(contentsOfFile: downloadingFilePath1)
-                        let imageData = UIImageJPEGRepresentation(image, 1.0)
+                        let imageData = UIImageJPEGRepresentation(image!, 1.0)
                         imageCache[id] = imageData
                         dispatch_async(dispatch_get_main_queue()
                             , { () -> Void in
@@ -143,7 +143,7 @@ class PickTargetViewController: UIViewController, UITableViewDataSource, UITable
                                 cell.setNeedsLayout()
                                 
                         })
-                        println("Fetched image")
+                        print("Fetched image")
                     }
                     return nil
                 }
@@ -165,14 +165,14 @@ class PickTargetViewController: UIViewController, UITableViewDataSource, UITable
         if indexPath.section == 0 {
             var count = 0
             for (count; count < targetIdArray.count; count++) {
-                var indexPath = NSIndexPath(forRow: count, inSection: 1)
+                let indexPath = NSIndexPath(forRow: count, inSection: 1)
                 tableView.deselectRowAtIndexPath(indexPath, animated: false)
             }
             postTargets = targetIdArray
             self.sendButton.enabled = true
-            println(postTargets)
+            print(postTargets)
         } else {
-            var allFriends = NSIndexPath(forRow: 0, inSection: 0)
+            let allFriends = NSIndexPath(forRow: 0, inSection: 0)
             let selectedIndexPaths = indexPathsForSelectedRowsInSection(indexPath.section)
             if selectedIndexPaths?.count == 1 {
                 tableView.deselectRowAtIndexPath(allFriends, animated: false)
@@ -182,13 +182,13 @@ class PickTargetViewController: UIViewController, UITableViewDataSource, UITable
             let target: (String) = targetIdArray[indexPath.row]
             postTargets.append(target)
             self.sendButton.enabled = true
-            println(postTargets)
+            print(postTargets)
         }
 
     }
     
     func indexPathsForSelectedRowsInSection(section: Int) -> [NSIndexPath]? {
-        return (tableView.indexPathsForSelectedRows() as? [NSIndexPath])?.filter({ (indexPath) -> Bool in
+        return (tableView.indexPathsForSelectedRows)?.filter({ (indexPath) -> Bool in
             indexPath.section == section
         })
     }
@@ -202,16 +202,16 @@ class PickTargetViewController: UIViewController, UITableViewDataSource, UITable
         if indexPath.section == 0 {
             postTargets = []
             self.sendButton.enabled = false
-            println(postTargets)
+            print(postTargets)
         } else {
             let target: (String) = targetIdArray[indexPath.row]
-            let index = find(postTargets, target)
+            let index = postTargets.indexOf(target)
             postTargets.removeAtIndex(index!)
             
             if postTargets.count == 0 {
                 self.sendButton.enabled = false
             }
-            println(postTargets)
+            print(postTargets)
         }
     }
     
@@ -256,7 +256,7 @@ class PickTargetViewController: UIViewController, UITableViewDataSource, UITable
             pushRef.observeSingleEventOfType(.Value, withBlock: {
                 snapshot in
                 if snapshot.value is NSNull {
-                    println("Did not enable push notifications")
+                    print("Did not enable push notifications")
                 } else {
                     // Create our Installation query
                     let pushQuery = PFInstallation.query()

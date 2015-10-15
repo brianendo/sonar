@@ -53,7 +53,7 @@ class ChangePasswordViewController: UIViewController {
     }
     
     func textFieldDidChange(textField: UITextField) {
-        if count(self.currentPasswordTextField.text) > 0 && count(self.newPasswordTextField.text) > 0{
+        if self.currentPasswordTextField.text!.characters.count > 0 && self.newPasswordTextField.text!.characters.count > 0{
             self.saveButton.enabled = true
         } else {
             self.saveButton.enabled = false
@@ -66,7 +66,7 @@ class ChangePasswordViewController: UIViewController {
     }
     
     @IBAction func saveButtonPressed(sender: UIButton) {
-        if count(self.newPasswordTextField.text) < 6 {
+        if self.newPasswordTextField.text!.characters.count < 6 {
             var alert = UIAlertController(title: "New password not secure", message: "Make sure it is at least 6 characters", preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "Back", style: UIAlertActionStyle.Default, handler: nil))
             self.presentViewController(alert, animated: true, completion: nil)
@@ -83,7 +83,7 @@ class ChangePasswordViewController: UIViewController {
                         // Password changed successfully
                         let alert = UIAlertController(title: nil, message: "Password Changed!", preferredStyle: UIAlertControllerStyle.ActionSheet)
                         let cancelButton = UIAlertAction(title: "Okay", style: UIAlertActionStyle.Cancel) { (alert) -> Void in
-                            print("Okay Pressed")
+                            print("Okay Pressed", terminator: "")
                             self.navigationController?.popViewControllerAnimated(true)
                         }
                         alert.addAction(cancelButton)

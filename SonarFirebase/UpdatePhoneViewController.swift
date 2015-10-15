@@ -65,7 +65,7 @@ class UpdatePhoneViewController: UIViewController {
     }
     
     func phoneTextFieldDidChange(textField: UITextField) {
-        if count(self.phoneNumberTextField.text) == 10 {
+        if self.phoneNumberTextField.text!.characters.count == 10 {
             self.verifyButton.enabled = true
         } else {
             self.verifyButton.enabled = false
@@ -73,7 +73,7 @@ class UpdatePhoneViewController: UIViewController {
     }
     
     func textFieldDidChange(textField: UITextField) {
-        if count(self.verificationCodeTextField.text) > 0 {
+        if self.verificationCodeTextField.text!.characters.count > 0 {
             self.saveButton.enabled = true
         } else {
             self.saveButton.enabled = false
@@ -87,20 +87,20 @@ class UpdatePhoneViewController: UIViewController {
     
 
     @IBAction func verifyButtonPressed(sender: UIButton) {
-        PFCloud.callFunctionInBackground("sendVerificationCode", withParameters: ["phoneNumber": self.phoneNumberTextField.text, "firebaseId": currentUser])
+        PFCloud.callFunctionInBackground("sendVerificationCode", withParameters: ["phoneNumber": self.phoneNumberTextField.text!, "firebaseId": currentUser])
     }
     
     
     @IBAction func saveButtonPressed(sender: UIButton) {
-        PFCloud.callFunctionInBackground("verifyPhoneNumber", withParameters: ["phoneVerificationCode": self.verificationCodeTextField.text, "phoneNumber": self.phoneNumberTextField.text, "firebaseId": currentUser]) { (objects:AnyObject?, error:NSError?) -> Void in
+        PFCloud.callFunctionInBackground("verifyPhoneNumber", withParameters: ["phoneVerificationCode": self.verificationCodeTextField.text!, "phoneNumber": self.phoneNumberTextField.text!, "firebaseId": currentUser]) { (objects:AnyObject?, error:NSError?) -> Void in
             if error == nil {
                 let userUrl = "https://sonarapp.firebaseio.com/users/" + currentUser + "/phoneNumber/"
                 let userRef = Firebase(url: userUrl)
                 userRef.setValue(self.phoneNumberTextField.text)
-                println("Made It")
+                print("Made It")
                 let alert = UIAlertController(title: nil, message: "Phone Number Changed!", preferredStyle: UIAlertControllerStyle.ActionSheet)
                 let cancelButton = UIAlertAction(title: "Okay", style: UIAlertActionStyle.Cancel) { (alert) -> Void in
-                    print("Okay Pressed")
+                    print("Okay Pressed", terminator: "")
                     self.navigationController?.popViewControllerAnimated(true)
                 }
                 alert.addAction(cancelButton)

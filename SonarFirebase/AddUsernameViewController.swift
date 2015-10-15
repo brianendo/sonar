@@ -133,7 +133,7 @@ class AddUsernameViewController: UIViewController, UITableViewDataSource, UITabl
             pushRef.observeEventType(.Value, withBlock: {
                 snapshot in
                 if snapshot.value is NSNull {
-                    println("Did not enable push notifications")
+                    print("Did not enable push notifications")
                 } else {
                     // Create our Installation query
                     let pushQuery = PFInstallation.query()
@@ -165,7 +165,7 @@ class AddUsernameViewController: UIViewController, UITableViewDataSource, UITabl
     
     func updateSearchResultsForSearchController(searchController: UISearchController) {
         let searchString = self.searchController.searchBar.text
-        self.filterContentForSearch(searchString)
+        self.filterContentForSearch(searchString!)
         self.tableView.reloadData()
     }
     
@@ -176,30 +176,28 @@ class AddUsernameViewController: UIViewController, UITableViewDataSource, UITabl
         user.whereKey("username", equalTo: searchTextLowercase)
         
         user.findObjectsInBackgroundWithBlock {
-            (objects: [AnyObject]?, error: NSError?) -> Void in
+            (objects: [PFObject]?, error: NSError?) -> Void in
             
             if error == nil {
                 // The find succeeded.
                 if objects!.count > 0 {
-                    if let objects = objects as? [PFObject] {
-                        for object in objects {
-                            println(object.objectForKey("firebaseId"))
-                            println(object.objectForKey("name"))
+                        for object in objects! {
+                            print(object.objectForKey("firebaseId"))
+                            print(object.objectForKey("name"))
                             let name = object.objectForKey("name") as! String
                             let firebaseId = object.objectForKey("firebaseId") as! String
                             let searchedUsername = searchTextLowercase
                             self.username = Username(username: searchedUsername, firebaseId: firebaseId)
                             self.tableView.reloadData()
                         }
-                    }
                 } else {
-                    println("No user")
+                    print("No user")
                     self.username = nil
                     self.tableView.reloadData()
                 }
             } else {
                 // Log details of the failure
-                println("Error: \(error!) \(error!.userInfo!)")
+                print("Error: \(error!) \(error!.userInfo)")
             }
         }
     }

@@ -118,7 +118,7 @@ class AddedMeViewController: UIViewController, UITableViewDataSource, UITableVie
         
         cell.profileImageView.image = UIImage(named: "Placeholder.png")
         if let cachedImageResult = imageCache[user] {
-            println("pull from cache")
+            print("pull from cache")
             cell.profileImageView.image = UIImage(data: cachedImageResult!)
         } else {
             // 3
@@ -138,10 +138,10 @@ class AddedMeViewController: UIViewController, UITableViewDataSource, UITableVie
             let task = transferManager.download(readRequest1)
             task.continueWithBlock { (task) -> AnyObject! in
                 if task.error != nil {
-                    print(task.error)
+                    print(task.error, terminator: "")
                 } else {
                     let image = UIImage(contentsOfFile: downloadingFilePath1)
-                    let imageData = UIImageJPEGRepresentation(image, 1.0)
+                    let imageData = UIImageJPEGRepresentation(image!, 1.0)
                     imageCache[user] = imageData
                     dispatch_async(dispatch_get_main_queue()
                         , { () -> Void in
@@ -150,7 +150,7 @@ class AddedMeViewController: UIViewController, UITableViewDataSource, UITableVie
                             cell.setNeedsLayout()
                             
                     })
-                    println("Fetched image")
+                    print("Fetched image")
                 }
                 return nil
             }
@@ -198,13 +198,13 @@ class AddedMeViewController: UIViewController, UITableViewDataSource, UITableVie
             pushRef.observeEventType(.Value, withBlock: {
                 snapshot in
                 if snapshot.value is NSNull {
-                    println("Did not enable push notifications")
+                    print("Did not enable push notifications")
                 } else {
                     // Create our Installation query
                     let pushQuery = PFInstallation.query()
                     pushQuery?.whereKey("installationId", equalTo: snapshot.value)
                     
-                    println("Reached")
+                    print("Reached")
                     // Send push notification to query
                     let push = PFPush()
                     push.setQuery(pushQuery) // Set our Installation query

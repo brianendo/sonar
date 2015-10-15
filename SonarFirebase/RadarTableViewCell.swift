@@ -17,7 +17,7 @@ class RadarTableViewCell: UITableViewCell, UITextViewDelegate {
     
     @IBOutlet weak var timeLabel: UILabel!
     
-    @IBOutlet weak var textView: MyTextView!
+    weak var textView: UITextView!
     
     @IBOutlet weak var postImageView: UIImageView!
     
@@ -42,7 +42,7 @@ class RadarTableViewCell: UITableViewCell, UITextViewDelegate {
     
     var timeInterval: Int = 0 {
         didSet {
-            var value = (timeInterval - Int(NSDate().timeIntervalSince1970))
+            let value = (timeInterval - Int(NSDate().timeIntervalSince1970))
             if value > 420 {
                 let time = Int(value/60)
                 let timeString = returnSecondsToHoursMinutesSeconds(value)

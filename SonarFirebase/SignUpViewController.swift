@@ -120,13 +120,13 @@ class SignUpViewController: UIViewController {
 //    }
     
     @IBAction func signUpButtonPressed(sender: UIButton) {
-        if count(self.passwordTextField.text) < 6 {
+        if self.passwordTextField.text!.characters.count < 6 {
             var alert = UIAlertController(title: "Password not secure", message: "Make sure it is at least 6 characters", preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "Back", style: UIAlertActionStyle.Default, handler: nil))
             self.presentViewController(alert, animated: true, completion: nil)
         } else {
         let email = emailTextField.text
-        let emailLowercase = email.lowercaseString
+        let emailLowercase = email!.lowercaseString
         
         ref.createUser(emailLowercase, password: passwordTextField.text,
             withValueCompletionBlock: { error, result in
@@ -137,7 +137,7 @@ class SignUpViewController: UIViewController {
                     self.presentViewController(alert, animated: true, completion: nil)
                 } else {
                     let uid = result["uid"] as? String
-                    print("Successfully created user account with uid: \(uid)")
+                    print("Successfully created user account with uid: \(uid)", terminator: "")
                     
                     ref.authUser(self.emailTextField.text, password: self.passwordTextField.text,
                         withCompletionBlock: { error, authData in
@@ -165,10 +165,10 @@ class SignUpViewController: UIViewController {
                                     (success: Bool, error: NSError?) -> Void in
                                     if (success) {
                                         // The object has been saved.
-                                        println("saved")
+                                        print("saved")
                                     } else {
                                         // There was a problem, check error.description
-                                        println("error")
+                                        print("error")
                                     }
                                 }
                                 self.performSegueWithIdentifier("showUsername", sender: self)

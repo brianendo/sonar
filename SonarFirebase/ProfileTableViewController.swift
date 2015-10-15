@@ -52,11 +52,11 @@ class ProfileTableViewController: UITableViewController, UIImagePickerController
             snapshot in
             let read = snapshot.value as? Bool
             if read == false {
-                println("Unread")
+                print("Unread")
                 self.addedMeContentView.backgroundColor = UIColor(red:0.92, green:0.92, blue:0.92, alpha:1.0)
                 self.newFriendLabel.text = "New Friend Request"
             } else {
-                println("Read")
+                print("Read")
                 self.addedMeContentView.backgroundColor = UIColor.clearColor()
                 self.newFriendLabel.text = ""
             }
@@ -112,7 +112,7 @@ class ProfileTableViewController: UITableViewController, UIImagePickerController
             let task = transferManager.download(readRequest1)
             task.continueWithBlock { (task) -> AnyObject! in
                 if task.error != nil {
-                    print(task.error)
+                    print(task.error, terminator: "")
                 } else {
                     dispatch_async(dispatch_get_main_queue()
                         , { () -> Void in
@@ -122,7 +122,7 @@ class ProfileTableViewController: UITableViewController, UIImagePickerController
                             self.profileImageView.image = UIImage(contentsOfFile: downloadingFilePath1)
                             
                     })
-                    print("Fetched image")
+                    print("Fetched image", terminator: "")
                 }
                 return nil
             }
@@ -148,7 +148,7 @@ class ProfileTableViewController: UITableViewController, UIImagePickerController
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.section == 1 {
-            println("Selected")
+            print("Selected")
             tableView.deselectRowAtIndexPath(indexPath, animated: true)
         } else if indexPath.section == 2{
             tableView.deselectRowAtIndexPath(indexPath, animated: true)
@@ -156,8 +156,8 @@ class ProfileTableViewController: UITableViewController, UIImagePickerController
                 ref.unauth()
                 
                 let login = UIStoryboard(name: "LogIn", bundle: nil)
-                let loginVC = login.instantiateInitialViewController() as! UIViewController
-                self.presentViewController(loginVC, animated: true, completion: nil)
+                let loginVC = login.instantiateInitialViewController()
+                self.presentViewController(loginVC!, animated: true, completion: nil)
             } else if indexPath.row == 0 {
                 
             }
@@ -165,7 +165,7 @@ class ProfileTableViewController: UITableViewController, UIImagePickerController
     }
     
     @IBAction func imageButtonClicked(sender: UIButton) {
-        println("Clicked")
+        print("Clicked")
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
         let libButton = UIAlertAction(title: "Select photo from library", style: UIAlertActionStyle.Default) { (alert) -> Void in
             let photoLibraryController = UIImagePickerController()
@@ -180,7 +180,7 @@ class ProfileTableViewController: UITableViewController, UIImagePickerController
         }
         if(UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)){
             let cameraButton = UIAlertAction(title: "Take a picture", style: UIAlertActionStyle.Default) { (alert) -> Void in
-                print("Take Photo")
+                print("Take Photo", terminator: "")
                 let cameraController = UIImagePickerController()
                 //if it is then create an instance of UIImagePickerController
                 cameraController.delegate = self
@@ -197,11 +197,11 @@ class ProfileTableViewController: UITableViewController, UIImagePickerController
             }
             alert.addAction(cameraButton)
         } else {
-            print("Camera not available")
+            print("Camera not available", terminator: "")
             
         }
         let cancelButton = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel) { (alert) -> Void in
-            print("Cancel Pressed")
+            print("Cancel Pressed", terminator: "")
         }
         
         alert.addAction(libButton)
@@ -212,7 +212,7 @@ class ProfileTableViewController: UITableViewController, UIImagePickerController
     
     // UIImagePickerControllerDelegate
     
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         let image = info[UIImagePickerControllerOriginalImage] as! UIImage
         let editedImage = info[UIImagePickerControllerEditedImage] as! UIImage
         
@@ -224,7 +224,7 @@ class ProfileTableViewController: UITableViewController, UIImagePickerController
         let uploadRequest1 : AWSS3TransferManagerUploadRequest = AWSS3TransferManagerUploadRequest()
         
         let data = UIImageJPEGRepresentation(squareImage, 0.01)
-        data!.writeToURL(testFileURL1!, atomically: true)
+        data!.writeToURL(testFileURL1, atomically: true)
         uploadRequest1.bucket = S3BucketName
         uploadRequest1.key =  currentUser
         uploadRequest1.body = testFileURL1
@@ -233,10 +233,10 @@ class ProfileTableViewController: UITableViewController, UIImagePickerController
         let task = transferManager.upload(uploadRequest1)
         task.continueWithBlock { (task) -> AnyObject! in
             if task.error != nil {
-                print("Error: \(task.error)")
+                print("Error: \(task.error)", terminator: "")
             } else {
                 self.download()
-                print("Upload successful")
+                print("Upload successful", terminator: "")
             }
             return nil
         }
@@ -263,7 +263,7 @@ class ProfileTableViewController: UITableViewController, UIImagePickerController
         var cropSquare = CGRectMake(posX, posY, edge, edge)
         
         var imageRef = CGImageCreateWithImageInRect(image.CGImage, cropSquare);
-        return UIImage(CGImage: imageRef, scale: UIScreen.mainScreen().scale, orientation: image.imageOrientation)!
+        return UIImage(CGImage: imageRef!, scale: UIScreen.mainScreen().scale, orientation: image.imageOrientation)
     }
     
     

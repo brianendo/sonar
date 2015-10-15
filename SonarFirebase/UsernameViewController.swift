@@ -56,24 +56,24 @@ class UsernameViewController: UIViewController {
     }
     
     func textFieldDidChange(textField: UITextField) {
-        if count(self.usernameTextField.text) > 2  {
+        if self.usernameTextField.text!.characters.count > 2  {
             
             let username = self.usernameTextField.text
             
-            let usernameLowercase = username.lowercaseString
+            let usernameLowercase = username!.lowercaseString
             
             var user = PFQuery(className:"FirebaseUser")
             user.whereKey("username", equalTo: usernameLowercase)
             
             user.findObjectsInBackgroundWithBlock {
-                (objects: [AnyObject]?, error: NSError?) -> Void in
+                (objects: [PFObject]?, error: NSError?) -> Void in
                 
                 if error == nil {
                     // The find succeeded.
                     if objects!.count == 0 {
                         
-                        if ((usernameLowercase.rangeOfCharacterFromSet(self.characterSet.invertedSet, options: nil, range: nil)) != nil) {
-                            println("Could not handle special characters")
+                        if ((usernameLowercase.rangeOfCharacterFromSet(self.characterSet.invertedSet, options: [], range: nil)) != nil) {
+                            print("Could not handle special characters")
                             self.nextButton.enabled = false
                             self.usernameStatusLabel.text = "Username cannot contain special characters"
                         } else {
@@ -86,7 +86,7 @@ class UsernameViewController: UIViewController {
                     }
                 } else {
                     // Log details of the failure
-                    println("Error: \(error!) \(error!.userInfo!)")
+                    print("Error: \(error!) \(error!.userInfo)")
                 }
             }
         } else {
@@ -103,7 +103,7 @@ class UsernameViewController: UIViewController {
     
     @IBAction func nextButtonPressed(sender: UIButton) {
         let username = self.usernameTextField.text
-        let usernameLowercase = username.lowercaseString
+        let usernameLowercase = username!.lowercaseString
         
         let userUrl = "https://sonarapp.firebaseio.com/users/" + currentUser + "/username/"
         let userRef = Firebase(url: userUrl)
@@ -114,19 +114,17 @@ class UsernameViewController: UIViewController {
         user.whereKey("firebaseId", equalTo: currentUser)
         
         user.findObjectsInBackgroundWithBlock {
-            (objects: [AnyObject]?, error: NSError?) -> Void in
+            (objects: [PFObject]?, error: NSError?) -> Void in
             
             if error == nil {
                 // The find succeeded.
-                if let objects = objects as? [PFObject] {
-                    for object in objects {
+                    for object in objects! {
                         object.setObject(usernameLowercase, forKey: "username")
                         object.saveInBackground()
                     }
-                }
             } else {
                 // Log details of the failure
-                println("Error: \(error!) \(error!.userInfo!)")
+                print("Error: \(error!) \(error!.userInfo)")
             }
         }
         

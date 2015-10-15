@@ -30,13 +30,13 @@ class ChatInfoViewController: UIViewController, UITableViewDelegate, UITableView
             urlRef.observeEventType(.Value, withBlock: {
                 snapshot in
                 let username = snapshot.value as? String
-                println(username)
+                print(username)
                 
                 let user = Username(username: username, firebaseId: (id as! String))
                 
                 self.usernameArray.append(user)
                 
-                self.usernameArray.sort({ $0.username < $1.username })
+                self.usernameArray.sortInPlace({ $0.username < $1.username })
                 self.tableView.reloadData()
             })
         }
@@ -101,7 +101,7 @@ class ChatInfoViewController: UIViewController, UITableViewDelegate, UITableView
         
         friendRef.observeEventType(.Value, withBlock: {
             snapshot in
-            println(snapshot.value)
+            print(snapshot.value)
             if snapshot.value is NSNull {
                 cell.toggleButton.hidden = false
                 if id == currentUser {
@@ -114,7 +114,7 @@ class ChatInfoViewController: UIViewController, UITableViewDelegate, UITableView
         
         cell.profileImageView.image = UIImage(named: "Placeholder.png")
         if let cachedImageResult = imageCache[id] {
-            println("pull from cache")
+            print("pull from cache")
             cell.profileImageView.image = UIImage(data: cachedImageResult!)
         } else {
             // 3
@@ -134,10 +134,10 @@ class ChatInfoViewController: UIViewController, UITableViewDelegate, UITableView
             let task = transferManager.download(readRequest1)
             task.continueWithBlock { (task) -> AnyObject! in
                 if task.error != nil {
-                    print(task.error)
+                    print(task.error, terminator: "")
                 } else {
                     let image = UIImage(contentsOfFile: downloadingFilePath1)
-                    let imageData = UIImageJPEGRepresentation(image, 1.0)
+                    let imageData = UIImageJPEGRepresentation(image!, 1.0)
                     imageCache[id] = imageData
                     dispatch_async(dispatch_get_main_queue()
                         , { () -> Void in
@@ -146,7 +146,7 @@ class ChatInfoViewController: UIViewController, UITableViewDelegate, UITableView
                             cell.setNeedsLayout()
                             
                     })
-                    println("Fetched image")
+                    print("Fetched image")
                 }
                 return nil
             }
@@ -156,8 +156,7 @@ class ChatInfoViewController: UIViewController, UITableViewDelegate, UITableView
         
         return cell
         } else {
-            let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("leaveChatCell") as! UITableViewCell
-            
+            let cell = tableView.dequeueReusableCellWithIdentifier("leaveChatCell") as! LeaveChatTableViewCell
             return cell
         }
     }
@@ -185,7 +184,7 @@ class ChatInfoViewController: UIViewController, UITableViewDelegate, UITableView
             pushRef.observeEventType(.Value, withBlock: {
                 snapshot in
                 if snapshot.value is NSNull {
-                    println("Did not enable push notifications")
+                    print("Did not enable push notifications")
                 } else {
                     // Create our Installation query
                     let pushQuery = PFInstallation.query()
@@ -234,7 +233,7 @@ class ChatInfoViewController: UIViewController, UITableViewDelegate, UITableView
 
             }
             let cancelButton = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel) { (alert) -> Void in
-                print("Cancel Pressed")
+                print("Cancel Pressed", terminator: "")
                 tableView.deselectRowAtIndexPath(indexPath, animated: false)
             }
             

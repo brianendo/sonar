@@ -53,7 +53,7 @@ class PhoneNumberViewController: UIViewController, UITextFieldDelegate {
     }
     
     func textFieldDidChange(textField: UITextField) {
-        if count(self.phoneNumberTextField.text) == 10 {
+        if self.phoneNumberTextField.text!.characters.count == 10 {
             self.nextButton.enabled = true
 //            var number = NSMutableString(contentsOfFile: self.phoneNumberTextField.text)
 //            number.insertString("(", atIndex: 0)
@@ -82,14 +82,14 @@ class PhoneNumberViewController: UIViewController, UITextFieldDelegate {
         if segue.identifier == "showVerification" {
             let number = self.phoneNumberTextField.text
             let verificationVC: VerificationViewController = segue.destinationViewController as! VerificationViewController
-            verificationVC.phoneNumber = number
+            verificationVC.phoneNumber = number!
         }
     }
     
     
     @IBAction func nextButtonPressed(sender: UIButton) {
         
-        PFCloud.callFunctionInBackground("sendVerificationCode", withParameters: ["phoneNumber": self.phoneNumberTextField.text, "firebaseId": currentUser])
+        PFCloud.callFunctionInBackground("sendVerificationCode", withParameters: ["phoneNumber": self.phoneNumberTextField.text!, "firebaseId": currentUser])
         
         self.performSegueWithIdentifier("showVerification", sender: self)
         

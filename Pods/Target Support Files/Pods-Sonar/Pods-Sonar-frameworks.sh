@@ -68,7 +68,6 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework 'Pods-Sonar/AWSSNS.framework'
   install_framework 'Pods-Sonar/AWSSQS.framework'
   install_framework 'Pods-Sonar/AWSSimpleDB.framework'
-  install_framework 'Pods-Sonar/Alamofire.framework'
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework 'Pods-Sonar/AWSAutoScaling.framework'
@@ -87,5 +86,4 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework 'Pods-Sonar/AWSSNS.framework'
   install_framework 'Pods-Sonar/AWSSQS.framework'
   install_framework 'Pods-Sonar/AWSSimpleDB.framework'
-  install_framework 'Pods-Sonar/Alamofire.framework'
 fi

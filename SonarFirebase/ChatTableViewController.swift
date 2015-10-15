@@ -154,7 +154,7 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
     
     var timeInterval: Int = 0 {
         didSet {
-            var value = (timeInterval - Int(NSDate().timeIntervalSince1970))
+            let value = (timeInterval - Int(NSDate().timeIntervalSince1970))
             if value > 60 {
                 let time = Int(value/60)
                 let timeString = returnSecondsToHoursMinutesSeconds(value)
@@ -201,14 +201,14 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
                         let userRef = Firebase(url: url)
                         userRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
                             if let username = snapshot.value["username"] as? String {
-                                println(endAt)
+                                print(endAt)
                                 if endAt == nil {
                                     endAt = 0
                                 }
                                 let endedDate = NSDate(timeIntervalSince1970: (endAt!))
                                 var timeLeft = endedDate.timeIntervalSinceDate(NSDate())
                                 
-                                var timeInterval = endedDate.timeIntervalSince1970
+                                let timeInterval = endedDate.timeIntervalSince1970
                                 
                                 self.timeInterval = Int(timeInterval)
                                 self.nameLabel.text = username
@@ -245,7 +245,7 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
     func messageCountUpdate() {
         
         let messagesCount = "https://sonarapp.firebaseio.com/messageCount/" + currentUser + "/postsReceived/" + self.postID! + "/realMessageCount/"
-        var messagesCountRef = Firebase(url: messagesCount)
+        let messagesCountRef = Firebase(url: messagesCount)
         
         messagesCountRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
             if let count = snapshot.value as? Int {
@@ -264,7 +264,7 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
     func messageCountWhenLoading() {
         
         let messagesCount = "https://sonarapp.firebaseio.com/posts/" + self.postID! + "/messageCount/"
-        var messagesCountRef = Firebase(url: messagesCount)
+        let messagesCountRef = Firebase(url: messagesCount)
         
         messagesCountRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
             if let count = snapshot.value as? Int {
@@ -283,12 +283,12 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         
         // Add messagesCount
         let postUpdated = "https://sonarapp.firebaseio.com/posts/" + postID!
-        var postUpdatedRef = Firebase(url: postUpdated)
+        let postUpdatedRef = Firebase(url: postUpdated)
         
         postUpdatedRef.observeEventType(.ChildChanged, withBlock: {
             snapshot in
             let messagesCount = "https://sonarapp.firebaseio.com/posts/" + self.postID! + "/messageCount/"
-            var messagesCountRef = Firebase(url: messagesCount)
+            let messagesCountRef = Firebase(url: messagesCount)
             
             messagesCountRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
                 if let count = snapshot.value as? Int {
@@ -335,10 +335,10 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         targetRef.observeEventType(.ChildRemoved, withBlock: {
             snapshot in
             if let key = snapshot.key as? String {
-                if let found = find(self.targetIdArray.map({ $0 }), key) {
+                if let found = self.targetIdArray.map({ $0 }).indexOf(key) {
                     let obj = self.targetIdArray[found]
-                    println(obj)
-                    println(found)
+                    print(obj)
+                    print(found)
                     self.targetIdArray.removeAtIndex(found)
                     self.tableView.reloadData()
                 }
@@ -368,7 +368,7 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         // Add a tap gesture recognizer to the table view
         let tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "tableViewTapped")
         self.tableView.addGestureRecognizer(tapGesture)
-        self.tableView.tableFooterView = UIView(frame: CGRect.zeroRect)
+        self.tableView.tableFooterView = UIView(frame: CGRect.zero)
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 70
         
@@ -478,8 +478,8 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         let messages = messagesRef.childByAutoId()
         messages.setValue(message1)
         
-        println(targetIdArray)
-        println(targetIdArray.count)
+        print(targetIdArray)
+        print(targetIdArray.count)
         
         for target in targetIdArray {
             let pushURL = "https://sonarapp.firebaseio.com/users/" + target + "/pushId"
@@ -515,7 +515,7 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
 //            })
             
             let messageCount = "https://sonarapp.firebaseio.com/messageCount/" + target + "/postsReceived/" + self.postID! + "/realMessageCount/"
-            var messageCountRef = Firebase(url: messageCount)
+            let messageCountRef = Firebase(url: messageCount)
             
             messageCountRef.observeSingleEventOfType(.Value, withBlock: {
                 snapshot in
@@ -526,11 +526,11 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
                 let postReceivedRef = Firebase(url: postReceivedUrl)
                 
                 let newMessageCount = "https://sonarapp.firebaseio.com/messageCount/" + target + "/postsReceived/" + self.postID! + "/realMessageCount/"
-                var newMessageCountRef = Firebase(url: newMessageCount)
+                let newMessageCountRef = Firebase(url: newMessageCount)
                 newMessageCountRef.setValue(messageCount)
                 
                 let timeLeft = (self.timeInterval - Int(NSDate().timeIntervalSince1970))
-                println(timeLeft)
+                print(timeLeft)
                 
                 let timeInterval = self.timeInterval
                 
@@ -547,9 +547,9 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
                         pushRef.observeSingleEventOfType(.Value, withBlock: {
                             snapshot in
                             if snapshot.value is NSNull {
-                                println("Did not enable push notifications")
+                                print("Did not enable push notifications")
                             } else {
-                                println("Made it")
+                                print("Made it")
                                 
                                 if target == currentUser {
                                     
@@ -586,9 +586,9 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
                         pushRef.observeSingleEventOfType(.Value, withBlock: {
                             snapshot in
                             if snapshot.value is NSNull {
-                                println("Did not enable push notifications")
+                                print("Did not enable push notifications")
                             } else {
-                                println("Made it")
+                                print("Made it")
                                 
                                 if target == currentUser {
                                     
@@ -627,9 +627,9 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
                         pushRef.observeSingleEventOfType(.Value, withBlock: {
                             snapshot in
                             if snapshot.value is NSNull {
-                                println("Did not enable push notifications")
+                                print("Did not enable push notifications")
                             } else {
-                                println("Made it")
+                                print("Made it")
                                 
                                 if target == currentUser {
                                     
@@ -666,9 +666,9 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
                         pushRef.observeSingleEventOfType(.Value, withBlock: {
                             snapshot in
                             if snapshot.value is NSNull {
-                                println("Did not enable push notifications")
+                                print("Did not enable push notifications")
                             } else {
-                                println("Made it")
+                                print("Made it")
                                 
                                 if target == currentUser {
                                     
@@ -889,7 +889,7 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
     
     func textViewDidChange(textView: UITextView) {
         let trimmedString = sendMessageTextView.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
-        if count(trimmedString) == 0 {
+        if trimmedString.characters.count == 0 {
             self.sendButton.enabled = false
         } else {
             self.sendButton.enabled = true
@@ -949,7 +949,7 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         
         cell.profileImageView.image = UIImage(named: "Placeholder.png")
         if let cachedImageResult = imageCache[messageCreator] {
-            println("pull from cache")
+            print("pull from cache")
             cell.profileImageView.image = UIImage(data: cachedImageResult!)
         } else {
             // 3
@@ -969,10 +969,10 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
             let task = transferManager.download(readRequest1)
             task.continueWithBlock { (task) -> AnyObject! in
                 if task.error != nil {
-                    print(task.error)
+                    print(task.error, terminator: "")
                 } else {
                     let image = UIImage(contentsOfFile: downloadingFilePath1)
-                    let imageData = UIImageJPEGRepresentation(image, 1.0)
+                    let imageData = UIImageJPEGRepresentation(image!, 1.0)
                     imageCache[messageCreator] = imageData
                     dispatch_async(dispatch_get_main_queue()
                         , { () -> Void in
@@ -981,7 +981,7 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
                             cell.setNeedsLayout()
                             
                     })
-                    println("Fetched image")
+                    print("Fetched image")
                 }
                 return nil
             }
@@ -1004,7 +1004,7 @@ class ChatTableViewController: UIViewController, UITableViewDataSource, UITableV
         
         dispatch_after(time, dispatch_get_main_queue(), {
             
-            let numberOfSections = self.tableView.numberOfSections()
+            let numberOfSections = self.tableView.numberOfSections
             let numberOfRows = self.tableView.numberOfRowsInSection(numberOfSections-1)
             
             if numberOfRows > 0 {

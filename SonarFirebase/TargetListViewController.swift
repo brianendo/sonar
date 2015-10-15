@@ -28,7 +28,7 @@ class TargetListViewController: UIViewController, UITableViewDelegate, UITableVi
         
         targetRef.queryOrderedByChild("username").observeEventType(.ChildAdded, withBlock: {
             snapshot in
-            print(snapshot.key)
+            print(snapshot.key, terminator: "")
             let id = snapshot.key as? String
             let usernameUrl = "https://sonarapp.firebaseio.com/users/" + snapshot.key
             let usernameRef = Firebase(url: usernameUrl)
@@ -36,7 +36,7 @@ class TargetListViewController: UIViewController, UITableViewDelegate, UITableVi
                 // do some stuff once
                 if let username = snapshot.value["username"] as? String {
                         self.friendsArray.append(username)
-                        print(username)
+                        print(username, terminator: "")
                         self.idArray.append(id!)
                         self.tableView.reloadData()
                 }
@@ -82,7 +82,7 @@ class TargetListViewController: UIViewController, UITableViewDelegate, UITableVi
         
         cell.profileImageView.image = UIImage(named: "Placeholder.png")
         if let cachedImageResult = imageCache[id] {
-            println("pull from cache")
+            print("pull from cache")
             cell.profileImageView.image = UIImage(data: cachedImageResult!)
         } else {
             // 3
@@ -102,10 +102,10 @@ class TargetListViewController: UIViewController, UITableViewDelegate, UITableVi
             let task = transferManager.download(readRequest1)
             task.continueWithBlock { (task) -> AnyObject! in
                 if task.error != nil {
-                    print(task.error)
+                    print(task.error, terminator: "")
                 } else {
                     let image = UIImage(contentsOfFile: downloadingFilePath1)
-                    let imageData = UIImageJPEGRepresentation(image, 1.0)
+                    let imageData = UIImageJPEGRepresentation(image!, 1.0)
                     imageCache[id] = imageData
                     dispatch_async(dispatch_get_main_queue()
                         , { () -> Void in
@@ -114,7 +114,7 @@ class TargetListViewController: UIViewController, UITableViewDelegate, UITableVi
                             cell.setNeedsLayout()
                             
                     })
-                    println("Fetched image")
+                    print("Fetched image")
                 }
                 return nil
             }
@@ -165,7 +165,7 @@ class TargetListViewController: UIViewController, UITableViewDelegate, UITableVi
             self.tableView.reloadData()
         }
         let cancelButton = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel) { (alert) -> Void in
-            print("Cancel Pressed")
+            print("Cancel Pressed", terminator: "")
             tableView.deselectRowAtIndexPath(indexPath, animated: false)
         }
         

@@ -60,41 +60,41 @@ class UpdateUsernameViewController: UIViewController {
     }
 
     func textFieldDidChange(textField: UITextField) {
-        if self.usernameTextField.text == username || count(self.usernameTextField.text) < 2  {
+        if self.usernameTextField.text == username || self.usernameTextField.text!.characters.count < 2  {
             
             self.saveButton.enabled = false
             
         } else {
             let username = self.usernameTextField.text
             
-            let usernameLowercase = username.lowercaseString
+            let usernameLowercase = username!.lowercaseString
             
             var user = PFQuery(className:"FirebaseUser")
             user.whereKey("username", equalTo: usernameLowercase)
             
-            user.findObjectsInBackgroundWithBlock {
-                (objects: [AnyObject]?, error: NSError?) -> Void in
-                
-                if error == nil {
-                    // The find succeeded.
-                    if objects!.count == 0 {
-                        if ((usernameLowercase.rangeOfCharacterFromSet(self.characterSet.invertedSet, options: nil, range: nil)) != nil) {
-                            println("Could not handle special characters")
-                            self.saveButton.enabled = false
-                            self.statusLabel.text = "Username cannot contain special characters"
-                        } else {
-                            self.saveButton.enabled = true
-                            self.statusLabel.text = "Username Available!"
-                        }
-                    } else {
-                        self.statusLabel.text = "Username taken"
-                        self.saveButton.enabled = false
-                    }
-                } else {
-                    // Log details of the failure
-                    println("Error: \(error!) \(error!.userInfo!)")
-                }
-            }
+//            user.findObjectsInBackgroundWithBlock {
+//                (objects: [AnyObject]?, error: NSError?) -> Void in
+//                
+//                if error == nil {
+//                    // The find succeeded.
+//                    if objects!.count == 0 {
+//                        if ((usernameLowercase.rangeOfCharacterFromSet(self.characterSet.invertedSet, options: [], range: nil)) != nil) {
+//                            print("Could not handle special characters")
+//                            self.saveButton.enabled = false
+//                            self.statusLabel.text = "Username cannot contain special characters"
+//                        } else {
+//                            self.saveButton.enabled = true
+//                            self.statusLabel.text = "Username Available!"
+//                        }
+//                    } else {
+//                        self.statusLabel.text = "Username taken"
+//                        self.saveButton.enabled = false
+//                    }
+//                } else {
+//                    // Log details of the failure
+//                    print("Error: \(error!) \(error!.userInfo!)")
+//                }
+//            }
             
         }
     }
@@ -111,16 +111,16 @@ class UpdateUsernameViewController: UIViewController {
         friendsRef.observeEventType(.ChildAdded, withBlock: {
             snapshot in
             let id = snapshot.key as? String
-            println(id)
+            print(id)
             self.friendArray.append(id!)
-            println(self.friendArray)
+            print(self.friendArray)
             
         })
     }
     
     @IBAction func saveButtonPressed(sender: UIButton) {
         
-        let usernameLowercase = self.usernameTextField.text.lowercaseString
+        let usernameLowercase = self.usernameTextField.text!.lowercaseString
         
         let userUrl = "https://sonarapp.firebaseio.com/users/" + currentUser + "/username/"
         let userRef = Firebase(url: userUrl)
@@ -136,24 +136,22 @@ class UpdateUsernameViewController: UIViewController {
         user.whereKey("firebaseId", equalTo: currentUser)
         
         user.findObjectsInBackgroundWithBlock {
-            (objects: [AnyObject]?, error: NSError?) -> Void in
+            (objects: [PFObject]?, error: NSError?) -> Void in
             
             if error == nil {
                 // The find succeeded.
-                if let objects = objects as? [PFObject] {
-                    for object in objects {
+                    for object in objects! {
                         object.setObject(usernameLowercase, forKey: "username")
                         object.saveInBackground()
                     }
-                }
             } else {
                 // Log details of the failure
-                println("Error: \(error!) \(error!.userInfo!)")
+                print("Error: \(error!) \(error!.userInfo)")
             }
         }
         let alert = UIAlertController(title: nil, message: "Username Changed!", preferredStyle: UIAlertControllerStyle.ActionSheet)
         let cancelButton = UIAlertAction(title: "Okay", style: UIAlertActionStyle.Cancel) { (alert) -> Void in
-            print("Okay Pressed")
+            print("Okay Pressed", terminator: "")
             self.navigationController?.popViewControllerAnimated(true)
         }
         

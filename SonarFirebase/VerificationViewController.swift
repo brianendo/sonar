@@ -12,7 +12,7 @@ import Firebase
 
 extension String {
     func insert(string:String,ind:Int) -> String {
-        return  prefix(self,ind) + string + suffix(self,count(self)-ind)
+        return  String(self.characters.prefix(ind)) + string + String(self.characters.suffix(self.characters.count-ind))
     }
 }
 
@@ -55,7 +55,7 @@ class VerificationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        var number = phoneNumber
+        let number = phoneNumber
 //        number.insert("(", ind: 0)
 //        number.insert(")", ind: 4)
 //        number.insert("-", ind: 9)
@@ -74,7 +74,7 @@ class VerificationViewController: UIViewController {
     }
     
     func textFieldDidChange(textField: UITextField) {
-        if count(self.verificationTextField.text) > 0 {
+        if self.verificationTextField.text!.characters.count > 0 {
             self.nextButton.enabled = true
         }
         else {
@@ -89,12 +89,12 @@ class VerificationViewController: UIViewController {
 
     @IBAction func nextButtonPressed(sender: UIButton) {
         
-        PFCloud.callFunctionInBackground("verifyPhoneNumber", withParameters: ["phoneVerificationCode": self.verificationTextField.text, "phoneNumber": phoneNumber, "firebaseId": currentUser]) { (objects:AnyObject?, error:NSError?) -> Void in
+        PFCloud.callFunctionInBackground("verifyPhoneNumber", withParameters: ["phoneVerificationCode": self.verificationTextField.text!, "phoneNumber": phoneNumber, "firebaseId": currentUser]) { (objects:AnyObject?, error:NSError?) -> Void in
             if error == nil {
                 let userUrl = "https://sonarapp.firebaseio.com/users/" + currentUser + "/phoneNumber/"
                 let userRef = Firebase(url: userUrl)
                 userRef.setValue(self.phoneNumber)
-                println("Made It")
+                print("Made It")
                 self.performSegueWithIdentifier("segueToSelfie", sender: self)
             } else {
                 var alert = UIAlertController(title: "Wrong verification code", message: "Please retry", preferredStyle: UIAlertControllerStyle.Alert)
@@ -111,7 +111,7 @@ class VerificationViewController: UIViewController {
         let confirmAction = UIAlertAction(title: "Confirm", style: .Default) { (_) in
             if let field = alertController.textFields![0] as? UITextField {
                 // store your data
-                PFCloud.callFunctionInBackground("sendVerificationCode", withParameters: ["phoneNumber": field.text, "firebaseId": currentUser])
+                PFCloud.callFunctionInBackground("sendVerificationCode", withParameters: ["phoneNumber": field.text!, "firebaseId": currentUser])
             } else {
                 // user did not fill field
             }

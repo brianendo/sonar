@@ -53,8 +53,8 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
         targetRef.queryLimitedToLast(1).observeEventType(.Value, withBlock: {
             snapshot in
             
-            println("get added")
-            println(snapshot.value)
+            print("get added")
+            print(snapshot.value)
         })
     }
     
@@ -65,9 +65,9 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
         
         targetRef.queryLimitedToLast(1).observeEventType(.ChildChanged, withBlock: {
             snapshot in
-            println("get changed")
-            println(snapshot.key)
-            println(snapshot.value)
+            print("get changed")
+            print(snapshot.key)
+            print(snapshot.value)
         })
     }
 
@@ -77,12 +77,12 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
         
         targetRef.observeEventType(.ChildAdded, withBlock: {
             snapshot in
-            println("child")
+            print("child")
             
-            if let found = find(self.posts.map({ $0.key }), snapshot.key) {
+            if let found = self.posts.map({ $0.key }).indexOf(snapshot.key) {
                 let obj = self.posts[found]
-                println(obj)
-                println(found)
+                print(obj)
+                print(found)
                 self.posts.removeAtIndex(found)
             }
             
@@ -115,9 +115,10 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
                                             let post = Post(content: content, creator: creator, key: key, createdAt: updatedDate, name: username, joined: true, messageCount: 0, endAt: endedDate)
                                             
                                             self.posts.append(post)
+                                            print(post)
                                             
                                             // Sort posts in descending order
-                                            self.posts.sort({ $0.createdAt.compare($1.createdAt) == .OrderedDescending })
+                                            self.posts.sortInPlace({ $0.createdAt.compare($1.createdAt) == .OrderedDescending })
                                             self.tableView.reloadData()
                                             
                                         }
@@ -138,7 +139,7 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
         
         targetRef.observeEventType(.ChildChanged, withBlock: {
             snapshot in
-            println("childChanged")
+            print("childChanged")
             
             let eliminate = snapshot.key
             
@@ -166,23 +167,23 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
                                     
                                     let post = Post(content: content, creator: creator, key: key, createdAt: updatedDate, name: username, joined: true, messageCount: 0, endAt: endedDate)
                                     
-                                    if let found = find(self.posts.map({ $0.key }), eliminate) {
+                                    if let found = self.posts.map({ $0.key }).indexOf(eliminate) {
                                         let obj = self.posts[found]
-                                        println(obj)
-                                        println(found)
+                                        print(obj)
+                                        print(found)
                                         self.posts.removeAtIndex(found)
                                     }
                                     
                                     
                                     self.posts.append(post)
                                     
-                                    println(self.posts)
-                                    println(post.key)
+                                    print(self.posts)
+                                    print(post.key)
                                     
                                     
                                     // Sort posts in descending order
-                                    self.posts.sort({ $0.createdAt.compare($1.createdAt) == .OrderedDescending })
-                                    self.tableView.reloadData()
+                                    self.posts.sortInPlace({ $0.createdAt.compare($1.createdAt) == .OrderedDescending })
+//                                    self.tableView.reloadData()
                                     
 
                                 }
@@ -236,10 +237,10 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
         targetRef.observeEventType(.ChildRemoved, withBlock: {
             snapshot in
             let key = snapshot.key as? String
-            if let found = find(self.posts.map({ $0.key }), snapshot.key) {
+            if let found = self.posts.map({ $0.key }).indexOf(snapshot.key) {
                 let obj = self.posts[found]
-                println(obj)
-                println(found)
+                print(obj)
+                print(found)
                 self.posts.removeAtIndex(found)
             }
             var createdAt = snapshot.value["createdAt"] as? Int
@@ -249,17 +250,17 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
                 createdAt = 0
             }
             
-            println(createdAt!/1000)
-            println(endAt)
+            print(createdAt!/1000)
+            print(endAt)
             let length = Int((endAt! - (createdAt!/1000)))
-            println(length)
-            println("childRemoved")
+            print(length)
+            print("childRemoved")
             
             let pointAddedUrl = "https://sonarapp.firebaseio.com/time/" + currentUser + "/posts/" + key! 
             let pointAddedRef = Firebase(url: pointAddedUrl)
             pointAddedRef.setValue(length)
             
-            self.posts.sort({ $0.createdAt.compare($1.createdAt) == .OrderedDescending })
+            self.posts.sortInPlace({ $0.createdAt.compare($1.createdAt) == .OrderedDescending })
             self.tableView.reloadData()
         })
     }
@@ -290,7 +291,7 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
         
         targetRef.queryOrderedByChild("username").observeEventType(.ChildAdded, withBlock: {
             snapshot in
-            print(snapshot.key)
+            print(snapshot.key, terminator: "")
             let id = snapshot.key as? String
             let usernameUrl = "https://sonarapp.firebaseio.com/users/" + snapshot.key
             let usernameRef = Firebase(url: usernameUrl)
@@ -298,7 +299,7 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
                 // do some stuff once
                 if let username = snapshot.value["username"] as? String {
                     self.friendsArray.append(username)
-                    print(username)
+                    print(username, terminator: "")
                     self.idArray.append(id!)
                     self.tableView.reloadData()
                 }
@@ -310,15 +311,10 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     
     override func viewDidAppear(animated: Bool) {
-        var nav = self.navigationController?.navigationBar
+        let nav = self.navigationController?.navigationBar
         let rightImage = UIImage(named: "WhitePulseSize")
         
         let rightBarButton = UIBarButtonItem(image: rightImage, style: UIBarButtonItemStyle.Plain, target: self, action: "pushRadarToPulse")
-        
-//        let leftImage = UIImage(named: "Profile")
-//        let leftBarButton = UIBarButtonItem(image: leftImage, style: UIBarButtonItemStyle.Plain, target: self, action: "pushRadarToProfile")
-//        
-//        self.navigationItem.leftBarButtonItem = leftBarButton
         
         self.navigationItem.rightBarButtonItem = rightBarButton
 
@@ -350,12 +346,12 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
         
         targetRef.observeSingleEventOfType(.Value, withBlock: {
             snapshot in
-            println("clean")
+            print("clean")
             
-            if let found = find(self.posts.map({ $0.key }), snapshot.key) {
+            if let found = self.posts.map({ $0.key }).indexOf(snapshot.key) {
                 let obj = self.posts[found]
-                println(obj)
-                println(found)
+                print(obj)
+                print(found)
                 self.posts.removeAtIndex(found)
             }
         })
@@ -369,7 +365,7 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
         ref.observeAuthEventWithBlock({ authData in
             if authData != nil {
                 // user authenticated
-                print(authData)
+                print(authData, terminator: "")
                 currentUser = authData.uid
                 
                 // Add installationID from Parse to Firebase
@@ -407,8 +403,8 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
             } else {
                 // No user is signed in
                 let login = UIStoryboard(name: "LogIn", bundle: nil)
-                let loginVC = login.instantiateInitialViewController() as! UIViewController
-                self.presentViewController(loginVC, animated: true, completion: nil)
+                let loginVC = login.instantiateInitialViewController()
+                self.presentViewController(loginVC!, animated: true, completion: nil)
             }
         })
     }
@@ -425,13 +421,13 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
     func deleteDeadCell() {
         for post in posts {
             let endAt = post.endAt
-            var timeLeft = endAt.timeIntervalSinceDate(NSDate())
+            let timeLeft = endAt.timeIntervalSinceDate(NSDate())
             if timeLeft <= 0 {
-                if let found = find(self.posts.map({ $0.endAt }), post.endAt) {
+                if let found = self.posts.map({ $0.endAt }).indexOf(post.endAt) {
                     let obj = self.posts[found]
-                    println(obj)
-                    println(found)
-                    println(post.key)
+                    print(obj)
+                    print(found)
+                    print(post.key)
                     
                     let url = "https://sonarapp.firebaseio.com/posts/" + post.key + "/endAt"
                     let postRef = Firebase(url: url)
@@ -441,13 +437,13 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
                         
                         let endedDate = NSDate(timeIntervalSince1970: (endTime!))
                         
-                        var timeLeft = endedDate.timeIntervalSinceDate(NSDate())
-                        println(timeLeft)
+                        let timeLeft = endedDate.timeIntervalSinceDate(NSDate())
+                        print(timeLeft)
                         if timeLeft >= 0 {
-                            println("Alive")
+                            print("Alive")
                         }
                         else {
-                            println("Delete")
+                            print("Delete")
                             let url = "https://sonarapp.firebaseio.com/users/" + currentUser + "/postsReceived/" + post.key
                             let targetRef = Firebase(url: url)
                             targetRef.removeValue()
@@ -467,11 +463,11 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     func timeAgoSinceDate(date:NSDate, numericDates:Bool) -> String {
         let calendar = NSCalendar.currentCalendar()
-        let unitFlags = NSCalendarUnit.CalendarUnitMinute | NSCalendarUnit.CalendarUnitHour | NSCalendarUnit.CalendarUnitDay | NSCalendarUnit.CalendarUnitWeekOfYear | NSCalendarUnit.CalendarUnitMonth | NSCalendarUnit.CalendarUnitYear | NSCalendarUnit.CalendarUnitSecond
+        let unitFlags: NSCalendarUnit = [NSCalendarUnit.Minute, NSCalendarUnit.Hour, NSCalendarUnit.Day, NSCalendarUnit.WeekOfYear, NSCalendarUnit.Month, NSCalendarUnit.Year, NSCalendarUnit.Second]
         let now = NSDate()
         let earliest = now.earlierDate(date)
         let latest = (earliest == now) ? date : now
-        let components:NSDateComponents = calendar.components(unitFlags, fromDate: earliest, toDate: latest, options: nil)
+        let components:NSDateComponents = calendar.components(unitFlags, fromDate: earliest, toDate: latest, options: [])
         
         
         if (components.year >= 2) {
@@ -535,7 +531,7 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
         // Segue to Chat
         if segue.identifier == "showChat" {
             let chatVC: ChatTableViewController = segue.destinationViewController as! ChatTableViewController
-            let indexPath = self.tableView.indexPathForSelectedRow()
+            let indexPath = self.tableView.indexPathForSelectedRow
             let post = self.posts[indexPath!.row]
             chatVC.postVC = post
             chatVC.postID = post.key
@@ -585,13 +581,15 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
         let creator: (String) = posts[indexPath.row].creator
         let key = posts[indexPath.row].key
         
+        print(creator)
+            
         let radarContent: (AnyObject) = posts[indexPath.row].content
         cell.textView.selectable = false
         cell.textView.text = radarContent as? String
         cell.textView.userInteractionEnabled = false
         
         cell.textView.selectable = true
-        
+
         let url = "https://sonarapp.firebaseio.com/messageCount/" + currentUser + "/postsReceived/" + key
         let messageRef = Firebase(url: url)
         messageRef.observeEventType(.Value, withBlock: {
@@ -621,11 +619,11 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
             
         // Need View Controller to segue in TableViewCell
         cell.viewController = self
-        
+
         let radarCreator: (AnyObject) = posts[indexPath.row].name
         
         cell.nameLabel.text = radarCreator as? String
-
+            
         return cell
         } else if indexPath.section == 1 {
             let cell: FriendScoreTableViewCell = tableView.dequeueReusableCellWithIdentifier("friendCell", forIndexPath: indexPath) as! FriendScoreTableViewCell
@@ -657,7 +655,7 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
                 
                 cell.profileImageView.image = UIImage(named: "Placeholder.png")
                 if let cachedImageResult = imageCache[currentUser] {
-                    println("pull from cache")
+                    print("pull from cache")
                     cell.profileImageView.image = UIImage(data: cachedImageResult!)
                 } else {
                     // 3
@@ -677,10 +675,10 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
                     let task = transferManager.download(readRequest1)
                     task.continueWithBlock { (task) -> AnyObject! in
                         if task.error != nil {
-                            println("No Profile Pic")
+                            print("No Profile Pic")
                         } else {
                             let image = UIImage(contentsOfFile: downloadingFilePath1)
-                            let imageData = UIImageJPEGRepresentation(image, 1.0)
+                            let imageData = UIImageJPEGRepresentation(image!, 1.0)
                             imageCache[currentUser] = imageData
                             dispatch_async(dispatch_get_main_queue()
                                 , { () -> Void in
@@ -689,7 +687,7 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
                                     cell.setNeedsLayout()
                                     
                             })
-                            println("Fetched image")
+                            print("Fetched image")
                         }
                         return nil
                     }
@@ -718,7 +716,7 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
             
             cell.profileImageView.image = UIImage(named: "Placeholder.png")
             if let cachedImageResult = imageCache[id] {
-                println("pull from cache")
+                print("pull from cache")
                 cell.profileImageView.image = UIImage(data: cachedImageResult!)
             } else {
                 // 3
@@ -738,10 +736,10 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
                 let task = transferManager.download(readRequest1)
                 task.continueWithBlock { (task) -> AnyObject! in
                     if task.error != nil {
-                        println("No Profile Pic")
+                        print("No Profile Pic")
                     } else {
                         let image = UIImage(contentsOfFile: downloadingFilePath1)
-                        let imageData = UIImageJPEGRepresentation(image, 1.0)
+                        let imageData = UIImageJPEGRepresentation(image!, 1.0)
                         imageCache[id] = imageData
                         dispatch_async(dispatch_get_main_queue()
                             , { () -> Void in
@@ -750,7 +748,7 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
                                 cell.setNeedsLayout()
                                 
                         })
-                        println("Fetched image")
+                        print("Fetched image")
                     }
                     return nil
                 }
@@ -760,11 +758,12 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
             
             return cell
         } else {
-            let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("addFriendCell") as! UITableViewCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("addFriendCell")
             
-            return cell
+            return cell!
         }
     }
+    
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.section == 1 {
@@ -796,7 +795,7 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
             }
 
             let cancelButton = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel) { (alert) -> Void in
-                print("Cancel Pressed")
+                print("Cancel Pressed", terminator: "")
             }
             
             alert.addAction(usernameButton)
@@ -811,7 +810,7 @@ class RadarViewController: UIViewController, UITableViewDataSource, UITableViewD
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.section == 0 {
             if editingStyle == .Delete {
-                println("Delete")
+                print("Delete")
                 let post = posts[indexPath.row]
                 
                 let url = "https://sonarapp.firebaseio.com/users/" + currentUser + "/postsReceived/" + post.key

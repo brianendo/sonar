@@ -65,16 +65,16 @@ class EmailViewController: UIViewController {
             let emailField = self.emailTextField.text
             
             var user = PFQuery(className:"FirebaseUser")
-            user.whereKey("email", equalTo: emailField)
+            user.whereKey("email", equalTo: emailField!)
             
             user.findObjectsInBackgroundWithBlock {
-                (objects: [AnyObject]?, error: NSError?) -> Void in
+                (objects: [PFObject]?, error: NSError?) -> Void in
                 
                 if error == nil {
                     // The find succeeded.
                     if objects!.count == 0 {
                         self.statusLabel.text = "Email Available!"
-                        if count(self.passwordTextField.text) > 0 {
+                        if self.passwordTextField.text!.characters.count > 0 {
                             self.saveButton.enabled = true
                         }
                     } else {
@@ -83,7 +83,7 @@ class EmailViewController: UIViewController {
                     }
                 } else {
                     // Log details of the failure
-                    println("Error: \(error!) \(error!.userInfo!)")
+                    print("Error: \(error!) \(error!.userInfo)")
                 }
             }
             
@@ -98,7 +98,7 @@ class EmailViewController: UIViewController {
 
     @IBAction func saveButtonPressed(sender: UIButton) {
         
-        let emailLowercase = self.emailTextField.text.lowercaseString
+        let emailLowercase = self.emailTextField.text!.lowercaseString
         
         let ref = Firebase(url: "https://sonarapp.firebaseio.com")
         ref.changeEmailForUser(self.email, password: self.passwordTextField.text,
@@ -119,24 +119,22 @@ class EmailViewController: UIViewController {
                     user.whereKey("firebaseId", equalTo: currentUser)
                     
                     user.findObjectsInBackgroundWithBlock {
-                        (objects: [AnyObject]?, error: NSError?) -> Void in
+                        (objects: [PFObject]?, error: NSError?) -> Void in
                         
                         if error == nil {
                             // The find succeeded.
-                            if let objects = objects as? [PFObject] {
-                                for object in objects {
+                                for object in objects! {
                                     object.setObject(emailLowercase, forKey: "email")
                                     object.saveInBackground()
                                 }
-                            }
                         } else {
                             // Log details of the failure
-                            println("Error: \(error!) \(error!.userInfo!)")
+                            print("Error: \(error!) \(error!.userInfo)")
                         }
                     }
                     let alert = UIAlertController(title: nil, message: "Email Changed!", preferredStyle: UIAlertControllerStyle.ActionSheet)
                     let cancelButton = UIAlertAction(title: "Okay", style: UIAlertActionStyle.Cancel) { (alert) -> Void in
-                        print("Okay Pressed")
+                        print("Okay Pressed", terminator: "")
                         self.navigationController?.popViewControllerAnimated(true)
                     }
                     

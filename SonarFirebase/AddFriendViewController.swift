@@ -128,7 +128,7 @@ class AddFriendViewController: UIViewController, UITableViewDataSource, UITableV
         pushRef.observeEventType(.Value, withBlock: {
             snapshot in
             if snapshot.value is NSNull {
-                println("Did not enable push notifications")
+                print("Did not enable push notifications")
             } else {
                 // Create our Installation query
                 let pushQuery = PFInstallation.query()
@@ -146,8 +146,8 @@ class AddFriendViewController: UIViewController, UITableViewDataSource, UITableV
             }
         })
         
-        print(user)
-        print(currentUser)
+        print(user, terminator: "")
+        print(currentUser, terminator: "")
     }
 
 }

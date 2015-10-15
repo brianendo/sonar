@@ -66,7 +66,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             let task = transferManager.download(readRequest1)
             task.continueWithBlock { (task) -> AnyObject! in
                 if task.error != nil {
-                    print(task.error)
+                    print(task.error, terminator: "")
                 } else {
                     dispatch_async(dispatch_get_main_queue()
                         , { () -> Void in
@@ -76,7 +76,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
                             self.imageView.image = UIImage(contentsOfFile: downloadingFilePath1)
                             
                     })
-                    print("Fetched image")
+                    print("Fetched image", terminator: "")
                 }
                 return nil
             }
@@ -114,13 +114,12 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     func queryImageFromParse() {
         var query = PFQuery(className: "profilePicture")
         query.whereKey("userID", equalTo: currentUser)
-        query.findObjectsInBackgroundWithBlock { (objects: [AnyObject]?, error: NSError?) -> Void in
+        query.findObjectsInBackgroundWithBlock { (objects: [PFObject]?, error: NSError?) -> Void in
             if error == nil {
                 // The find succeeded.
-                println("Successfully retrieved \(objects!.count) scores.")
+                print("Successfully retrieved \(objects!.count) scores.")
                 // Do something with the found objects
-                if let objects = objects as? [PFObject] {
-                    for object in objects {
+                    for object in objects! {
                         let userImageFile = object.objectForKey("profilePicture") as! PFFile
                         userImageFile.getDataInBackgroundWithBlock({ (imageData: NSData?, error: NSError?) -> Void in
                             if error == nil {
@@ -130,10 +129,9 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
                             }
                         })
                     }
-                }
             } else {
                 // Log details of the failure
-                println("Error: \(error!) \(error!.userInfo!)")
+                print("Error: \(error!) \(error!.userInfo)")
             }
         }
     }
@@ -157,7 +155,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         }
         if(UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)){
             let cameraButton = UIAlertAction(title: "Take a picture", style: UIAlertActionStyle.Default) { (alert) -> Void in
-                print("Take Photo")
+                print("Take Photo", terminator: "")
                 let cameraController = UIImagePickerController()
                 //if it is then create an instance of UIImagePickerController
                 cameraController.delegate = self
@@ -174,11 +172,11 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             }
             alert.addAction(cameraButton)
         } else {
-            print("Camera not available")
+            print("Camera not available", terminator: "")
             
         }
         let cancelButton = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel) { (alert) -> Void in
-            print("Cancel Pressed")
+            print("Cancel Pressed", terminator: "")
         }
         
         alert.addAction(libButton)
@@ -191,7 +189,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
 
     // UIImagePickerControllerDelegate
     
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         let image = info[UIImagePickerControllerOriginalImage] as! UIImage
         
         // Save image in S3 with the userID
@@ -200,7 +198,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         let uploadRequest1 : AWSS3TransferManagerUploadRequest = AWSS3TransferManagerUploadRequest()
         
         let data = UIImageJPEGRepresentation(image, 0.01)
-        data!.writeToURL(testFileURL1!, atomically: true)
+        data!.writeToURL(testFileURL1, atomically: true)
         uploadRequest1.bucket = S3BucketName
         uploadRequest1.key =  currentUser
         uploadRequest1.body = testFileURL1
@@ -209,10 +207,10 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         let task = transferManager.upload(uploadRequest1)
         task.continueWithBlock { (task) -> AnyObject! in
             if task.error != nil {
-                print("Error: \(task.error)")
+                print("Error: \(task.error)", terminator: "")
             } else {
                 self.download()
-                print("Upload successful")
+                print("Upload successful", terminator: "")
             }
             return nil
         }
@@ -228,8 +226,8 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         ref.unauth()
         
         let login = UIStoryboard(name: "LogIn", bundle: nil)
-        let loginVC = login.instantiateInitialViewController() as! UIViewController
-        self.presentViewController(loginVC, animated: true, completion: nil)
+        let loginVC = login.instantiateInitialViewController()
+        self.presentViewController(loginVC!, animated: true, completion: nil)
     }
     
     
